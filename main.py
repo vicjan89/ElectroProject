@@ -25,12 +25,19 @@ class ElementPath(ElementCircuit):
 
 class ContactOpen(ElementPath):
 
-    def __init__(self, name=''):
+    def __init__(self, name='', label_a='', label_b=''):
         super().__init__(name)
         self.vertices = [(0, 0),   (5, 0),      (5, 5),      (15, 0),     (20, 0)]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
         self.label_x = 5
         self.label_y = 6
+        self.label_a = label_a
+        self.label_b = label_b
+
+    def show(self, ax):
+        super().show(ax)
+        plt.text(self.a[0], self.a[1]-5, self.label_a, color='black', fontsize=12)
+        plt.text(self.b[0], self.b[1]-5,  self.label_b, color='black', fontsize=12)
 
     @property
     def a(self):
@@ -42,12 +49,19 @@ class ContactOpen(ElementPath):
 
 class ContactClose(ElementPath):
 
-    def __init__(self, name=''):
+    def __init__(self, name='', label_a='', label_b=''):
         super().__init__(name)
         self.vertices = [(0, 0),   (5, 0),      (5, -5),     (4, -5),     (15, 0),     (20, 0)]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
         self.label_x = 5
         self.label_y = 6
+        self.label_a = label_a
+        self.label_b = label_b
+
+    def show(self, ax):
+        super().show(ax)
+        plt.text(self.a[0]-1, self.a[1]-5, self.label_a, color='black', fontsize=12)
+        plt.text(self.b[0]-1, self.b[1]-5,  self.label_b, color='black', fontsize=12)
 
     @property
     def a(self):
@@ -135,12 +149,19 @@ class ContactCloseTimeOff(ContactClose):
 
 class Winding(ElementPath):
 
-    def __init__(self, name=''):
+    def __init__(self, name='', label_a='', label_b=''):
         super().__init__(name)
         self.vertices = [(0, 0),   (5, 0),      (5, 5),      (10, 5),     (10, -5),    (5, -5),     (5, 0),      (10, 0),     (15, 0)]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO]
         self.label_x = 4
         self.label_y = 7
+        self.label_a = label_a
+        self.label_b = label_b
+
+    def show(self, ax):
+        super().show(ax)
+        plt.text(self.a[0]-5, self.a[1]-5, self.label_a, color='black', fontsize=12)
+        plt.text(self.b[0]-5, self.b[1]-5,  self.label_b, color='black', fontsize=12)
 
     @property
     def a(self):
@@ -177,29 +198,36 @@ class Wire(ElementCircuit):
         ax.add_patch(path_patch)
         plt.text(self.x1 + dx1, (self.y1 + dx2 + self.y2 + dy2)/2 + self.y1 + 2, self.name, color='black', fontsize=14)
 
+class Apparatus:
+
+    def __init__(self, name=''):
+        self.name = name
+
+class RP23_25(Apparatus):
+
+    def __init__(self, name=''):
+        super().__init__(name)
+        self.__w = Winding(name, '11', '12')
+        self.__k1 = ContactClose(name, '1', '2')
+        self.__k2 = ContactOpen(name, '3', '4')
+        self.__k3 = ContactOpen(name, '5', '6')
+        self.__k4 = ContactOpen(name, '7', '8')
+        self.__k5 = ContactOpen(name, '9', '10')
+
+    @property
+    def w(self):
+        return self.__w
+
+    @property
+    def k1(self):
+        return self.__k1
+
 fig,ax = plt.subplots()
 ax.set(xlim=(0, 200), ylim=(0, 100))
-c = ContactCloseTimeOn('KT1')
-c.mov_to(10, 10)
-c.show(ax)
-d = ContactCloseTimeOff('KT2')
-d.mov_to(30, 10)
-d.show(ax)
-e = ContactOpenTimeOn('KT1')
-e.mov_to(50, 10)
-e.show(ax)
-r = ContactOpenTimeOff('KT2')
-r.mov_to(70, 10)
-r.show(ax)
-b = ContactClose('KH2')
-b.mov_to(90, 10)
-b.show(ax)
-v = ContactOpen('KL1')
-v.mov_to(110, 10)
-v.show(ax)
-w = Winding('KL1')
-w.mov_to(160, 50)
-w.show(ax)
-l = Wire(*v.b, *w.a, 'A401')
-l.show(ax)
+kl1 = RP23_25('KL1')
+kl1.k1.mov_to(10, 10)
+kl1.k1.show(ax)
+kl1.w.mov_to(100, 50)
+kl1.w.show(ax)
+Wire(*kl1.k1.b, *kl1.w.a, 'A401').show(ax)
 plt.show()
