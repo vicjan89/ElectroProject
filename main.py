@@ -41,11 +41,11 @@ class ContactOpen(ElementPath):
 
     @property
     def a(self):
-        return *self.vertices[0], True
+        return (self.vertices[0][0], self.vertices[0][1], True)
 
     @property
     def b(self):
-        return *self.vertices[4], False
+        return (self.vertices[4][0], self.vertices[4][1], False)
 
 class ContactClose(ElementPath):
 
@@ -65,11 +65,11 @@ class ContactClose(ElementPath):
 
     @property
     def a(self):
-        return *self.vertices[0], True
+        return (self.vertices[0][0], self.vertices[0][1], True)
 
     @property
     def b(self):
-        return *self.vertices[5], False
+        return (self.vertices[5][0], self.vertices[5][1], False)
 
 class ContactOpenTimeOn(ContactOpen):
 
@@ -165,11 +165,11 @@ class Winding(ElementPath):
 
     @property
     def a(self):
-        return *self.vertices[0], True
+        return (self.vertices[0][0], self.vertices[0][1], True)
 
     @property
     def b(self):
-        return *self.vertices[-1], False
+        return (self.vertices[-1][0], self.vertices[-1][1], False)
 
 class Wire(ElementCircuit):
 
@@ -205,7 +205,7 @@ class Apparatus:
 
 class RP23_25(Apparatus):
 
-    def __init__(self, name=''):
+    def __init__(self, name='', x=0, y=0):
         super().__init__(name)
         self.__w = Winding(name, '11', '12')
         self.__k1 = ContactClose(name, '1', '2')
@@ -213,6 +213,10 @@ class RP23_25(Apparatus):
         self.__k3 = ContactOpen(name, '5', '6')
         self.__k4 = ContactOpen(name, '7', '8')
         self.__k5 = ContactOpen(name, '9', '10')
+        self.__x = x
+        self.__y = y
+        self.vertices = [(0, 0),   (30, 0),      (30, -60),     (0, -60),     (0, 0)]
+        self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
 
     @property
     def w(self):
@@ -222,12 +226,19 @@ class RP23_25(Apparatus):
     def k1(self):
         return self.__k1
 
-fig,ax = plt.subplots()
+    def show(self,ax):
+        path = Path(self.vertices, self.codes)
+        path_patch = PathPatch(path, fill=False)
+        ax.add_patch(path_patch)
+
+fig = plt.figure(figsize=(200, 100))
+ax = fig.add_subplot()
 ax.set(xlim=(0, 200), ylim=(0, 100))
-kl1 = RP23_25('KL1')
+kl1 = RP23_25('KL1', 100, 100)
 kl1.k1.mov_to(10, 10)
 kl1.k1.show(ax)
 kl1.w.mov_to(100, 50)
 kl1.w.show(ax)
 Wire(*kl1.k1.b, *kl1.w.a, 'A401').show(ax)
+kl1.show(ax)
 plt.show()
