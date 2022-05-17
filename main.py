@@ -205,7 +205,7 @@ class Apparatus:
 
 class RP23_25(Apparatus):
 
-    def __init__(self, name='', x=0, y=0):
+    def __init__(self, name=''):
         super().__init__(name)
         self.__w = Winding(name, '11', '12')
         self.__k1 = ContactClose(name, '1', '2')
@@ -213,8 +213,6 @@ class RP23_25(Apparatus):
         self.__k3 = ContactOpen(name, '5', '6')
         self.__k4 = ContactOpen(name, '7', '8')
         self.__k5 = ContactOpen(name, '9', '10')
-        self.__x = x
-        self.__y = y
         self.vertices = [(0, 0),   (30, 0),      (30, -60),     (0, -60),     (0, 0)]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
 
@@ -234,11 +232,25 @@ class RP23_25(Apparatus):
 fig = plt.figure(figsize=(200, 100))
 ax = fig.add_subplot()
 ax.set(xlim=(0, 200), ylim=(0, 100))
-kl1 = RP23_25('KL1', 100, 100)
-kl1.k1.mov_to(10, 10)
-kl1.k1.show(ax)
-kl1.w.mov_to(100, 50)
-kl1.w.show(ax)
-Wire(*kl1.k1.b, *kl1.w.a, 'A401').show(ax)
-kl1.show(ax)
+kl1 = RP23_25('KL1')
+yat = YA('YAT')
+yac = YA('YAC')
+sac1 = TO2('SAC1')
+w7 = Wire(kl1.k1.b, kl1.w.a, '7')
+sh8 = MountingModule('Шкаф №8')
+sh8.add(kl1, yat, yac, sac1, w7)
+cd = CircuitDiagram()
+cd.add(sh8)
+cd.show(ax)
+#wd = WiringDiagram()
+#wd.add(sh8)
+#wd.show(ax)
+
+#cm = CableMagazine()
+#cm.add(cab101, cab102, cab103)
+#cm.show(ax)
+
+#ci = CableInstallation()
+#ci.add(cab101, cab102, cab103)
+#ci.show(ax)
 plt.show()
