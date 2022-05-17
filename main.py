@@ -185,9 +185,9 @@ class Wire(ElementCircuit):
     def show(self, ax):
         p = [(self.x1, self.y1)]
         dx1 = -5 if self.side1 else 5
-        dy1 = -10 if self.y1 > self.y2 else 10
+        dy1 = -5 if self.y1 > self.y2 else 5
         dx2 = -5 if self.side2 else 5
-        dy2 = 10 if self.y1 > self.y2 else -10
+        dy2 = 5 if self.y1 > self.y2 else -5
         p.append((self.x1 + dx1, self.y1 + dy1))
         p.append((self.x1 + dx1, (self.y1 + dx2 + self.y2 + dy2)/2 + self.y1))
         p.append((self.x2 + dx2, (self.y1 + dx2 + self.y2 + dy2) / 2 + self.y1))
