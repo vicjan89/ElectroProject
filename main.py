@@ -50,6 +50,7 @@ class ElementPath(ElementCircuit):
         self.label_y += y
 
     def show(self, ax):
+        super().show()
         path = Path(self.vertices, self.codes)
         path_patch = PathPatch(path, fill=False)
         ax.add_patch(path_patch)
@@ -61,10 +62,10 @@ class ContactOpen(ElementPath):
         super().__init__(name)
         self.vertices = [(0, 0),   (5, 0),      (5, 5),      (15, 0),     (20, 0)]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
+        self.__a = Connection(label_a, self.vertices[0][0], self.vertices[0][1], True)
+        self.__b = Connection(label_b, self.vertices[-1][0], self.vertices[-1][1], False)
         self.label_x = 5
         self.label_y = 6
-        self.label_a = label_a
-        self.label_b = label_b
 
     def show(self, ax):
         super().show(ax)
@@ -203,6 +204,11 @@ class Winding(ElementPath):
     def b(self):
         return self.__b
 
+    def mov_to(self, x, y):
+        super().mov_to(x, y)
+        self.__a.mov_to(x, y)
+        self.__b.mov_to(x, y)
+
 class CT_W(ElementCircuit):
 
     def __init__(self, name='', label_a='', label_b=''):
@@ -233,8 +239,8 @@ class CT_W(ElementCircuit):
         path_patch = PathPatch(path, fill=False)
         ax.add_patch(path_patch)
         ax.add_patch(crl)
-        ax.text(self.vertices[0][0] - 4, self.vertices[0][1] - 2, self.label_a, color='black', fontsize=12)
-        ax.text(self.vertices[-1][0] + 1, self.vertices[0][1] - 2, self.label_b, color='black', fontsize=12)
+        ax.text(self.vertices[0][0] - 10, self.vertices[0][1] - 5, self.label_a, color='black', fontsize=12)
+        ax.text(self.vertices[-1][0] , self.vertices[0][1] - 5, self.label_b, color='black', fontsize=12)
 
     @property
     def a(self):
@@ -273,12 +279,16 @@ class ConnectionTerminal(ElementCircuit):
 
 class ConnectionDetachable(ElementPath):
 
-    def __init__(self, name=''):
+    def __init__(self, name='', side=True):
         super().__init__(name)
-        self.vertices = [(5, 5), (0, 0), (5, -5), (7, 5), (2, 0), (7, -5)]
+        self.__side = side
+        if self.__side:
+            self.vertices = [(5, 5), (0, 0), (5, -5), (7, 5), (2, 0), (7, -5)]
+        else:
+            self.vertices = [(-5, 5), (0, 0), (-5, -5), (-3, 5), (2, 0), (-3, -5)]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
-        self.__a = Connection('', 0, 0, True)
-        self.__b = Connection('', 2, 0, False)
+        self.__a = Connection(name, 0, 0, True)
+        self.__b = Connection(name, 2, 0, False)
         self.label_x = 4
         self.label_y = 10
 
@@ -371,8 +381,8 @@ class CT2(Apparatus):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.ct_w1 = CT_W('1')
-        self.ct_w2 = CT_W('2')
+        self.ct_w1 = CT_W(name+'-1', name+'-1-И1', name+'-1-И2')
+        self.ct_w2 = CT_W(name+'/2', name+'-2-И1', name+'-2-И2')
 
     def show(self, ax):
         self.ct_w1.show(ax)
@@ -404,7 +414,15 @@ class XT(Apparatus):
         super().__init__(name)
         self.n = []
         for i in range(quantity):
-            self.n.append(ConnectionTerminal(str(i)))
+            self.n.append(ConnectionTerminal(name + '-' + str(i)))
+
+class RP361(Apparatus):
+
+    def __init__(self, name=''):
+        super().__init__(name)
+        self.__k1 = ContactOpen(name)
+        self.__k2 =ContactClose(name)
+        self.w8_14 = Winding(name)
 
 class CircuitDiagram():
 
@@ -430,12 +448,17 @@ fig = plt.figure(figsize=(250, 250))
 ax = fig.add_subplot()
 ax.set(xlim=(0, 250), ylim=(0, 250))
 ct_a = CT2('ТТа')
-xt = XT('SX', 50)
+xt = XT('XT', 50)
 w411 = Wire(ct_a.ct_w1.b, xt.n[6].a, 'A411')
-xt1 = ConnectionDetachable('XT1/12')
+xt1 = ConnectionDetachable('XT1/12', True)
 w412 = Wire(xt.n[6].b, xt1.a, '')
 yat_a = YA('YAA1')
 w413 = Wire(xt1.b, yat_a.a)
+xt2 = ConnectionDetachable('XT1/13', False)
+w414 = Wire(yat_a.b, xt2.a)
+w415 = Wire(xt2.b, xt.n[7],a)
+kl1 = RP361('KL1')
+w416 = Wire(xt.n[7].b, kl1.k1.a)
 '''
 
 yat_c = YA('YAC1')
@@ -448,7 +471,7 @@ rel_otc = MountingModule('Релейный отсек')
 sh8.add(yat_a, yat_c, kl1, kl2, a1)
 '''
 cd = CircuitDiagram()
-cd.add(ct_a.ct_w1, w411, xt.n[6], w412, xt1, w413, yat_a)
+cd.add(ct_a.ct_w1, w411, xt.n[6], w412, xt1, w413, yat_a, w414, xt2)
 cd.show(ax)
 #wd = WiringDiagram()
 #wd.add(sh8)
