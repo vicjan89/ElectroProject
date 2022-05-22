@@ -1,7 +1,9 @@
-import matplotlib.pyplot as plt
-from matplotlib.path import Path
-from matplotlib.patches import PathPatch
+import ezdxf
 import math
+
+class Path:
+    MOVETO = 1
+    LINETO = 2
 
 #Базовый класс
 
@@ -67,14 +69,21 @@ class ElementGraph(ElementCircuit):
     def show(self, ax):
         super().show()
         if len(self.vertices) > 0:
-            path = Path(self.vertices, self.codes)
-            path_patch = PathPatch(path, fill=False)
-            ax.add_patch(path_patch)
+            path = []
+            for i in range(len(self.vertices)):
+                if self.codes[i] == Path.MOVETO:
+                    if len(path) > 0:
+                        ax.add_lwpolyline(path)
+                    path = [self.vertices[i]]
+                elif self.codes[i] == Path.LINETO:
+                    path.append(self.vertices[i])
+                else:
+                    raise Exception('Неправильный код пути полилинии!')
+                ax.add_lwpolyline(path)
         for i in range(len(self.centers)):
-            crl = plt.Circle(self.centers[i], self.radii[i], fill=False)
-            ax.add_patch(crl)
+            crl = ax.add_circle(self.centers[i], radius=self.radii[i])
         for i in range(len(self.labels_xy)):
-            ax.text(self.labels_xy[i][0] - 10, self.labels_xy[i][1] - 5, self.labels[i], color='black', fontsize=12)
+            ax.add_text(self.labels[i]).set_pos((self.labels_xy[i][0], self.labels_xy[i][1]), align='BOTTOM_CENTER')
 
 #Графические элементы
 
@@ -82,18 +91,18 @@ class ContactOpen(ElementGraph):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.vertices = [[0, 0],   [5, 0],      [5, 5],      [15, 0],     [20, 0]]
-        self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
-        self.labels_xy = [[5, 6]]
+        self.vertices = [[0, 0],   [5, 0],      [15, 5],      [15, 0],     [20, 0]]
+        self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO]
+        self.labels_xy = [[10, 6]]
         self.labels = [name]
 
 class ContactClose(ElementGraph):
 
-    def __init__(self, name='', label_a='', label_b=''):
+    def __init__(self, name=''):
         super().__init__(name)
-        self.vertices = [(0, 0),   (5, 0),      (5, -5),     (4, -5),     (15, 0),     (20, 0)]
+        self.vertices = [[0, 0],   [5, 0],      [16, -5],     [15, -5],     [15, 0],     [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
-        self.labels_xy = [[5, 6]]
+        self.labels_xy = [[10, 6]]
         self.labels = [name]
 
 class ContactOpenTimeOn(ContactOpen):
@@ -142,7 +151,7 @@ class Winding(ElementGraph):
         super().__init__(name)
         self.vertices = [[0, 0],   [5, 0],      [5, 5],      [10, 5],     [10, -5],    [5, -5],     [5, 0],      [10, 0],     [15, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO]
-        self.labels_xy = [[4, 7]]
+        self.labels_xy = [[7, 6]]
         self.labels = [name]
 
 class CT_W(ElementGraph):
@@ -153,7 +162,7 @@ class CT_W(ElementGraph):
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
         self.centers = [[2, 7]]
         self.radii = [4]
-        self.labels_xy = [[0, 16]]
+        self.labels_xy = [[0, 12]]
         self.labels = [name]
 
 class ConnectionDetachable(ElementGraph):
@@ -220,14 +229,11 @@ class Wire(ElementCircuit):
             plt.text(self.__a.x + dx1, (self.__a.y + dx2 + self.__b.y + dy2) / 2 + self.__a.y + 2, self.name,
                      color='black', fontsize=12)
         else:
-            path = Path((self.__a.connections[self.__key_a][1].connections[self.__key_a],
+            ax.add_line(self.__a.connections[self.__key_a][1].connections[self.__key_a],
                         (self.__a.connections[self.__key_a][1].connections[self.__key_a][0] + 20,
-                         self.__a.connections[self.__key_a][1].connections[self.__key_a][1])), [Path.MOVETO, Path.LINETO])
-            path_patch = PathPatch(path, fill=False)
-            ax.add_patch(path_patch)
-            plt.text(self.__a.connections[self.__key_a][1].connections[self.__key_a][0] + 5,
-                         self.__a.connections[self.__key_a][1].connections[self.__key_a][1] + 5,
-                     self.name, color='black', fontsize=12)
+                         self.__a.connections[self.__key_a][1].connections[self.__key_a][1]))
+            ax.add_text(self.name).set_pos((self.__a.connections[self.__key_a][1].connections[self.__key_a][0] + 5,
+                         self.__a.connections[self.__key_a][1].connections[self.__key_a][1] + 5))
             self.__b.connections[self.__key_b][1].mov_to(base_point_key=self.__key_b,
                                                         x=self.__a.connections[self.__key_a][1].connections[self.__key_a][0] + 20,
                                                         y=self.__a.connections[self.__key_a][1].connections[self.__key_a][1])
@@ -238,9 +244,9 @@ class ConnectionTerminal(GraphWithConnection):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.centers = [[0, 0]]
-        self.radii = [0.5]
-        self.labels_xy = [[7, -5]]
+        self.centers = [[0, 0], [0, 0], [0, 0]]
+        self.radii = [0.5, 0.3, 0.1]
+        self.labels_xy = [[0, -5]]
         self.labels = [name]
         self.connections[name] = [0, 0]
 
@@ -266,12 +272,14 @@ class CT2(GraphWithConnection):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.w1 = GraphWithConnection(name + '-1')
-        self.w1 += CT_W(self.w1.name)
+        self.w1 = GraphWithConnection()
+        self.w1 += CT_W(name + '-1')
         self.w1.connections['1И1'] = [0, 0]
         self.w1.connections['1И2'] = [4, 0]
+        self.w1.labels += ['1И1', '1U2']
+        self.w1.labels_xy += [[-2, -5], [6, -5]]
         self.w2 = GraphWithConnection(name + '-2')
-        self.w2 += CT_W(self.w2.name)
+        self.w2 += CT_W(name + '-2')
         self.w2.connections['2И1'] = [0, 0]
         self.w2.connections['2И2'] = [4, 0]
         self.vertices = [[0, 0], [20, 0], [20, -50], [0, -50]]
@@ -316,13 +324,34 @@ class XT(GraphWithConnection):
             self.n.append(ConnectionTerminal(i))
             self.connections[i] = [[0, 0], self.n[-1]]
 
-class RP361(ElementCircuit):
+class RP361(GraphWithConnection):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.__k1 = ContactOpen(name)
-        self.__k2 =ContactClose(name)
-        self.w8_14 = Winding(name)
+        self.k2_4_6 = GraphWithConnection()
+        k =  ContactOpen(name)
+        k.rotate(180)
+        k.mov_to(20, 0)
+        self.k2_4_6 += k
+        k = ContactClose(name)
+        k.rotate(180)
+        k.mov_to(20, 20)
+        self.k2_4_6 += k
+        self.k2_4_6.vertices += [[20, 0], [20, 20]]
+        self.k2_4_6.codes += [Path.MOVETO, Path.LINETO]
+        self.k2_4_6.connections[2] = [0, 0]
+        self.k2_4_6.connections[4] = [20, 0]
+        self.k2_4_6.connections[6] = [0, 15]
+        self.w8_14 = GraphWithConnection()
+        self.w8_14 += Winding(name)
+        self.w8_14.connections[8] = [0, 0]
+        self.w8_14.connections[14] = [20, 0]
+        self.connections[2] = [[0, 0], self.k2_4_6]
+        self.connections[4] = [[0, 0], self.k2_4_6]
+        self.connections[6] = [[0, 0], self.k2_4_6]
+        self.connections[8] = [[0, 0], self.w8_14]
+        self.connections[14] = [[0, 0], self.w8_14]
+
 
 class CircuitDiagram:
 
@@ -344,10 +373,9 @@ class WiringDiagram:
     def show(self, ax):
         pass
 
-fig = plt.figure()
-ax = fig.add_subplot()
-ax.set(xlim=(0, 250), ylim=(0, 250))
-ct_a = CT2('ТТа')
+doc = ezdxf.new()
+msp = doc.modelspace()
+ct_a = CT2('TTa')
 xt = XT('XT1', 50)
 w411 = Wire(ct_a, '1И2', xt, 6,  'A411')
 xt1 = Connectors('XT1', 32)
@@ -357,8 +385,9 @@ w413 = Wire(xt1, 'p12', yat_a, 1)
 xt1.n[13].rotate(180)
 w414 = Wire(yat_a, 2, xt1, 'p13')
 w415 = Wire(xt1, 's13', xt, 7)
-#kl1 = RP361('KL1')
-#w416 = Wire(xt.n[7].b, kl1.k1.a)
+kl1 = RP361('KL1')
+w416 = Wire(xt, 7, kl1, 2)
+w417 = Wire(kl1, 4, kl1, 8)
 
 '''
 yat_c = YA('YAC1')
@@ -369,11 +398,12 @@ w7 = Wire(kl1.k1.b, kl1.w.a, '7')
 rel_otc = MountingModule('Релейный отсек')
 sh8.add(yat_a, yat_c, kl1, kl2, a1)
 '''
-cd = CircuitDiagram(ct_a.w1, w411, xt.n[6], w412, xt1.n[12], w413, yat_a.w, w414, xt1.n[13], w415, xt.n[7])
-cd.show(ax)
+cd = CircuitDiagram(ct_a.w1, w411, xt.n[6], w412, xt1.n[12], w413, yat_a.w, w414, xt1.n[13], w415, xt.n[7], w416, kl1.k2_4_6,
+                    w417, kl1.w8_14)
+cd.show(msp)
 
 wd = WiringDiagram(ct_a)
-wd.show(ax)
+wd.show(msp)
 
 #cm = CableMagazine()
 #cm.add(cab101, cab102, cab103)
@@ -382,4 +412,5 @@ wd.show(ax)
 #ci = CableInstallation()
 #ci.add(cab101, cab102, cab103)
 #ci.show(ax)
-plt.show()
+doc.saveas("RZAproject.dxf", encoding='cp1251')
+print('Чертёж сформирован.')
