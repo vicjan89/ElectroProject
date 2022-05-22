@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
-from matplotlib.path import Path
-from matplotlib.patches import PathPatch
+import svgwrite
 import math
 
 #Базовый класс
@@ -69,7 +67,7 @@ class ElementGraph(ElementCircuit):
         if len(self.vertices) > 0:
             path = Path(self.vertices, self.codes)
             path_patch = PathPatch(path, fill=False)
-            ax.add_patch(path_patch)
+            ax.add(path_patch)
         for i in range(len(self.centers)):
             crl = plt.Circle(self.centers[i], self.radii[i], fill=False)
             ax.add_patch(crl)
@@ -344,9 +342,7 @@ class WiringDiagram:
     def show(self, ax):
         pass
 
-fig = plt.figure()
-ax = fig.add_subplot()
-ax.set(xlim=(0, 250), ylim=(0, 250))
+dwg = svgwrite.Drawing('RZAproject.svg', profile='tiny')
 ct_a = CT2('ТТа')
 xt = XT('XT1', 50)
 w411 = Wire(ct_a, '1И2', xt, 6,  'A411')
@@ -370,10 +366,10 @@ rel_otc = MountingModule('Релейный отсек')
 sh8.add(yat_a, yat_c, kl1, kl2, a1)
 '''
 cd = CircuitDiagram(ct_a.w1, w411, xt.n[6], w412, xt1.n[12], w413, yat_a.w, w414, xt1.n[13], w415, xt.n[7])
-cd.show(ax)
+cd.show(dwg)
 
 wd = WiringDiagram(ct_a)
-wd.show(ax)
+wd.show(dwg)
 
 #cm = CableMagazine()
 #cm.add(cab101, cab102, cab103)
@@ -382,4 +378,4 @@ wd.show(ax)
 #ci = CableInstallation()
 #ci.add(cab101, cab102, cab103)
 #ci.show(ax)
-plt.show()
+dwg.save()
