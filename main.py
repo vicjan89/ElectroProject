@@ -1,8 +1,13 @@
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 from matplotlib.patches import PathPatch
+import math
+
+#Базовый класс
 
 class ElementCircuit:
+    LEFT = True
+    RIGHT = False
 
     def __init__(self, name=''):
         self.name = name
@@ -15,302 +20,187 @@ class ElementCircuit:
     def visible(self):
         return self.__visible
 
-class Connection(ElementCircuit):
+#Базовый класс для графических элементов
 
-    def __init__(self, name='', x=0, y=0, side=True):
+class ElementGraph(ElementCircuit):
+
+    def __init__(self, name=''):
         super().__init__(name)
-        self.__x = x
-        self.__y = y
-        self.__side = side
+        self.vertices = []
+        self.codes = []
+        self.centers = []
+        self.radii = []
+        self.labels_xy = []
+        self.labels = []
 
-    @property
-    def x(self):
-        return self.__x
-
-    @property
-    def y(self):
-        return self.__y
-
-    @property
-    def side(self):
-        return self.__side
-
-    def mov_to(self, x, y):
-        self.__x += x
-        self.__y += y
-
-class ElementPath(ElementCircuit):
-
-    def mov_to(self, x, y):
-        vertices_new = []
+    def mov_to(self, dx, dy):
         for i in self.vertices:
-            vertices_new.append((i[0] + x, i[1] + y))
-        self.vertices = vertices_new
-        self.label_x += x
-        self.label_y += y
+            i[0] += dx
+            i[1] += dy
+        for i in self.centers:
+            i[0] += dx
+            i[1] += dy
+        for i in self.labels_xy:
+            i[0] += dx
+            i[1] += dy
+
+    def rotate(self, angle):
+        for i in self.vertices:
+            i[0] = math.cos(math.radians(angle)) * i[0] - math.sin(math.radians(angle)) * i[1]
+            i[1] = math.sin(math.radians(angle)) * i[0] - math.cos(math.radians(angle)) * i[1]
+        for i in self.centers:
+            i[0] = math.cos(math.radians(angle)) * i[0] - math.sin(math.radians(angle)) * i[1]
+            i[1] = math.sin(math.radians(angle)) * i[0] - math.cos(math.radians(angle)) * i[1]
+        for i in self.labels_xy:
+            i[0] = math.cos(math.radians(angle)) * i[0] - math.sin(math.radians(angle)) * i[1]
+            i[1] = math.sin(math.radians(angle)) * i[0] - math.cos(math.radians(angle)) * i[1]
+
+    def __add__(self, other):
+        self.vertices += other.vertices
+        self.codes += other.codes
+        self.centers += other.centers
+        self.radii += other.radii
+        self.labels_xy += other.labels_xy
+        self.labels += other.labels
+        return self
 
     def show(self, ax):
         super().show()
-        path = Path(self.vertices, self.codes)
-        path_patch = PathPatch(path, fill=False)
-        ax.add_patch(path_patch)
-        plt.text(self.label_x, self.label_y, self.name, color='black', fontsize=14)
+        if len(self.vertices) > 0:
+            path = Path(self.vertices, self.codes)
+            path_patch = PathPatch(path, fill=False)
+            ax.add_patch(path_patch)
+        for i in range(len(self.centers)):
+            crl = plt.Circle(self.centers[i], self.radii[i], fill=False)
+            ax.add_patch(crl)
+        for i in range(len(self.labels_xy)):
+            ax.text(self.labels_xy[i][0] - 10, self.labels_xy[i][1] - 5, self.labels[i], color='black', fontsize=12)
 
-class ContactOpen(ElementPath):
+#Графические элементы
 
-    def __init__(self, name='', label_a='', label_b=''):
+class ContactOpen(ElementGraph):
+
+    def __init__(self, name=''):
         super().__init__(name)
-        self.vertices = [(0, 0),   (5, 0),      (5, 5),      (15, 0),     (20, 0)]
+        self.vertices = [[0, 0],   [5, 0],      [5, 5],      [15, 0],     [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
-        self.__a = Connection(label_a, self.vertices[0][0], self.vertices[0][1], True)
-        self.__b = Connection(label_b, self.vertices[-1][0], self.vertices[-1][1], False)
-        self.label_x = 5
-        self.label_y = 6
+        self.labels_xy = [[5, 6]]
+        self.labels = [name]
 
-    def show(self, ax):
-        super().show(ax)
-        plt.text(self.a[0], self.a[1]-5, self.label_a, color='black', fontsize=12)
-        plt.text(self.b[0], self.b[1]-5,  self.label_b, color='black', fontsize=12)
-
-    @property
-    def a(self):
-        return (self.vertices[0][0], self.vertices[0][1], True)
-
-    @property
-    def b(self):
-        return (self.vertices[4][0], self.vertices[4][1], False)
-
-class ContactClose(ElementPath):
+class ContactClose(ElementGraph):
 
     def __init__(self, name='', label_a='', label_b=''):
         super().__init__(name)
         self.vertices = [(0, 0),   (5, 0),      (5, -5),     (4, -5),     (15, 0),     (20, 0)]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
-        self.label_x = 5
-        self.label_y = 6
-        self.label_a = label_a
-        self.label_b = label_b
-
-    def show(self, ax):
-        super().show(ax)
-        plt.text(self.a[0]-1, self.a[1]-5, self.label_a, color='black', fontsize=12)
-        plt.text(self.b[0]-1, self.b[1]-5,  self.label_b, color='black', fontsize=12)
-
-    @property
-    def a(self):
-        return (self.vertices[0][0], self.vertices[0][1], True)
-
-    @property
-    def b(self):
-        return (self.vertices[5][0], self.vertices[5][1], False)
+        self.labels_xy = [[5, 6]]
+        self.labels = [name]
 
 class ContactOpenTimeOn(ContactOpen):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.vertices += [(9, 3),   (9, 8),     (11,2),      (11, 8)]
+        self.vertices += [[9, 3],   [9, 8],     [11,2],      [11, 8]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
-        self.vertices += [(6, 6),     (7, 7),    (8, 7.7),    (9, 8),    (11, 8),   (12, 7.7),    (13, 7),   (14, 6)]
+        self.vertices += [[6, 6],     [7, 7],    [8, 7.7],    [9, 8],      [11, 8],     [12, 7.7],    [13, 7],   [14, 6]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
-        self.label_x = 5
-        self.label_y = 10
-
-    @property
-    def a(self):
-        return self.vertices[0]
-
-    @property
-    def b(self):
-        return self.vertices[4]
+        self.labels_xy = [[5, 10]]
 
 class ContactOpenTimeOff(ContactOpen):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.vertices += [(9, 3),   (9, 8),     (11,2),      (11, 8)]
+        self.vertices += [[9, 3],   [9, 8],     [11,2],      [11, 8]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
-        self.vertices += [(6, 10),  (7, 9),    (8, 8.3),    (9, 8),    (11, 8),   (12, 8.3),    (13, 9),   (14, 10)]
+        self.vertices += [[6, 10],  [7, 9],     [8, 8.3],     [9, 8],      [11, 8],     [12, 8.3],    [13, 9],   [14, 10]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
-        self.label_x = 5
-        self.label_y = 11
-
-    @property
-    def a(self):
-        return self.vertices[0]
-
-    @property
-    def b(self):
-        return self.vertices[4]
+        self.labels_xy = [[5, 11]]
 
 class ContactCloseTimeOn(ContactClose):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.vertices += [(9, -3),   (9, 7),     (11,-2),      (11, 7)]
+        self.vertices += [[9, -3],   [9, 7],     [11,-2],      [11, 7]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
-        self.vertices += [(6, 5),     (7, 6),    (8, 6.7),    (9, 7),    (11, 7),   (12, 6.7),    (13, 6),   (14, 5)]
+        self.vertices += [[6, 5],     [7, 6],    [8, 6.7],    [9, 7],     [11, 7],     [12, 6.7],    [13, 6],    [14, 5]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
-        self.label_x = 5
-        self.label_y = 9
-
-    @property
-    def a(self):
-        return self.vertices[0]
-
-    @property
-    def b(self):
-        return self.vertices[5]
+        self.labels_xy = [[5, 9]]
 
 class ContactCloseTimeOff(ContactClose):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.vertices += [(9, -3),   (9, 6),     (11,-2),      (11, 6)]
+        self.vertices += [[9, -3],   [9, 6],     [11,-2],      [11, 6]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
-        self.vertices += [(6, 8),  (7, 7),    (8, 6.3),    (9, 6),    (11, 6),   (12, 6.3),    (13, 7),   (14, 8)]
+        self.vertices += [[6, 8],  [7, 7],    [8, 6.3],    [9, 6],    [11, 6],   [12, 6.3],    [13, 7],   [14, 8]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
-        self.label_x = 5
-        self.label_y = 9
+        self.labels_xy = [[5, 9]]
 
-    @property
-    def a(self):
-        return self.vertices[0]
-
-    @property
-    def b(self):
-        return self.vertices[5]
-
-class Winding(ElementPath):
-
-    def __init__(self, name='', label_a='', label_b=''):
-        super().__init__(name)
-        self.vertices = [(0, 0),   (5, 0),      (5, 5),      (10, 5),     (10, -5),    (5, -5),     (5, 0),      (10, 0),     (15, 0)]
-        self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO]
-        self.label_x = 4
-        self.label_y = 7
-        self.__a = Connection(label_a, self.vertices[0][0], True)
-        self.__b = Connection(label_b, self.vertices[-1][0], False)
-
-    def show(self, ax):
-        super().show(ax)
-        plt.text(self.__a.x-5, self.__a.y-5, self.__a.name, color='black', fontsize=12)
-        plt.text(self.__b.x-5, self.__b.y-5,  self.__b.name, color='black', fontsize=12)
-
-    @property
-    def a(self):
-        return self.__a
-
-    @property
-    def b(self):
-        return self.__b
-
-    def mov_to(self, x, y):
-        super().mov_to(x, y)
-        self.__a.mov_to(x, y)
-        self.__b.mov_to(x, y)
-
-class CT_W(ElementCircuit):
-
-    def __init__(self, name='', label_a='', label_b=''):
-        super().__init__(name)
-        self.vertices = [[0, 0],   [0, 3.5],      [4, 3.5],     [4, 0]]
-        self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
-        self.centre = [2, 7]
-        self.radius = 4
-        self.label_a = label_a
-        self.label_b = label_b
-        self.__a = Connection(label_a, self.vertices[0][0], self.vertices[0][1], True)
-        self.__b = Connection(label_b, self.vertices[-1][0], self.vertices[-1][1], False)
-
-    def mov_to(self, x, y):
-        for i in self.vertices:
-            i[0] += x
-            i[1] += y
-        self.centre[0] += x
-        self.centre[1] += y
-        self.__a.mov_to(x, y)
-        self.__b.mov_to(x, y)
-
-
-    def show(self, ax):
-        super().show()
-        crl = plt.Circle(self.centre, self.radius, fill=False)
-        path = Path(self.vertices, self.codes)
-        path_patch = PathPatch(path, fill=False)
-        ax.add_patch(path_patch)
-        ax.add_patch(crl)
-        ax.text(self.vertices[0][0] - 10, self.vertices[0][1] - 5, self.label_a, color='black', fontsize=12)
-        ax.text(self.vertices[-1][0] , self.vertices[0][1] - 5, self.label_b, color='black', fontsize=12)
-
-    @property
-    def a(self):
-        return self.__a
-
-    @property
-    def b(self):
-        return self.__b
-
-class ConnectionTerminal(ElementCircuit):
+class Winding(ElementGraph):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.centre = (0, 0)
-        self.radius = 0.5
-        self.__a = Connection('', 0, 0, True)
-        self.__b = Connection('', 0, 0, False)
+        self.vertices = [[0, 0],   [5, 0],      [5, 5],      [10, 5],     [10, -5],    [5, -5],     [5, 0],      [10, 0],     [15, 0]]
+        self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO]
+        self.labels_xy = [[4, 7]]
+        self.labels = [name]
 
-    def show(self, ax):
-        crl = plt.Circle(self.centre, self.radius, color='black', fill=True)
-        ax.add_patch(crl)
-        ax.text(self.centre[0]-1, self.centre[1]-5, self.name, color='black', fontsize=12)
+class CT_W(ElementGraph):
 
-    def mov_to(self, x, y):
-        self.centre = (x, y)
-        self.__a.mov_to(x, y)
-        self.__b.mov_to(x, y)
-
-    @property
-    def a(self):
-        return self.__a
-
-    @property
-    def b(self):
-        return self.__b
-
-class ConnectionDetachable(ElementPath):
-
-    def __init__(self, name='', side=True):
+    def __init__(self, name=''):
         super().__init__(name)
-        self.__side = side
-        if self.__side:
-            self.vertices = [(5, 5), (0, 0), (5, -5), (7, 5), (2, 0), (7, -5)]
-        else:
-            self.vertices = [(-5, 5), (0, 0), (-5, -5), (-3, 5), (2, 0), (-3, -5)]
+        self.vertices = [[0, 0],   [0, 3.5],      [4, 3.5],     [4, 0]]
+        self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
+        self.centers = [[2, 7]]
+        self.radii = [4]
+        self.labels_xy = [[0, 16]]
+        self.labels = [name]
+
+class ConnectionDetachable(ElementGraph):
+
+    def __init__(self, name=''):
+        super().__init__(name)
+        self.vertices = [[5, 5], [0, 0], [5, -5], [7, 5], [2, 0], [7, -5]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
-        self.__a = Connection(name, 0, 0, True)
-        self.__b = Connection(name, 2, 0, False)
-        self.label_x = 4
-        self.label_y = 10
+        self.labels_xy = [[4, 10]]
+        self.labels = [name]
 
-    def mov_to(self, x, y):
-        super().mov_to(x, y)
-        self.__a.mov_to(x, y)
-        self.__b.mov_to(x, y)
+#Базовый класс для графичиеских объектов с соединителями
 
-    @property
-    def a(self):
-        return self.__a
+class GraphWithConnection(ElementGraph):
 
-    @property
-    def b(self):
-        return self.__b
+    def __init__(self, name=''):
+        super().__init__(name)
+        self.connections = {}
+
+    def mov_to(self, base_point_key=None, x=0, y=0):
+        if base_point_key == None:
+            base_point_key = list(self.connections.keys())[0]
+        dx = x - self.connections[base_point_key][0]
+        dy = y - self.connections[base_point_key][1]
+        super().mov_to(dx, dy)
+        for i in self.connections.values():
+            i[0] += dx
+            i[1] += dy
+
+    def rotate(self, angle):
+        super().rotate(angle)
+        for i in self.connections.values():
+            i[0] = math.cos(math.radians(angle)) * i[0] - math.sin(math.radians(angle)) * i[1]
+            i[1] = math.sin(math.radians(angle)) * i[0] - math.cos(math.radians(angle)) * i[1]
+
+#Умный соединитель
 
 class Wire(ElementCircuit):
-
-    def __init__(self, a : Connection, b : Connection, name=''):
+    '''Умный соединитель'''
+    def __init__(self, a, key_a, b, key_b, name='', cable=None):
         super().__init__(name)
         self.__a = a
+        self.__key_a = key_a
         self.__b = b
+        self.__key_b = key_b
+        if cable != None:
+            cable.add(self)
 
     def show(self, ax):
         if self.__b.visible:
@@ -330,93 +220,103 @@ class Wire(ElementCircuit):
             plt.text(self.__a.x + dx1, (self.__a.y + dx2 + self.__b.y + dy2) / 2 + self.__a.y + 2, self.name,
                      color='black', fontsize=12)
         else:
-            path = Path([(self.__a.x, self.__a.y), (self.__a.x + 20, self.__a.y)])
+            path = Path((self.__a.connections[self.__key_a][1].connections[self.__key_a],
+                        (self.__a.connections[self.__key_a][1].connections[self.__key_a][0] + 20,
+                         self.__a.connections[self.__key_a][1].connections[self.__key_a][1])), [Path.MOVETO, Path.LINETO])
             path_patch = PathPatch(path, fill=False)
             ax.add_patch(path_patch)
-            plt.text(self.__a.x+5, self.__a.y + 5, self.name, color='black', fontsize=12)
+            plt.text(self.__a.connections[self.__key_a][1].connections[self.__key_a][0] + 5,
+                         self.__a.connections[self.__key_a][1].connections[self.__key_a][1] + 5,
+                     self.name, color='black', fontsize=12)
+            self.__b.connections[self.__key_b][1].mov_to(base_point_key=self.__key_b,
+                                                        x=self.__a.connections[self.__key_a][1].connections[self.__key_a][0] + 20,
+                                                        y=self.__a.connections[self.__key_a][1].connections[self.__key_a][1])
 
-    def mov_to(self, x, y):
-        pass
+#Составные элементы схемы
 
-    @property
-    def a(self):
-        return self.__a
-
-    @property
-    def b(self):
-        return self.__b if self.__b.visible else Connection('', self.__a.x + 20, self.__a.y, True)
-
-class Apparatus:
-
-    def __init__(self, name=''):
-        self.name = name
-
-class RP23_25(Apparatus):
+class ConnectionTerminal(GraphWithConnection):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.__w = Winding(name, '11', '12')
-        self.__k1 = ContactClose(name, '1', '2')
-        self.__k2 = ContactOpen(name, '3', '4')
-        self.__k3 = ContactOpen(name, '5', '6')
-        self.__k4 = ContactOpen(name, '7', '8')
-        self.__k5 = ContactOpen(name, '9', '10')
-        self.vertices = [(0, 0),   (30, 0),      (30, -60),     (0, -60),     (0, 0)]
+        self.centers = [[0, 0]]
+        self.radii = [0.5]
+        self.labels_xy = [[7, -5]]
+        self.labels = [name]
+        self.connections[name] = [0, 0]
+
+class Connector(GraphWithConnection):
+
+    def __init__(self, name=''):
+        super().__init__(name)
+        self += ConnectionDetachable()
+        self.connections['s' + str(name)] = [0, 0]
+        self.connections['p' + str(name)] = [2, 0]
+
+class Connectors(GraphWithConnection):
+
+    def __init__(self, name='', quantity=32):
+        super().__init__(name='')
+        self.n = [None]
+        for i in range(1, quantity+1):
+            self.n.append(Connector(i))
+            self.connections['s' + str(i)] = [[0, 0], self.n[-1]]
+            self.connections['p' + str(i)] = [[2, 0], self.n[-1]]
+
+class CT2(GraphWithConnection):
+
+    def __init__(self, name=''):
+        super().__init__(name)
+        self.w1 = GraphWithConnection(name + '-1')
+        self.w1 += CT_W(self.w1.name)
+        self.w1.connections['1И1'] = [0, 0]
+        self.w1.connections['1И2'] = [4, 0]
+        self.w2 = GraphWithConnection(name + '-2')
+        self.w2 += CT_W(self.w2.name)
+        self.w2.connections['2И1'] = [0, 0]
+        self.w2.connections['2И2'] = [4, 0]
+        self.vertices = [[0, 0], [20, 0], [20, -50], [0, -50]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.labels_xy = [[0, 5]]
+        self.labels = [[name]]
+        self.connections['1И1'] = [[0, -10], self.w1]
+        self.connections['1И2'] = [[20, -10], self.w1]
+        self.connections['2И1'] = [[0, -40], self.w2]
+        self.connections['2И2'] = [[20, -40], self.w2]
 
-    @property
-    def w(self):
-        return self.__w
-
-    @property
-    def k1(self):
-        return self.__k1
-
-    def show(self,ax):
-        path = Path(self.vertices, self.codes)
-        path_patch = PathPatch(path, fill=False)
-        ax.add_patch(path_patch)
-
-class CT2(Apparatus):
+class YA(GraphWithConnection):
 
     def __init__(self, name=''):
         super().__init__(name)
-        self.ct_w1 = CT_W(name+'-1', name+'-1-И1', name+'-1-И2')
-        self.ct_w2 = CT_W(name+'/2', name+'-2-И1', name+'-2-И2')
+        self.w = GraphWithConnection(name)
+        self.w += Winding(name)
+        self.w.connections[1] = [0, 0]
+        self.w.connections[2] = [15, 0]
+        self.connections[1] = [[0, 0], self.w]
+        self.connections[2] = [[15, 0], self.w]
 
-    def show(self, ax):
-        self.ct_w1.show(ax)
-        self.ct_w2.show(ax)
+# class RP23_25(ElementCircuit):
+#
+#     def __init__(self, name=''):
+#         super().__init__(name)
+#         self.__w = Winding(name)
+#         self.__k1 = ContactClose(name, '1', '2')
+#         self.__k2 = ContactOpen(name, '3', '4')
+#         self.__k3 = ContactOpen(name, '5', '6')
+#         self.__k4 = ContactOpen(name, '7', '8')
+#         self.__k5 = ContactOpen(name, '9', '10')
+#         self.vertices = [(0, 0),   (30, 0),      (30, -60),     (0, -60),     (0, 0)]
+#         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
 
-class YA(Apparatus):
-
-    def __init__(self, name=''):
-        super().__init__(name)
-        self.__w = Winding(name)
-
-    def show(self, ax):
-        self.__w.show(ax)
-
-    def mov_to(self, x, y):
-        self.__w.mov_to(x, y)
-
-    @property
-    def a(self):
-        return self.__w.a
-
-    @property
-    def b(self):
-        return self.__w.b
-
-class XT(Apparatus):
+class XT(GraphWithConnection):
 
     def __init__(self, name='', quantity=50):
         super().__init__(name)
         self.n = []
         for i in range(quantity):
-            self.n.append(ConnectionTerminal(name + '-' + str(i)))
+            self.n.append(ConnectionTerminal(i))
+            self.connections[i] = [[0, 0], self.n[-1]]
 
-class RP361(Apparatus):
+class RP361(ElementCircuit):
 
     def __init__(self, name=''):
         super().__init__(name)
@@ -424,58 +324,56 @@ class RP361(Apparatus):
         self.__k2 =ContactClose(name)
         self.w8_14 = Winding(name)
 
-class CircuitDiagram():
+class CircuitDiagram:
 
-    def __init__(self):
+    def __init__(self, *args):
         self.__list_circuits = []
-
-    def add(self, *args):
-        circuit_elements = []
         for i in args:
-            circuit_elements.append(i)
-        self.__list_circuits.append(circuit_elements)
+            self.__list_circuits.append(i)
 
     def show(self, ax):
-        last_x = 20
-        last_y = 200
+        self.__list_circuits[0].mov_to(x=20, y=200)
         for i in self.__list_circuits:
-            for j in i:
-                j.mov_to(last_x, last_y)
-                j.show(ax)
-                last_x, last_y = j.b.x, j.b.y
+            i.show(ax)
 
-fig = plt.figure(figsize=(250, 250))
+class WiringDiagram:
+
+    def __init__(self, *args):
+        pass
+
+    def show(self, ax):
+        pass
+
+fig = plt.figure()
 ax = fig.add_subplot()
 ax.set(xlim=(0, 250), ylim=(0, 250))
 ct_a = CT2('ТТа')
-xt = XT('XT', 50)
-w411 = Wire(ct_a.ct_w1.b, xt.n[6].a, 'A411')
-xt1 = ConnectionDetachable('XT1/12', True)
-w412 = Wire(xt.n[6].b, xt1.a, '')
+xt = XT('XT1', 50)
+w411 = Wire(ct_a, '1И2', xt, 6,  'A411')
+xt1 = Connectors('XT1', 32)
+w412 = Wire(xt, 6, xt1, 's12', '')
 yat_a = YA('YAA1')
-w413 = Wire(xt1.b, yat_a.a)
-xt2 = ConnectionDetachable('XT1/13', False)
-w414 = Wire(yat_a.b, xt2.a)
-w415 = Wire(xt2.b, xt.n[7],a)
-kl1 = RP361('KL1')
-w416 = Wire(xt.n[7].b, kl1.k1.a)
-'''
+w413 = Wire(xt1, 'p12', yat_a, 1)
+xt1.n[13].rotate(180)
+w414 = Wire(yat_a, 2, xt1, 'p13')
+w415 = Wire(xt1, 's13', xt, 7)
+#kl1 = RP361('KL1')
+#w416 = Wire(xt.n[7].b, kl1.k1.a)
 
+'''
 yat_c = YA('YAC1')
 kl1 = RP361('KL1')
 kl2 = RP361('KL2')
 a1 = MR5PO50('A1')
-
 w7 = Wire(kl1.k1.b, kl1.w.a, '7')
 rel_otc = MountingModule('Релейный отсек')
 sh8.add(yat_a, yat_c, kl1, kl2, a1)
 '''
-cd = CircuitDiagram()
-cd.add(ct_a.ct_w1, w411, xt.n[6], w412, xt1, w413, yat_a, w414, xt2)
+cd = CircuitDiagram(ct_a.w1, w411, xt.n[6], w412, xt1.n[12], w413, yat_a.w, w414, xt1.n[13], w415, xt.n[7])
 cd.show(ax)
-#wd = WiringDiagram()
-#wd.add(sh8)
-#wd.show(ax)
+
+wd = WiringDiagram(ct_a)
+wd.show(ax)
 
 #cm = CableMagazine()
 #cm.add(cab101, cab102, cab103)
