@@ -553,26 +553,16 @@ w['4'] = Wire(a1,'X8:5',a1,'X8:8')
 rel_otc = MountingModule('Релейный отсек')
 sh8.add(yat_a, yat_c, kl1, kl2, a1)
 '''
-# cd = CircuitDiagram(
-#     ct_a.w1, wa411, xt.n[6], wa412, xt1.n[12], wa413, yat_a.w, wa414, xt1.n[13], wa415, xt.n[7], wa416, kl1.k2_4_6,wa417, kl1.w8_14,wa418,a2.k1_2,wa419,a1.x8,
-#     wc419,a2.k3_4,wc418,kl2.w8_14,wc417,kl2.k2_4_6,wc416,xt.n[9],wc415,xt1.n[15],wc414,yat_c.w,wc413,xt1.n[14],wc412,xt.n[8],wc411,ct_c.w1,w1,wa420,wc420,
-#     w2,w3,w4)
-# cd.show(msp)
+cd = CircuitDiagram(
+    ct_a.w1, w['a411'], xt.n[6], w['a412'], xt1.n[12], w['a413'], yat_a.w, w['a414'], xt1.n[13], w['a415'], xt.n[7],
+    w['a416'], kl1.k2_4_6,w['a417'], kl1.w8_14,w['a418'],a2.k1_2,w['a419'],a1.x8,w['c419'],a2.k3_4,w['c418'],kl2.w8_14,
+    w['c417'],kl2.k2_4_6,w['c416'],xt.n[9],w['c415'],xt1.n[15],w['c414'],yat_c.w,w['c413'],xt1.n[14],w['c412'],xt.n[8],
+    w['c411'],ct_c.w1,w['1'],w['a420'],w['c420'], w['2'],w['3'],w['4'])
+cd.show(msp)
 
 wd = WiringDiagram([ct_a,ct_c],w)
-'''
-xt1 = Connectors('XT1', 32)
-yat_a = YA('YAA1')
-yat_c = YA('YAC1')
-xt1.n[13].rotate(180)
-xt1.n[15].rotate(180)
-kl1 = RP361('KL1')
-kl2 = RP361('KL2')
-a2 = BPT615('A2')
-a1 = MR5PO50('A1'))
-'''
 wd.show(msp)
-
+doc.saveas("Diagram.dxf", encoding='cp1251')
 #cm = CableMagazine()
 #cm.add(cab101, cab102, cab103)
 #cm.show(ax)
@@ -580,5 +570,5 @@ wd.show(msp)
 #ci = CableInstallation()
 #ci.add(cab101, cab102, cab103)
 #ci.show(ax)
-doc.saveas("RZAproject.dxf", encoding='cp1251')
-print('Чертёж сформирован.')
+
+print('Чертёжи сформированы.')
