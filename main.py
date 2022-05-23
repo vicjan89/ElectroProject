@@ -265,7 +265,7 @@ class Wire(ElementCircuit):
                 ax.add_text(self.name).set_pos((xb, yb - 15))
             self.__a.connections[self.__key_a][1].mov_to(base_point_key=self.__key_a, x=xm, y=ym)
 
-    def show_wd(self,ax):
+    def show_wd(self,ax, coords):
         xa = self.__a.connections[self.__key_a][0][0]
         ya = self.__a.connections[self.__key_a][0][1]
         xb = self.__b.connections[self.__key_b][0][0]
@@ -276,24 +276,42 @@ class Wire(ElementCircuit):
         visible_b = self.__b.visible
         name_a = self.__a.name + '-' + str(self.__key_a)
         name_b = self.__b.name + '-' + str(self.__key_b)
+        list_coords = []
         if visible_a:
+            match coords.count((xa,ya)):
+                case 0:
+                    dy = 0
+                case 1:
+                    dy = -5
+                case 2:
+                    dy = 5
             if side_a == LEFT:
-                dx = -10
+                dx = -5
                 a = 'BOTTOM_RIGHT'
             elif side_a == RIGHT:
-                dx = 10
+                dx = 5
                 a = 'BOTTOM_LEFT'
-            ax.add_line((xa,ya),(xa+dx,ya))
-            ax.add_text(name_b).set_pos((xa+dx,ya),align=a)
+            ax.add_lwpolyline(((xa,ya),(xa+dx,ya+dy),(xa+2*dx,ya+dy)))
+            ax.add_text(name_b).set_pos((xa+dx,ya+dy),align=a)
+            list_coords.append((xa,ya))
         if visible_b:
+            match coords.count((xb, yb)):
+                case 0:
+                    dy = 0
+                case 1:
+                    dy = -5
+                case 2:
+                    dy = 5
             if side_b == LEFT:
-                dx = -10
+                dx = -5
                 a = 'BOTTOM_RIGHT'
             elif side_b == RIGHT:
-                dx = 10
+                dx = 5
                 a = 'BOTTOM_LEFT'
-            ax.add_line((xb,yb),(xb+dx,yb))
-            ax.add_text(name_a).set_pos((xb+dx,yb),align=a)
+            ax.add_lwpolyline(((xb,yb),(xb+dx,yb+dy),(xb+2*dx,yb+dy)))
+            ax.add_text(name_a).set_pos((xb+dx,yb+dy),align=a)
+            list_coords.append((xb, yb))
+        return list_coords
 
 #Составные элементы схемы
 
@@ -488,8 +506,9 @@ class WiringDiagram:
             i.mov_to(x=x, y=y)
             i.show(ax)
             x+=40
+        coords = []
         for i in self.__wires:
-            i.show_wd(ax)
+            coords += i.show_wd(ax,coords)
 
 doc = ezdxf.new()
 msp = doc.modelspace()
