@@ -219,14 +219,22 @@ class Wire(ElementCircuit):
             cable.add(self)
 
     def show(self, ax):
-        xa = self.__a.connections[self.__key_a][1].connections[self.__key_a][0][0]
-        ya = self.__a.connections[self.__key_a][1].connections[self.__key_a][0][1]
-        xb = self.__b.connections[self.__key_b][1].connections[self.__key_b][0][0]
-        yb = self.__b.connections[self.__key_b][1].connections[self.__key_b][0][1]
-        side_a = self.__a.connections[self.__key_a][1].connections[self.__key_a][1]
-        side_b = self.__b.connections[self.__key_b][1].connections[self.__key_b][1]
-        visible_a = self.__a.connections[self.__key_a][1].visible
-        visible_b = self.__b.connections[self.__key_b][1].visible
+        if type(self.__key_a) is int:
+            key_a = abs(self.__key_a)
+        else:
+            key_a = self.__key_a
+        if type(self.__key_b) is int:
+            key_b = abs(self.__key_b)
+        else:
+            key_b = self.__key_b
+        xa = self.__a.connections[key_a][1].connections[key_a][0][0]
+        ya = self.__a.connections[key_a][1].connections[key_a][0][1]
+        xb = self.__b.connections[key_b][1].connections[key_b][0][0]
+        yb = self.__b.connections[key_b][1].connections[key_b][0][1]
+        side_a = self.__a.connections[key_a][1].connections[key_a][1]
+        side_b = self.__b.connections[key_b][1].connections[key_b][1]
+        visible_a = self.__a.connections[key_a][1].visible
+        visible_b = self.__b.connections[key_b][1].visible
         if visible_a and visible_b:
             if xa == xb:
                 if side_a == LEFT:
@@ -251,7 +259,7 @@ class Wire(ElementCircuit):
                 ym = ya-25
                 ax.add_lwpolyline([(xa,ya),(xa-5,ya),(xa-5,ya-25),(xm,ym)])
                 ax.add_text(self.name).set_pos((xa, ya - 15))
-            self.__b.connections[self.__key_b][1].mov_to(base_point_key=self.__key_b, x=xm, y=ym)
+            self.__b.connections[key_b][1].mov_to(base_point_key=key_b, x=xm, y=ym)
         elif visible_b and not visible_a:
             if side_b == LEFT or side_b == BOTH:
                 xm = xb - 20
@@ -263,7 +271,7 @@ class Wire(ElementCircuit):
                 ym = yb-25
                 ax.add_lwpolyline([(xb,yb),(xb+5,yb),(xb+5,yb-25),(xm,ym)])
                 ax.add_text(self.name).set_pos((xb, yb - 15))
-            self.__a.connections[self.__key_a][1].mov_to(base_point_key=self.__key_a, x=xm, y=ym)
+            self.__a.connections[key_a][1].mov_to(base_point_key=key_a, x=xm, y=ym)
 
     def show_wd(self,ax, coords):
         xa = self.__a.connections[self.__key_a][0][0]
@@ -282,34 +290,34 @@ class Wire(ElementCircuit):
                 case 0:
                     dy = 0
                 case 1:
-                    dy = -5
+                    dy = -2
                 case 2:
-                    dy = 5
+                    dy = 2
             if side_a == LEFT:
                 dx = -5
                 a = 'BOTTOM_RIGHT'
             elif side_a == RIGHT:
                 dx = 5
                 a = 'BOTTOM_LEFT'
-            ax.add_lwpolyline(((xa,ya),(xa+dx,ya+dy),(xa+2*dx,ya+dy)))
-            ax.add_text(name_b).set_pos((xa+dx,ya+dy),align=a)
+            ax.add_lwpolyline(((xa,ya),(xa+dx,ya+dy),(xa+2*dx+abs(dy)*dx,ya+dy)))
+            ax.add_text(name_b).set_pos((xa+dx+abs(dy)*dx,ya+dy),align=a)
             list_coords.append((xa,ya))
         if visible_b:
             match coords.count((xb, yb)):
                 case 0:
                     dy = 0
                 case 1:
-                    dy = -5
+                    dy = -2
                 case 2:
-                    dy = 5
+                    dy = 2
             if side_b == LEFT:
                 dx = -5
                 a = 'BOTTOM_RIGHT'
             elif side_b == RIGHT:
                 dx = 5
                 a = 'BOTTOM_LEFT'
-            ax.add_lwpolyline(((xb,yb),(xb+dx,yb+dy),(xb+2*dx,yb+dy)))
-            ax.add_text(name_a).set_pos((xb+dx,yb+dy),align=a)
+            ax.add_lwpolyline(((xb,yb),(xb+dx,yb+dy),(xb+2*dx+abs(dy)*dx,yb+dy)))
+            ax.add_text(name_a).set_pos((xb+dx+abs(dy)*dx,yb+dy),align=a)
             list_coords.append((xb, yb))
         return list_coords
 
@@ -395,9 +403,15 @@ class XT(GraphWithConnection):
     def __init__(self, name='', quantity=50):
         super().__init__(name)
         self.n = [None]
+        h = 6
         for i in range(1, quantity+1):
             self.n.append(ConnectionTerminal(i))
-            self.connections[i] = [[0, 0], self.n[-1],LEFT]
+            self.connections[i] = [[0, i*h-3], self.n[-1],LEFT]
+            self.connections[-i] = [[20, i*h-3], self.n[-1], RIGHT]
+            self.vertices +=[[0,i*h],[20,i*h],[20,i*h-h],[0,i*h-h],[0,i*h]]
+            self.codes += [Path.MOVETO, Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO]
+            self.labels += [i]
+            self.labels_xy += [[10,i*h-h+1]]
 
 class RP361(GraphWithConnection):
 
@@ -526,16 +540,16 @@ a2 = BPT615('A2')
 a1 = MR5PO50('A1')
 w={}
 w['1']=Wire(ct_a,'1И1',ct_c,'1И1')
-w['a411'] = Wire(ct_a, '1И2', xt, 6,  'A411')
+w['a411'] = Wire(ct_a, '1И2', xt, -6,  'A411')
 w['a412'] = Wire(xt, 6, xt1, 's12', '')
 w['a413'] = Wire(xt1, 'p12', yat_a, 1)
 w['a414'] = Wire(yat_a, 2, xt1, 'p13')
 w['a415'] = Wire(xt1, 's13', xt, 7)
-w['a416'] = Wire(xt, 7, kl1, 2)
+w['a416'] = Wire(xt, -7, kl1, 2)
 w['a417'] = Wire(kl1, 4, kl1, 8)
 w['a418'] = Wire(kl1,14,a2,2)
 w['a419'] = Wire(a2,1,a1,'X8:1')
-w['c411'] = Wire(ct_c, '1И2', xt, 8,  'C411')
+w['c411'] = Wire(ct_c, '1И2', xt, -8,  'C411')
 w['c412'] = Wire(xt, 8, xt1, 's14', '')
 w['c413'] = Wire(xt1, 'p14', yat_c, 1)
 w['c414'] = Wire(yat_c, 2, xt1, 'p15')
@@ -544,8 +558,8 @@ w['c416'] = Wire(xt, 9, kl2, 2)
 w['c417'] = Wire(kl2, 4, kl2, 8)
 w['c418'] = Wire(kl2,14,a2,4)
 w['c419'] = Wire(a2,3,a1,'X8:7')
-w['a420'] = Wire(xt,6,kl1,6)
-w['c420'] = Wire(xt,8,kl2,6)
+w['a420'] = Wire(xt, 6,kl1,6)
+w['c420'] = Wire(xt, 8,kl2,6)
 w['2'] = Wire(ct_a,'1И1',a1,'X8:4')
 w['3'] = Wire(a1,'X8:2',a1,'X8:5')
 w['4'] = Wire(a1,'X8:5',a1,'X8:8')
@@ -560,7 +574,7 @@ cd = CircuitDiagram(
     w['c411'],ct_c.w1,w['1'],w['a420'],w['c420'], w['2'],w['3'],w['4'])
 cd.show(msp)
 
-wd = WiringDiagram([ct_a,ct_c],w)
+wd = WiringDiagram([ct_a,ct_c,xt],w)
 wd.show(msp)
 doc.saveas("Diagram.dxf", encoding='cp1251')
 #cm = CableMagazine()
