@@ -173,7 +173,7 @@ class ConnectionDetachable(ElementGraph):
         super().__init__(name)
         self.vertices = [[5, 5], [0, 0], [5, -5], [7, 5], [2, 0], [7, -5]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
-        self.labels_xy = [[4, 10]]
+        self.labels_xy = [[1, 2]]
         self.labels = [name]
 
 #Базовый класс для графичиеских объектов с соединителями
@@ -282,8 +282,16 @@ class Wire(ElementCircuit):
         side_b = self.__b.connections[self.__key_b][2]
         visible_a = self.__a.visible
         visible_b = self.__b.visible
-        name_a = self.__a.name + '-' + str(self.__key_a)
-        name_b = self.__b.name + '-' + str(self.__key_b)
+        if type(self.__key_a) is int:
+            key_a = abs(self.__key_a)
+        else:
+            key_a = self.__key_a
+        if type(self.__key_b) is int:
+            key_b = abs(self.__key_b)
+        else:
+            key_b = self.__key_b
+        name_a = self.__a.name + '-' + str(key_a)
+        name_b = self.__b.name + '-' + str(key_b)
         list_coords = []
         if visible_a:
             match coords.count((xa,ya)):
@@ -344,12 +352,15 @@ class Connector(GraphWithConnection):
 class Connectors(GraphWithConnection):
 
     def __init__(self, name='', quantity=32):
-        super().__init__(name='')
+        super().__init__(name)
         self.n = [None]
         for i in range(1, quantity+1):
             self.n.append(Connector(i))
-            self.connections['s' + str(i)] = [[0, 0], self.n[-1],LEFT]
-            self.connections['p' + str(i)] = [[2, 0], self.n[-1],LEFT]
+            c = ConnectionDetachable(i)
+            c.mov_to(0, -i*12-12)
+            self += c
+            self.connections['s' + str(i)] = [[0, -i*12-12], self.n[-1],LEFT]
+            self.connections['p' + str(i)] = [[2, -i*12-12], self.n[-1],RIGHT]
 
 class CT2(GraphWithConnection):
 
@@ -382,8 +393,9 @@ class YA(GraphWithConnection):
         self.w += Winding(name)
         self.w.connections[1] = [[0, 0],LEFT]
         self.w.connections[2] = [[15, 0],RIGHT]
+        self += Winding(name)
         self.connections[1] = [[0, 0], self.w,LEFT]
-        self.connections[2] = [[15, 0], self.w,LEFT]
+        self.connections[2] = [[15, 0], self.w,RIGHT]
 
 # class RP23_25(ElementCircuit):
 #
@@ -406,12 +418,14 @@ class XT(GraphWithConnection):
         h = 6
         for i in range(1, quantity+1):
             self.n.append(ConnectionTerminal(i))
-            self.connections[i] = [[0, i*h-3], self.n[-1],LEFT]
-            self.connections[-i] = [[20, i*h-3], self.n[-1], RIGHT]
-            self.vertices +=[[0,i*h],[20,i*h],[20,i*h-h],[0,i*h-h],[0,i*h]]
+            self.connections[i] = [[0, -i*h-3], self.n[-1],LEFT]
+            self.connections[-i] = [[20, -i*h-3], self.n[-1], RIGHT]
+            self.vertices +=[[0,-i*h],[20,-i*h],[20,-i*h-h],[0,-i*h-h],[0,-i*h]]
             self.codes += [Path.MOVETO, Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO]
             self.labels += [i]
-            self.labels_xy += [[10,i*h-h+1]]
+            self.labels_xy += [[10,-i*h-h+1]]
+        self.labels += [name]
+        self.labels_xy += [[10, 0]]
 
 class RP361(GraphWithConnection):
 
@@ -439,11 +453,24 @@ class RP361(GraphWithConnection):
         self.w8_14.connections[14] = [[15, 0],RIGHT]
         self.w8_14.labels += [8, 14]
         self.w8_14.labels_xy += [[0, -4], [15, -4]]
-        self.connections[2] = [[0, 0], self.k2_4_6,LEFT]
-        self.connections[4] = [[0, 0], self.k2_4_6,LEFT]
-        self.connections[6] = [[0, 0], self.k2_4_6,LEFT]
-        self.connections[8] = [[0, 0], self.w8_14,LEFT]
-        self.connections[14] = [[0, 0], self.w8_14,LEFT]
+        self.vertices = [[0,0],[20,0],[20,-70],[0,-70],[0,0]]
+        self.codes = [Path.MOVETO,Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO]
+        self.labels = [name,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+        self.labels_xy = [[10,0],[17,-7],[3,-7],[17,-17],[3,-17],[17,-27],[3,-27],[17,-37],[3,-37],[17,-47],[3,-47],[17,-57],[3,-57],[17,-67],[3,-67]]
+        self.connections[1] = [[20, -5], self.k2_4_6, RIGHT]
+        self.connections[2] = [[0, -5], self.k2_4_6,LEFT]
+        self.connections[3] = [[20, -15], self.k2_4_6, RIGHT]
+        self.connections[4] = [[0, -15], self.k2_4_6,LEFT]
+        self.connections[5] = [[20, -25], self.k2_4_6, RIGHT]
+        self.connections[6] = [[0, -25], self.k2_4_6,LEFT]
+        self.connections[7] = [[30, -35], self.k2_4_6, RIGHT]
+        self.connections[8] = [[0, -35], self.w8_14,LEFT]
+        self.connections[9] = [[30, -45], self.k2_4_6, RIGHT]
+        self.connections[10] = [[0, -45], self.k2_4_6, LEFT]
+        self.connections[11] = [[30, -55], self.k2_4_6, RIGHT]
+        self.connections[12] = [[0, -55], self.k2_4_6, LEFT]
+        self.connections[13] = [[30, -65], self.k2_4_6, RIGHT]
+        self.connections[14] = [[0, -65], self.w8_14,LEFT]
 
 class BPT615(GraphWithConnection):
 
@@ -519,7 +546,7 @@ class WiringDiagram:
         for i in self.__list_circuits:
             i.mov_to(x=x, y=y)
             i.show(ax)
-            x+=40
+            x+=70
         coords = []
         for i in self.__wires:
             coords += i.show_wd(ax,coords)
@@ -529,7 +556,7 @@ msp = doc.modelspace()
 ct_a = CT2('TTa')
 ct_c = CT2('TTc')
 xt = XT('XT', 50)
-xt1 = Connectors('XT1', 32)
+xt1 = Connectors('XT1', 20)
 yat_a = YA('YAA1')
 yat_c = YA('YAC1')
 xt1.n[13].rotate(180)
@@ -567,14 +594,14 @@ w['4'] = Wire(a1,'X8:5',a1,'X8:8')
 rel_otc = MountingModule('Релейный отсек')
 sh8.add(yat_a, yat_c, kl1, kl2, a1)
 '''
-cd = CircuitDiagram(
-    ct_a.w1, w['a411'], xt.n[6], w['a412'], xt1.n[12], w['a413'], yat_a.w, w['a414'], xt1.n[13], w['a415'], xt.n[7],
-    w['a416'], kl1.k2_4_6,w['a417'], kl1.w8_14,w['a418'],a2.k1_2,w['a419'],a1.x8,w['c419'],a2.k3_4,w['c418'],kl2.w8_14,
-    w['c417'],kl2.k2_4_6,w['c416'],xt.n[9],w['c415'],xt1.n[15],w['c414'],yat_c.w,w['c413'],xt1.n[14],w['c412'],xt.n[8],
-    w['c411'],ct_c.w1,w['1'],w['a420'],w['c420'], w['2'],w['3'],w['4'])
-cd.show(msp)
+# cd = CircuitDiagram(
+#     ct_a.w1, w['a411'], xt.n[6], w['a412'], xt1.n[12], w['a413'], yat_a.w, w['a414'], xt1.n[13], w['a415'], xt.n[7],
+#     w['a416'], kl1.k2_4_6,w['a417'], kl1.w8_14,w['a418'],a2.k1_2,w['a419'],a1.x8,w['c419'],a2.k3_4,w['c418'],kl2.w8_14,
+#     w['c417'],kl2.k2_4_6,w['c416'],xt.n[9],w['c415'],xt1.n[15],w['c414'],yat_c.w,w['c413'],xt1.n[14],w['c412'],xt.n[8],
+#     w['c411'],ct_c.w1,w['1'],w['a420'],w['c420'], w['2'],w['3'],w['4'])
+# cd.show(msp)
 
-wd = WiringDiagram([ct_a,ct_c,xt],w)
+wd = WiringDiagram([ct_a,ct_c,xt, xt1,yat_a,yat_c, kl1, kl2],w)
 wd.show(msp)
 doc.saveas("Diagram.dxf", encoding='cp1251')
 #cm = CableMagazine()
