@@ -455,8 +455,9 @@ class RP361(GraphWithConnection):
         self.w8_14.labels_xy += [[0, -4], [15, -4]]
         self.vertices = [[0,0],[20,0],[20,-70],[0,-70],[0,0]]
         self.codes = [Path.MOVETO,Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO]
-        self.labels = [name,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-        self.labels_xy = [[10,0],[17,-7],[3,-7],[17,-17],[3,-17],[17,-27],[3,-27],[17,-37],[3,-37],[17,-47],[3,-47],[17,-57],[3,-57],[17,-67],[3,-67]]
+        self.labels = [name,1,2,3,4,5,6,7,8,9,10,11,12,13,14,'РП-361']
+        self.labels_xy = [[10,0],[17,-7],[3,-7],[17,-17],[3,-17],[17,-27],[3,-27],[17,-37],[3,-37],[17,-47],[3,-47],
+                          [17,-57],[3,-57],[17,-67],[3,-67],[10,-5]]
         self.connections[1] = [[20, -5], self.k2_4_6, RIGHT]
         self.connections[2] = [[0, -5], self.k2_4_6,LEFT]
         self.connections[3] = [[20, -15], self.k2_4_6, RIGHT]
@@ -488,10 +489,27 @@ class BPT615(GraphWithConnection):
         self.k3_4.connections[3] = [[15, 0], RIGHT]
         self.k3_4.labels += [4,3]
         self.k3_4.labels_xy += [[0, -4], [15, -4]]
-        self.connections[1] = [[0, 0], self.k1_2,LEFT]
-        self.connections[2] = [[0, 0], self.k1_2,LEFT]
-        self.connections[3] = [[0, 0], self.k3_4,LEFT]
-        self.connections[4] = [[0, 0], self.k3_4,LEFT]
+        self.vertices = [[0, 0], [20, 0], [20, -120], [0, -120], [0, 0]]
+        self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.labels = [name, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,'БПТ-615']
+        self.labels_xy = [[10, 0], [17, -65], [17, -55], [17, -45], [17, -35], [3, -115], [3, -105], [3, -95], [3, -85],
+                          [3, -75], [3, -65], [3, -55], [3, -45], [3, -35], [3, -25], [3,-15],[3,-5],[15,-5]]
+        self.connections[1] = [[20, -65], self.k1_2,RIGHT]
+        self.connections[2] = [[20, -55], self.k1_2,RIGHT]
+        self.connections[3] = [[20, -45], self.k3_4,RIGHT]
+        self.connections[4] = [[20, -35], self.k3_4,RIGHT]
+        self.connections[5] = [[0, -115], self.k1_2,LEFT]
+        self.connections[6] = [[0, -105], self.k1_2,LEFT]
+        self.connections[7] = [[0, -95], self.k3_4,LEFT]
+        self.connections[8] = [[0, -85], self.k3_4,LEFT]
+        self.connections[9] = [[0, -75], self.k1_2,LEFT]
+        self.connections[10] = [[0, -65], self.k1_2,LEFT]
+        self.connections[11] = [[0, -55], self.k3_4,LEFT]
+        self.connections[12] = [[0, -45], self.k3_4,LEFT]
+        self.connections[13] = [[0, -35], self.k1_2,LEFT]
+        self.connections[14] = [[0, -25], self.k1_2,LEFT]
+        self.connections[15] = [[0, -15], self.k3_4,LEFT]
+        self.connections[16] = [[0, -5], self.k3_4,LEFT]
 
 class MR5PO50(GraphWithConnection):
 
@@ -601,7 +619,7 @@ sh8.add(yat_a, yat_c, kl1, kl2, a1)
 #     w['c411'],ct_c.w1,w['1'],w['a420'],w['c420'], w['2'],w['3'],w['4'])
 # cd.show(msp)
 
-wd = WiringDiagram([ct_a,ct_c,xt, xt1,yat_a,yat_c, kl1, kl2],w)
+wd = WiringDiagram([ct_a,ct_c,xt, xt1,yat_a,yat_c, kl1, kl2,a2],w)
 wd.show(msp)
 doc.saveas("Diagram.dxf", encoding='cp1251')
 #cm = CableMagazine()
