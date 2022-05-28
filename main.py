@@ -784,11 +784,6 @@ sh8.add(yat_a, yat_c, kl1, kl2, a1)
 # cd.show(msp)
 
 
-width = 2.11
-
-msp.add_lwpolyline([(0, 0, width, width),
-                               (50, 50, width, width),
-                               ])
 
 # wd = WiringDiagram([ct_a,ct_c,xt, xt1,yat_a,yat_c, kl1, kl2,a2, a1],w)
 # wd.show(msp)
