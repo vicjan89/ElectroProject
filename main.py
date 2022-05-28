@@ -99,7 +99,7 @@ class ElementGraph(ElementCircuit):
                     raise Exception('Неправильный код пути полилинии!')
                 ax.add_lwpolyline(path, dxfattribs={'lineweight':lw})
         for i in range(len(self.centers)):
-            ax.add_circle(self.centers[i], radius=self.radii[i])
+            ax.add_circle(self.centers[i], radius=self.radii[i], dxfattribs={'lineweight':lw})
         for i in range(len(self.labels_xy)):
             ax.add_text(self.labels[i], dxfattribs={'style' : 'cyrillic_ii'}).set_pos((self.labels_xy[i][0], self.labels_xy[i][1]), align='BOTTOM_CENTER')
 
@@ -108,8 +108,8 @@ class ElementGraph(ElementCircuit):
 
 class ContactOpen(ElementGraph):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [5, 0], [15, 5], [15, 0], [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO]
         self.labels_xy = [[8, 6]]
@@ -118,8 +118,8 @@ class ContactOpen(ElementGraph):
 
 class ContactClose(ElementGraph):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [5, 0], [16, -5], [15, -5], [15, 0], [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
         self.labels_xy = [[10, 5]]
@@ -128,8 +128,8 @@ class ContactClose(ElementGraph):
 
 class ContactOpenTimeOn(ContactOpen):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices += [[9, 3], [9, 8], [11, 2], [11, 8]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
         self.vertices += [[6, 6], [7, 7], [8, 7.7], [9, 8], [11, 8], [12, 7.7], [13, 7], [14, 6]]
@@ -140,8 +140,8 @@ class ContactOpenTimeOn(ContactOpen):
 
 class ContactOpenTimeOff(ContactOpen):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices += [[9, 3], [9, 8], [11, 2], [11, 8]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
         self.vertices += [[6, 10], [7, 9], [8, 8.3], [9, 8], [11, 8], [12, 8.3], [13, 9], [14, 10]]
@@ -152,8 +152,8 @@ class ContactOpenTimeOff(ContactOpen):
 
 class ContactCloseTimeOn(ContactClose):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices += [[9, -3], [9, 7], [11, -2], [11, 7]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
         self.vertices += [[6, 5], [7, 6], [8, 6.7], [9, 7], [11, 7], [12, 6.7], [13, 6], [14, 5]]
@@ -164,8 +164,8 @@ class ContactCloseTimeOn(ContactClose):
 
 class ContactCloseTimeOff(ContactClose):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices += [[9, -3], [9, 6], [11, -2], [11, 6]]
         self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
         self.vertices += [[6, 8], [7, 7], [8, 6.3], [9, 6], [11, 6], [12, 6.3], [13, 7], [14, 8]]
@@ -176,8 +176,8 @@ class ContactCloseTimeOff(ContactClose):
 
 class Diode(ElementGraph):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [15, 0], [5, 3.5], [10, 0], [5, -3.5], [5, 3.5], [10, 3.5], [10, -35]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.MOVETO,
                       Path.LINETO]
@@ -198,8 +198,8 @@ class Winding(ElementGraph):
 
 class CT_W(ElementGraph):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [0, 3.5], [4, 3.5], [4, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO]
         self.centers = [[2, 7]]
@@ -210,8 +210,8 @@ class CT_W(ElementGraph):
 
 class ConnectionDetachable(ElementGraph):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.vertices = [[5, 5], [0, 0], [5, -5], [7, 5], [2, 0], [7, -5]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
         self.labels_xy = [[1, 2]]
@@ -223,7 +223,7 @@ class ConnectionDetachable(ElementGraph):
 class GraphWithConnection(ElementGraph):
 
     def __init__(self, name='', highlight=False):
-        super().__init__(name, highlight)
+        super().__init__(name, highlight=highlight)
         self.connections = {}
 
     def mov_to(self, base_point_key=None, x=0, y=0):
@@ -388,8 +388,8 @@ class Wire(ElementCircuit):
 
 class ConnectionTerminal(GraphWithConnection):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self.centers = [[0, 0], [0, 0], [0, 0]]
         self.radii = [0.5, 0.3, 0.1]
         self.labels_xy = [[0, -5]]
@@ -399,8 +399,8 @@ class ConnectionTerminal(GraphWithConnection):
 
 class Connector(GraphWithConnection):
 
-    def __init__(self, name=''):
-        super().__init__(name)
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
         self += ConnectionDetachable()
         self.connections['s' + str(name)] = [[0, 0], LEFT]
         self.connections['p' + str(name)] = [[2, 0], RIGHT]
@@ -408,8 +408,8 @@ class Connector(GraphWithConnection):
 
 class Connectors(GraphWithConnection):
 
-    def __init__(self, name='', quantity=32):
-        super().__init__(name)
+    def __init__(self, name='', quantity=32, highlight=False):
+        super().__init__(name, highlight=highlight)
         self.n = [None]
         for i in range(1, quantity + 1):
             self.n.append(Connector(i))
@@ -422,15 +422,15 @@ class Connectors(GraphWithConnection):
 
 class CT2(GraphWithConnection):
 
-    def __init__(self, name=''):
-        super().__init__(name)
-        self.w1 = GraphWithConnection()
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.w1 = GraphWithConnection(highlight=highlight)
         self.w1 += CT_W(name + '-1')
         self.w1.connections['1И1'] = [[0, 0], LEFT]
         self.w1.connections['1И2'] = [[4, 0], RIGHT]
         self.w1.labels += ['1U1', '1U2']
         self.w1.labels_xy += [[-2, -5], [6, -5]]
-        self.w2 = GraphWithConnection(name + '-2')
+        self.w2 = GraphWithConnection(highlight=highlight)
         self.w2 += CT_W(name + '-2')
         self.w2.connections['2И1'] = [[0, 0], LEFT]
         self.w2.connections['2И2'] = [[4, 0], RIGHT]
@@ -447,12 +447,12 @@ class CT2(GraphWithConnection):
 class YA(GraphWithConnection):
 
     def __init__(self, name='', highlight=False):
-        super().__init__(name, highlight)
-        self.w = GraphWithConnection(name, highlight)
+        super().__init__(name, highlight=highlight)
+        self.w = GraphWithConnection(highlight=highlight)
         self.w += Winding(name)
         self.w.connections[1] = [[0, 0], LEFT]
         self.w.connections[2] = [[15, 0], RIGHT]
-        self += Winding(name, highlight)
+        self += Winding(name)
         self.connections[1] = [[0, 0], self.w, LEFT]
         self.connections[2] = [[15, 0], self.w, RIGHT]
 
@@ -483,12 +483,12 @@ class Power(GraphWithConnection):
 
 class XT(GraphWithConnection):
 
-    def __init__(self, name='', quantity=50):
-        super().__init__(name)
+    def __init__(self, name='', quantity=50, highlight=False):
+        super().__init__(name, highlight=highlight)
         self.n = [None]
         h = 6
         for i in range(1, quantity + 1):
-            self.n.append(ConnectionTerminal(i))
+            self.n.append(ConnectionTerminal(i, highlight=highlight))
             self.connections[i] = [[0, -i * h - 3], self.n[-1], LEFT]
             self.connections[-i] = [[20, -i * h - 3], self.n[-1], RIGHT]
             self.vertices += [[0, -i * h], [20, -i * h], [20, -i * h - h], [0, -i * h - h], [0, -i * h]]
@@ -501,9 +501,9 @@ class XT(GraphWithConnection):
 
 class SF(GraphWithConnection):
 
-    def __init__(self, name=''):
-        super().__init__(name)
-        self.k1_2 = GraphWithConnection()
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.k1_2 = GraphWithConnection(highlight=highlight)
         k = ContactOpen(name)
         k.rotate(90)
         k.labels_xy[0][0] += 10
@@ -519,9 +519,9 @@ class SF(GraphWithConnection):
 
 class RP361(GraphWithConnection):
 
-    def __init__(self, name=''):
-        super().__init__(name)
-        self.k2_4_6 = GraphWithConnection()
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.k2_4_6 = GraphWithConnection(highlight=highlight)
         k = ContactOpen(name)
         k.rotate(180)
         k.mov_to(20, 0)
@@ -537,7 +537,7 @@ class RP361(GraphWithConnection):
         self.k2_4_6.connections[6] = [[0, 20], LEFT]
         self.k2_4_6.labels += [2, 4, 6]
         self.k2_4_6.labels_xy += [[0, -4], [20, -4], [0, 16]]
-        self.w8_14 = GraphWithConnection()
+        self.w8_14 = GraphWithConnection(highlight=highlight)
         self.w8_14 += Winding(name)
         self.w8_14.connections[8] = [[0, 0], LEFT]
         self.w8_14.connections[14] = [[15, 0], RIGHT]
@@ -567,15 +567,15 @@ class RP361(GraphWithConnection):
 
 class BPT615(GraphWithConnection):
 
-    def __init__(self, name=''):
-        super().__init__(name)
-        self.k1_2 = GraphWithConnection()
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.k1_2 = GraphWithConnection(highlight=highlight)
         self.k1_2 += Winding(name)
         self.k1_2.connections[2] = [[0, 0], LEFT]
         self.k1_2.connections[1] = [[15, 0], RIGHT]
         self.k1_2.labels += [2, 1]
         self.k1_2.labels_xy += [[0, -4], [15, -4]]
-        self.k3_4 = GraphWithConnection()
+        self.k3_4 = GraphWithConnection(highlight=highlight)
         self.k3_4 += Winding(name)
         self.k3_4.connections[4] = [[0, 0], LEFT]
         self.k3_4.connections[3] = [[15, 0], RIGHT]
@@ -742,23 +742,23 @@ class WiringDiagram:
             coords += i.show_wd(ax, coords)
 
 
-doc = ezdxf.new('R2007', setup=True)
+doc = ezdxf.new()
 doc.units = ezdxf.units.MM
 msp = doc.modelspace()
 
-ct_a = CT2('TTa')
+ct_a = CT2('TTa', highlight=True)
 ct_c = CT2('TTc')
-xt = XT('XT', 50)
-xt1 = Connectors('XT1', 20)
+xt = XT('XT', 50, highlight=True)
+xt1 = Connectors('XT1', 20, highlight=True)
 yat_a = YA('YAA1', highlight=True)
 yat_c = YA('YAC1')
 xt1.n[13].rotate(180)
 xt1.n[15].rotate(180)
-kl1 = RP361('KL1')
+kl1 = RP361('KL1', highlight=True)
 kl2 = RP361('KL2')
-a2 = BPT615('A2')
+a2 = BPT615('A2', highlight=True)
 a1 = MR5PO50('A1',highlight=True)
-sf = SF('SF1')
+sf = SF('SF1', highlight=True)
 
 w = {}
 w['1'] = Wire(ct_a, '1И1', ct_c, '1И1')
