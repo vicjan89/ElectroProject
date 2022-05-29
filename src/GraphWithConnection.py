@@ -1,6 +1,6 @@
 '''Графические элементы с коннекторами.'''
 
-from GraphicsElements import *
+from src.GraphicsElements import *
 
 class GraphWithConnection(ElementGraph):
     '''Базовый класс для графических элементов с коннекторами.'''

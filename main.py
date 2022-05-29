@@ -1,4 +1,4 @@
-from electroproject import *
+from src.electroproject import *
 import ezdxf
 
 ct_a = CT2('TTa', highlight=True)

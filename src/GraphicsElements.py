@@ -1,6 +1,6 @@
 '''Модуль для описания графических элементов электрических схем.'''
 
-from BasicElements import *
+from src.BasicElements import *
 
 
 class ContactOpen(ElementGraph):

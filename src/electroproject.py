@@ -1,6 +1,6 @@
 '''Модуль прорисовки проектной документации.'''
 
-from GraphWithConnection import *
+from src.GraphWithConnection import *
 
 class CircuitDiagram:
     '''Вывод принципиальной схемы в формат DXF.'''

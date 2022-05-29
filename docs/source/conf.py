@@ -32,7 +32,8 @@ release = '0.1'
 # ones.
 extensions = ['autoapi.extension'
 ]
-autoapi_dirs = ['..']
+autoapi_dirs = ['../../src']
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
