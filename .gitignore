@@ -1,0 +1,6 @@
+
+/docs/build/
+*.xml
+*.iml
+*.png
+*.dxf
