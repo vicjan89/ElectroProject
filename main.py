@@ -45,14 +45,17 @@ w.append(Wire(ct_a, '1И1', a1, 'X8:4'))
 rel_otc = MountingModule('Релейный отсек')
 sh8.add(yat_a, yat_c, kl1, kl2, a1)
 '''
-doc = ezdxf.new()
-doc.units = ezdxf.units.MM
-msp1 = doc.modelspace()
+doc1 = ezdxf.new()
+doc1.units = ezdxf.units.MM
+msp1 = doc1.modelspace()
 CircuitDiagram(w, msp1)
-doc.saveas("Токовые цепи.dxf", encoding='utf-8')
+doc1.saveas("Принципиальная схема.dxf", encoding='utf-8')
 
-# wd = WiringDiagram([ct_a,ct_c,xt, xt1,yat_a,yat_c, kl1, kl2,a2, a1],w)
-# wd.show(msp)
+doc2 = ezdxf.new()
+doc2.units = ezdxf.units.MM
+msp2 = doc2.modelspace()
+WiringDiagram([ct_a,ct_c,xt, xt1,yat_a,yat_c, kl1, kl2,a2, a1],w, msp2)
+doc2.saveas("Монтажная схема.dxf", encoding='utf-8')
 
 # cm = CableMagazine()
 # cm.add(cab101, cab102, cab103)

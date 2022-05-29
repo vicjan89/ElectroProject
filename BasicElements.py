@@ -87,7 +87,7 @@ class ElementGraph(ElementCircuit):
     def show(self, ax):
         super().show()
         if self.highlight:
-            lw = 100
+            lw = 50
         else:
             lw = 0
         if len(self.vertices) > 0:

@@ -47,7 +47,7 @@ class Wire(ElementCircuit):
 
     def show(self, ax):
         if self.highlight:
-            lw = 100
+            lw = 50
         else:
             lw = 0
         if type(self.__key_a) is int:
@@ -113,7 +113,7 @@ class Wire(ElementCircuit):
 
     def show_wd(self, ax, coords):
         if self.highlight:
-            lw = 100
+            lw = 50
         else:
             lw = 0
         xa = self.__a.connections[self.__key_a][0][0]
