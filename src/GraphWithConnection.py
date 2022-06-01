@@ -284,8 +284,9 @@ class Power(GraphWithConnection):
 
 class XT(GraphWithConnection):
 
-    def __init__(self, name='', quantity=50, highlight=False):
+    def __init__(self, name='', quantity=50, type='', highlight=False):
         super().__init__(name, highlight=highlight)
+        self.__type = type
         self.n = [None]
         h = 6
         for i in range(1, quantity + 1):
@@ -511,3 +512,78 @@ class MR5PO50(GraphWithConnection):
             self.labels += [key]
             dx = 4 if value[0][0] == 0 else -4
             self.labels_xy += [[value[0][0]+dx,value[0][1]]]
+
+class BB_TEL10(GraphWithConnection):
+
+    def __init__(selfself, name='', highlight=False):
+        self.sf1 = GraphWithConnection(highlight=highlight)
+        k = ContactOpen(name+'-SF1')
+        self.sf1 += k
+        self.sf1.connections[1] = [[0, 0], LEFT]
+        self.sf1.connections[2] = [[20, 0], RIGHT]
+        self.sf2 = GraphWithConnection(highlight=highlight)
+        k = ContactOpen(name + '-SF2')
+        self.sf2 += k
+        self.sf2.connections[3] = [[0, 0], LEFT]
+        self.sf2.connections[4] = [[20, 0], RIGHT]
+        self.sf3 = GraphWithConnection(highlight=highlight)
+        k = ContactOpen(name + '-SF3')
+        self.sf3 += k
+        self.sf3.connections[5] = [[0, 0], LEFT]
+        self.sf3.connections[6] = [[20, 0], RIGHT]
+        self.sf4 = GraphWithConnection(highlight=highlight)
+        k = ContactOpen(name + '-SF4')
+        self.sf4 += k
+        self.sf4.connections[7] = [[0, 0], LEFT]
+        self.sf4.connections[8] = [[20, 0], RIGHT]
+        self.sf5 = GraphWithConnection(highlight=highlight)
+        k = ContactOpen(name + '-SF5')
+        self.sf5 += k
+        self.sf5.connections[9] = [[0, 0], LEFT]
+        self.sf5.connections[10] = [[20, 0], RIGHT]
+        self.sf6 = GraphWithConnection(highlight=highlight)
+        k = ContactOpen(name + '-SF6')
+        self.sf6 += k
+        self.sf6.connections[11] = [[0, 0], LEFT]
+        self.sf6.connections[12] = [[20, 0], RIGHT]
+        self.em = GraphWithConnection(highlight=highlight)
+        k = Winding(name + '-ЭМ1')
+        self.em += k
+        self.em.connections[13] = [[0, 0], LEFT]
+        self.em.connections[14] = [[20, 0], RIGHT]
+        self.bk = GraphWithConnection(highlight=highlight)
+        k = ContactClose(name + '-БК')
+        self.bk += k
+        self.bk.connections[15] = [[0, 0], LEFT]
+        self.bk.connections[16] = [[20, 0], RIGHT]
+        self.sf7 = GraphWithConnection(highlight=highlight)
+        k = ContactClose(name + '-SF7')
+        self.sf7 += k
+        self.sf7.connections[17] = [[0, 0], LEFT]
+        self.sf7.connections[18] = [[20, 0], RIGHT]
+        self.sf8 = GraphWithConnection(highlight=highlight)
+        k = ContactClose(name + '-SF8')
+        self.sf8 += k
+        self.sf8.connections[19] = [[0, 0], LEFT]
+        self.sf8.connections[20] = [[20, 0], RIGHT]
+        self.sf9 = GraphWithConnection(highlight=highlight)
+        k = ContactClose(name + '-SF9')
+        self.sf9 += k
+        self.sf9.connections[21] = [[0, 0], LEFT]
+        self.sf9.connections[22] = [[20, 0], RIGHT]
+        self.sf10 = GraphWithConnection(highlight=highlight)
+        k = ContactClose(name + '-SF10')
+        self.sf10 += k
+        self.sf10.connections[23] = [[0, 0], LEFT]
+        self.sf10.connections[24] = [[20, 0], RIGHT]
+        self.sf11 = GraphWithConnection(highlight=highlight)
+        k = ContactClose(name + '-SF11')
+        self.sf11 += k
+        self.sf11.connections[25] = [[0, 0], LEFT]
+        self.sf11.connections[26] = [[20, 0], RIGHT]
+        self.sf12 = GraphWithConnection(highlight=highlight)
+        k = ContactClose(name + '-SF12')
+        self.sf12 += k
+        self.sf12.connections[27] = [[0, 0], LEFT]
+        self.sf12.connections[28] = [[20, 0], RIGHT]
+        self.connections[1] = [[0, -10], self.sf1, LEFT]
