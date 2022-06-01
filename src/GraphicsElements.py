@@ -114,3 +114,22 @@ class ConnectionDetachable(ElementGraph):
         self.labels_xy = [[1, 2]]
         self.labels = [name]
 
+
+class Resistor(ElementGraph):
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.vertices = [[0, 0], [5, 0], [5, -2.5], [5, 2.5], [15, 2.5], [15,-2.5],[5,-2.5],[15,0],[20,0]]
+        self.codes = [Path.MOVETO, Path.LINETO,Path.MOVETO,Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,Path.MOVETO,Path.LINETO]
+        self.labels_xy = [[8, 6]]
+        self.labels = [name]
+
+class Сapacitor(ElementGraph):
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.vertices = [[0, 0], [5, 0], [5, -5], [5, 5], [6, -5], [6,5],[6,0],[11,0]]
+        self.codes = [Path.MOVETO, Path.LINETO,Path.MOVETO,Path.LINETO, Path.MOVETO,Path.LINETO, Path.MOVETO,Path.LINETO]
+        self.labels_xy = [[8, 6]]
+        self.labels = [name]
+
