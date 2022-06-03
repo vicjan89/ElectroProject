@@ -11,7 +11,7 @@ a9=PS12('A9')
 c1 = C('C1', highlight=True)
 c2 = C('C2')
 c3 = C('C3')
-kv1=R3('KV1')
+kv1=R3('KV1', highlight=True)
 kv2=R3('KV2')
 kv3=R3('KV3')
 pa=CP8501_14('PA')
@@ -95,7 +95,7 @@ doc2 = ezdxf.new()
 doc2.units = ezdxf.units.MM
 msp2 = doc2.modelspace()
 WiringDiagram([ct_a,ct_b, ct_c,x, xt1, a1, r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,
-               c1,c2,c3],w, msp2)
+               c1,c2,c3, kv1, kv2, kv3],w, msp2)
 doc2.saveas("Монтажная схема.dxf", encoding='utf-8')
 
 # cm = CableMagazine()

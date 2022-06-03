@@ -645,7 +645,70 @@ class C(GraphWithConnection):
         self.connections[2] = [[15, 0], self.c, RIGHT]
 
 class R3(GraphWithConnection):
-    pass
+    '''Реле R3N RELPOL'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.k1 = GraphWithConnection()
+        self.k1 += ContactOpenClose(name,highlight=highlight)
+        self.k1.labels += [11,12,14]
+        self.k1.labels_xy += [[0,0],[20,7],[20,0]]
+        self.k1.connections[11] = [[0,0],LEFT]
+        self.k1.connections[12] = [[20, 10], RIGHT]
+        self.k1.connections[14] = [[20, 0], RIGHT]
+        self.k2 = GraphWithConnection()
+        self.k2 += ContactOpenClose(name,highlight=highlight)
+        self.k2.labels += [21,22,24]
+        self.k2.labels_xy += [[0,0],[20,7],[20,0]]
+        self.k2.connections[11] = [[0,0],LEFT]
+        self.k2.connections[12] = [[20, 10], RIGHT]
+        self.k2.connections[14] = [[20, 0], RIGHT]
+        self.k3 = GraphWithConnection()
+        self.k3 += ContactOpenClose(name,highlight=highlight)
+        self.k3.labels += [31,32,34]
+        self.k3.labels_xy += [[0,0],[20,7],[20,0]]
+        self.k3.connections[11] = [[0,0],LEFT]
+        self.k3.connections[12] = [[20, 10], RIGHT]
+        self.k3.connections[14] = [[20, 0], RIGHT]
+        self.w = GraphWithConnection()
+        self.w += Winding(name, highlight=highlight)
+        self.w.labels += ['A','B']
+        self.w.labels_xy += [[0,0],[15,0]]
+        self.w.connections['A'] = [[0,0],LEFT]
+        self.w.connections['B'] = [[15, 0], RIGHT]
+        self.vertices += [[0,0],[20,0],[20,-75],[0,-75],[0,0]]
+        self.codes += [Path.MOVETO,Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO]
+        self.labels += ['R3N', name]
+        self.labels_xy += [[10,-4], [10,0]]
+        k = ContactOpenClose(highlight=highlight)
+        k.mov_to(0,-30)
+        self += k
+        k = ContactOpenClose(highlight=highlight)
+        k.mov_to(0, -50)
+        self += k
+        k = ContactOpenClose(highlight=highlight)
+        k.mov_to(0, -70)
+        self += k
+        w= Winding(highlight=highlight)
+        w.mov_to(2.5,-10)
+        self +=w
+        self.connections[11] = [[0,-30],self.k1,LEFT]
+        self.connections[12] = [[20, -20], self.k1, RIGHT]
+        self.connections[14] = [[20, -30], self.k1, RIGHT]
+        self.connections[21] = [[0, -50], self.k2, LEFT]
+        self.connections[22] = [[20, -40], self.k2, RIGHT]
+        self.connections[24] = [[20, -50], self.k2, RIGHT]
+        self.connections[31] = [[0, -70], self.k3, LEFT]
+        self.connections[32] = [[20, -60], self.k3, RIGHT]
+        self.connections[34] = [[20, -70], self.k3, RIGHT]
+        self.connections['A'] = [[0, -10], self.w, LEFT]
+        self.connections['B'] = [[20, -10], self.w, RIGHT]
+        for key, value in self.connections.items():
+            self.labels += [key]
+            dx = 3 if value[0][0] == 0 else -3
+            self.labels_xy += [[value[0][0]+dx,value[0][1]]]
+
+
 
 class CP8501_14(GraphWithConnection):
     pass

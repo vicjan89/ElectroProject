@@ -22,6 +22,15 @@ class ContactClose(ElementGraph):
         self.labels_xy = [[10, 5]]
         self.labels = [name]
 
+class ContactOpenClose(ElementGraph):
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.vertices = [[0, 0], [5, 0], [15, 5], [15, 0], [20, 0], [14,4],[14,10],[20,10]]
+        self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO,Path.MOVETO, Path.LINETO, Path.LINETO]
+        self.labels_xy = [[8, 6]]
+        self.labels = [name]
+
 
 class ContactOpenTimeOn(ContactOpen):
 
