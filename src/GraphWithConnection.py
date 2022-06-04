@@ -270,18 +270,18 @@ class Power(GraphWithConnection):
         self.labels = [name]
 
 
-# class RP23_25(ElementCircuit):
-#
-#     def __init__(self, name=''):
-#         super().__init__(name)
-#         self.__w = Winding(name)
-#         self.__k1 = ContactClose(name, '1', '2')
-#         self.__k2 = ContactOpen(name, '3', '4')
-#         self.__k3 = ContactOpen(name, '5', '6')
-#         self.__k4 = ContactOpen(name, '7', '8')
-#         self.__k5 = ContactOpen(name, '9', '10')
-#         self.vertices = [(0, 0),   (30, 0),      (30, -60),     (0, -60),     (0, 0)]
-#         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+class RP23_25(ElementCircuit):
+
+    def __init__(self, name=''):
+        super().__init__(name)
+        self.__w = Winding(name)
+        self.__k1 = ContactClose(name, '1', '2')
+        self.__k2 = ContactOpen(name, '3', '4')
+        self.__k3 = ContactOpen(name, '5', '6')
+        self.__k4 = ContactOpen(name, '7', '8')
+        self.__k5 = ContactOpen(name, '9', '10')
+        self.vertices = [(0, 0),   (30, 0),      (30, -60),     (0, -60),     (0, 0)]
+        self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
 
 class XT(GraphWithConnection):
 
@@ -701,11 +701,60 @@ class BU_TEL(GraphWithConnection):
         self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
         self.labels += [name, 'BU/TEL-220-05A',' 1 +220', ' 2 -220', ' 3 ЭМ1 ', ' 4 ЭМ2 ', ' 5 БК1 ', ' 6 БК2 ',
                         ' 7 ВО   ', ' 8 ВКЛ ', ' 9 ОТКЛ', '10 TTA1','11 TTA2','12 TTC1','13 TTC2']
-        self.labels_xy += [[12, 0], [1,-5],[1, -10], [1, -20], [1, -30], [1, -40], [1, -50], [1, -60], [1, -70],
-                                 [1, -80], [1, -90],[1,-100],[1,-110],[1,-120],[1,-130]]
+        self.labels_xy += [[15, 0], [15,-5],[1, -10, 'BOTTOM_LEFT'], [1, -20, 'BOTTOM_LEFT'], [1, -30, 'BOTTOM_LEFT'],
+                           [1, -40, 'BOTTOM_LEFT'], [1, -50, 'BOTTOM_LEFT'], [1, -60, 'BOTTOM_LEFT'], [1, -70, 'BOTTOM_LEFT'],
+                [1, -80, 'BOTTOM_LEFT'], [1, -90, 'BOTTOM_LEFT'],[1,-100, 'BOTTOM_LEFT'],[1,-110, 'BOTTOM_LEFT'],[1,-120, 'BOTTOM_LEFT'],[1,-130, 'BOTTOM_LEFT']]
 
 class BP_TEL(GraphWithConnection):
-    pass
+    '''Блок питания BP/TEL-220-02A выключателя BB/TEL-10'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.type = 'Блок питания BP/TEL-220-02A выключателя BB/TEL-10'
+        self.bp = GraphWithConnection(highlight=highlight)
+        self.bp.vertices += [[0, 0], [20, 0], [20, -65], [0, -65], [0, 0]]
+        self.bp.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.bp.labels += [name, '14 ~220', '15 ~220', '8 +220', '9 +220', '5 -220', '6 220']
+        self.bp.labels_xy += [[10, 0], [3, -10,'BOTTOM_LEFT'], [3, -20,'BOTTOM_LEFT'], [3, -30,'BOTTOM_RIGHT'],
+                                 [3, -40,'BOTTOM_RIGHT'], [3, -50,'BOTTOM_RIGHT'], [3, -60,'BOTTOM_RIGHT']]
+        self.bp.connections[14] = [[0, -10], LEFT]
+        self.bp.connections[15] = [[0, -20], LEFT]
+        self.bp.connections[8] = [[20, -30], RIGHT]
+        self.bp.connections[9] = [[20, -40], RIGHT]
+        self.bp.connections[5] = [[20, -50], RIGHT]
+        self.bp.connections[6] = [[20, -60], RIGHT]
+        self.bp12 = GraphWithConnection(highlight=highlight)
+        self.bp12.vertices += [[0, 0], [20, 0], [20, -25], [0, -25], [0, 0]]
+        self.bp12.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.bp12.labels += [name, '-12В 11', '+12В 12']
+        self.bp12.labels_xy += [[10, 0], [20, -10,'BOTTOM_RIGHT'], [20, -20,'BOTTOM_RIGHT']]
+        self.bp12.connections[11] = [[20, -10], RIGHT]
+        self.bp12.connections[12] = [[20, -20], RIGHT]
+        self.k = GraphWithConnection()
+        self.k += ContactOpenClose(name, highlight=highlight)
+        self.k.labels += [18, 17, 16]
+        self.k.labels_xy += [[0, 0], [20, 7], [20, 0]]
+        self.k.connections[18] = [[0, 0], LEFT]
+        self.k.connections[17] = [[20, 10], RIGHT]
+        self.k.connections[16] = [[20, 0], RIGHT]
+        self.connections[5] = [[0, -10], self.bp, LEFT]
+        self.connections[6] = [[0, -20], self.bp, LEFT]
+        self.connections[8] = [[0, -30], self.bp, LEFT]
+        self.connections[9] = [[0, -40], self.bp, LEFT]
+        self.connections[11] = [[0, -50], self.bp12, LEFT]
+        self.connections[12] = [[0, -60], self.bp12, LEFT]
+        self.connections[14] = [[0, -70], self.bp, LEFT]
+        self.connections[15] = [[0, -80], self.bp, LEFT]
+        self.connections[16] = [[0, -90], self.k, LEFT]
+        self.connections[17] = [[0, -100], self.k, LEFT]
+        self.connections[18] = [[0, -110], self.k, LEFT]
+        self.vertices += [[0, 0], [30, 0], [30, -115], [0, -115], [0, 0]]
+        self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.labels += [name, 'BP/TEL-220-02A', ' 5 -220', ' 6 -220', ' 8 +220', ' 9 +220', '11 -12В', '12 +12В',
+                        '14 ~220В', '15 ~220В', '16 Конт.Uвых 3', '17 Конт.Uвых 1', '18 Конт.Uвых 2']
+        self.labels_xy += [[15, 0], [15, -5], [1, -10, 'BOTTOM_LEFT'], [1, -20, 'BOTTOM_LEFT'], [1, -30, 'BOTTOM_LEFT'],
+                           [1, -40, 'BOTTOM_LEFT'], [1, -50, 'BOTTOM_LEFT'], [1, -60, 'BOTTOM_LEFT'], [1, -70, 'BOTTOM_LEFT'],
+                           [1, -80, 'BOTTOM_LEFT'], [1, -90, 'BOTTOM_LEFT'], [1, -100, 'BOTTOM_LEFT'], [1, -110, 'BOTTOM_LEFT']]
 
 class MR500(GraphWithConnection):
     pass
