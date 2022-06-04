@@ -266,7 +266,7 @@ class Power(GraphWithConnection):
         self.vertices = [[0, 0], [5, 0], [5, 5], [15, 5], [15, -5], [5, -5], [5, 5], [15, 0], [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,
                       Path.MOVETO, Path.LINETO]
-        self.labels_xy = [[10, 6]]
+        self.labels_xy = [[10, 0]]
         self.labels = [name]
 
 
@@ -611,10 +611,98 @@ class BB_TEL10(GraphWithConnection):
 
 
 class PS7(GraphWithConnection):
-    pass
+    '''Панель сигнальная ПС7 Сиинтез-Электро.'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.type = 'ПС-7'
+        self.vertices += [[5,0],[185,0],[185,-20],[5,-20],[5,0]]
+        self.codes += [Path.MOVETO,Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO]
+        self.l_bi = []
+        for i in range(7):
+            self.l_bi.append(GraphWithConnection(name, highlight=highlight))
+            self.l_bi[-1] += BI('Вход ' + str(i+1), highlight=highlight)
+            self.l_bi[-1].labels += [name, i * 2 + 5, i * 2 + 6]
+            self.l_bi[-1].labels_xy += [[10,2],[0, -2],[20,-2]]
+            self.l_bi[-1].connections[i * 2 + 5] = [[0,0],LEFT]
+            self.l_bi[-1].connections[i * 2 + 6] = [[20, 0], RIGHT]
+            self.connections[i * 2 + 5] = [[i*20 + 50,-20], self.l_bi[-1], DOWN]
+            self.connections[i * 2 + 6] = [[i*20 + 60,-20], self.l_bi[-1], DOWN]
+            self.labels += ['Вход ' + str(i+1), i * 2 + 5, i * 2 + 6]
+            self.labels_xy += [[i*20 + 55,-12],[i*20 + 50,-18],[i*20 + 60,-18]]
+        self.p = Power('Сеть',highlight=highlight)
+        self.p.labels += [name, 1, 2]
+        self.p.labels_xy += [[10,6], [0,0],[20,0]]
+        self.p.connections[1] = [[0,0],LEFT]
+        self.p.connections[2] = [[20, 0], RIGHT]
+        self.connections[1] = [[10,-20],self.p,DOWN]
+        self.connections[1] = [[20, -20], self.p, DOWN]
+        self.labels += ['Сеть',1,2]
+        self.labels_xy += [[15,-12],[10,-18],[20,-18]]
+        self.r = GraphWithConnection()
+        self.r += ContactOpen('Реле', highlight=highlight)
+        self.r.labels += [name, 3, 4]
+        self.r.labels_xy += [[5, 6], [0, 0], [20, 0]]
+        self.r.connections[3] = [[0, 0], LEFT]
+        self.r.connections[4] = [[20, 0], RIGHT]
+        self.connections[3] = [[30, -20], self.r, DOWN]
+        self.connections[4] = [[40, -20], self.r, DOWN]
+        self.labels += [self.type,name,'Реле',3, 4]
+        self.labels_xy += [[95,-5],[95,0],[35,-12],[30, -18], [40, -18]]
+
 
 class BU_TEL(GraphWithConnection):
-    pass
+    '''Блок управления BU/TEL-220-05A выключателем BB/TEL-10'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.type = 'Блок управления BU/TEL-220-05A выключателем BB/TEL-10'
+        self.xt1_9 = GraphWithConnection(highlight=highlight)
+        self.xt1_9.vertices += [[0,0], [20,0],[20,-100],[0,-100],[0,0]]
+        self.xt1_9.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.xt1_9.labels += [name,'1 +220','2 -220', '3 ЭМ1','4 ЭМ2','5 БК1','6 БК2','7 ВО',
+                              '8 ВКЛ','9 ОТКЛ']
+        self.xt1_9.labels_xy += [[10,0],[3,-10],[3,-20],[3,-30],[3,-40],[3,-50],[3,-60],[3,-70],[3,-80],[3,-90]]
+        self.xt1_9.connections[1] = [[0,-10],LEFT]
+        self.xt1_9.connections[2] = [[0, -20], LEFT]
+        self.xt1_9.connections[3] = [[0, -30], LEFT]
+        self.xt1_9.connections[4] = [[0, -40], LEFT]
+        self.xt1_9.connections[5] = [[0, -50], LEFT]
+        self.xt1_9.connections[6] = [[0, -60], LEFT]
+        self.xt1_9.connections[7] = [[0, -70], LEFT]
+        self.xt1_9.connections[8] = [[0, -80], LEFT]
+        self.xt1_9.connections[9] = [[0, -90], LEFT]
+        self.tta = GraphWithConnection(highlight=highlight)
+        self.tta += BI('TTA')
+        self.tta.labels += [name, 10,11]
+        self.tta.labels_xy += [[10,6],[0,0],[20,0]]
+        self.tta.connections[10] = [[0,0],LEFT]
+        self.tta.connections[11] = [[20, 0], RIGHT]
+        self.ttc = GraphWithConnection(highlight=highlight)
+        self.ttc += BI('TTC')
+        self.ttc.labels += [name, 12, 13]
+        self.tta.labels_xy += [[10, 6], [0, 0], [20, 0]]
+        self.tta.connections[12] = [[0, 0], LEFT]
+        self.tta.connections[13] = [[20, 0], RIGHT]
+        self.connections[1] = [[0,-10],self.xt1_9,LEFT]
+        self.connections[2] = [[0, -20], self.xt1_9, LEFT]
+        self.connections[3] = [[0, -30], self.xt1_9, LEFT]
+        self.connections[4] = [[0, -40], self.xt1_9, LEFT]
+        self.connections[5] = [[0, -50], self.xt1_9, LEFT]
+        self.connections[6] = [[0, -60], self.xt1_9, LEFT]
+        self.connections[7] = [[0, -70], self.xt1_9, LEFT]
+        self.connections[8] = [[0, -80], self.xt1_9, LEFT]
+        self.connections[9] = [[0, -90], self.xt1_9, LEFT]
+        self.connections[10] = [[0, -100], self.tta, LEFT]
+        self.connections[11] = [[0, -110], self.tta, LEFT]
+        self.connections[12] = [[0, -120], self.ttc, LEFT]
+        self.connections[13] = [[0, -130], self.ttc, LEFT]
+        self.vertices += [[0,0],[30,0],[30,-135],[0,-135],[0,0]]
+        self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.labels += [name, 'BU/TEL-220-05A',' 1 +220', ' 2 -220', ' 3 ЭМ1 ', ' 4 ЭМ2 ', ' 5 БК1 ', ' 6 БК2 ',
+                        ' 7 ВО   ', ' 8 ВКЛ ', ' 9 ОТКЛ', '10 TTA1','11 TTA2','12 TTC1','13 TTC2']
+        self.labels_xy += [[12, 0], [1,-5],[1, -10], [1, -20], [1, -30], [1, -40], [1, -50], [1, -60], [1, -70],
+                                 [1, -80], [1, -90],[1,-100],[1,-110],[1,-120],[1,-130]]
 
 class BP_TEL(GraphWithConnection):
     pass
@@ -707,7 +795,6 @@ class R3(GraphWithConnection):
             self.labels += [key]
             dx = 3 if value[0][0] == 0 else -3
             self.labels_xy += [[value[0][0]+dx,value[0][1]]]
-
 
 
 class CP8501_14(GraphWithConnection):

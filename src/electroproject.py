@@ -12,12 +12,9 @@ class CircuitDiagram:
 class WiringDiagram:
     '''Вывод монтажной схемы в формат DXF.'''
     def __init__(self, list_elements: list, wires: list, msp):
-        x = 0
-        y = 0
         for i in list_elements:
-            i.mov_to(x=x, y=y)
-            i.show(msp)
-            x += 70
+            i[0].mov_to(x=i[1][0], y=i[1][1])
+            i[0].show(msp)
         coords = []
         for i in wires:
             coords += i.show_wd(msp, coords)

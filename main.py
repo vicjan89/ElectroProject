@@ -94,8 +94,14 @@ sh8.add(yat_a, yat_c, kl1, kl2, a1)
 doc2 = ezdxf.new()
 doc2.units = ezdxf.units.MM
 msp2 = doc2.modelspace()
-WiringDiagram([ct_a,ct_b, ct_c,x, xt1, a1, r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,
-               c1,c2,c3, kv1, kv2, kv3],w, msp2)
+list_elements = [[a2,[0,0]],
+                  [ct_a,[200,0]],
+                [ct_b, [230,0]],
+                 [a3,[0,-50]]]
+
+ #                ct_c,x, xt1, a1, r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,
+ #              c1,c2,c3, kv1, kv2, kv3]
+WiringDiagram(list_elements, w, msp2)
 doc2.saveas("Монтажная схема.dxf", encoding='utf-8')
 
 # cm = CableMagazine()

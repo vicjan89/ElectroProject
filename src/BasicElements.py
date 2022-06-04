@@ -105,4 +105,4 @@ class ElementGraph(ElementCircuit):
         for i in range(len(self.centers)):
             ax.add_circle(self.centers[i], radius=self.radii[i], dxfattribs={'lineweight':lw})
         for i in range(len(self.labels_xy)):
-            ax.add_text(self.labels[i], dxfattribs={'style' : 'cyrillic_ii'}).set_pos((self.labels_xy[i][0], self.labels_xy[i][1]), align='BOTTOM_CENTER')
+            ax.add_text(self.labels[i], dxfattribs={'style' : 'cyrillic_ii'}).set_pos((self.labels_xy[i][0], self.labels_xy[i][1]), align='BOTTOM_LEFT')
