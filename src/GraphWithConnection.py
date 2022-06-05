@@ -136,21 +136,48 @@ class Wire(ElementCircuit):
         name_b = self.__b.name + '-' + str(key_b)
         list_coords = []
         if visible_a:
-            match coords.count((xa, ya)):
-                case 0:
-                    dy = 0
-                case 1:
-                    dy = -2
-                case 2:
-                    dy = 2
+            if side_a == LEFT or side_a == RIGHT:
+                match coords.count((xa, ya)):
+                    case 0:
+                        dy = 0
+                    case 1:
+                        dy = -2
+                    case 2:
+                        dy = 2
+            if side_a == DOWN or side_a == UP:
+                match coords.count((xa, ya)):
+                    case 0:
+                        dx = 0
+                    case 1:
+                        dx = -2
+                    case 2:
+                        dx = 2
             if side_a == LEFT:
                 dx = -5
+                d2x = -10
+                d2y = 0
                 a = 'BOTTOM_RIGHT'
+                f = 0
             elif side_a == RIGHT:
                 dx = 5
+                d2x = 10
+                d2y = 0
                 a = 'BOTTOM_LEFT'
-            ax.add_lwpolyline(((xa, ya), (xa + dx, ya + dy), (xa + 2 * dx + abs(dy) * dx, ya + dy)), dxfattribs={'lineweight':lw})
-            ax.add_text(name_b, dxfattribs={'style' : 'cyrillic_ii'}).set_pos((xa + dx + abs(dy) * dx, ya + dy), align=a)
+                f = 0
+            elif side_a == DOWN:
+                dy = -5
+                d2x = 0
+                d2y = -10
+                a = 'BOTTOM_RIGHT'
+                f = 90
+            elif side_a == UP:
+                dy = 5
+                d2x = 0
+                d2y = 10
+                a = 'BOTTOM_LEFT'
+                f = -90
+            ax.add_lwpolyline(((xa, ya), (xa + dx, ya + dy), (xa + dx + d2x, ya + dy + d2y)), dxfattribs={'lineweight':lw})
+            ax.add_text(name_b, dxfattribs={'style' : 'cyrillic_ii', 'rotation':f}).set_pos((xa + dx + abs(dy) * dx, ya + dy), align=a)
             list_coords.append((xa, ya))
         if visible_b:
             match coords.count((xb, yb)):
@@ -636,7 +663,7 @@ class PS7(GraphWithConnection):
         self.p.connections[1] = [[0,0],LEFT]
         self.p.connections[2] = [[20, 0], RIGHT]
         self.connections[1] = [[10,-20],self.p,DOWN]
-        self.connections[1] = [[20, -20], self.p, DOWN]
+        self.connections[2] = [[20, -20], self.p, DOWN]
         self.labels += ['Сеть',1,2]
         self.labels_xy += [[15,-12],[10,-18],[20,-18]]
         self.r = GraphWithConnection()
