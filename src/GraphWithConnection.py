@@ -1032,7 +1032,96 @@ class PS3_old(GraphWithConnection):
 
 
 class DUGA_O(GraphWithConnection):
-    pass
+    '''Регистратор дуговых замыканий ДУГА-О.'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.type = 'Регистратор дуговых замыканий ДУГА-О.'
+        self.k1 = GraphWithConnection()
+        self.k1 += ContactOpen(name+' Вых.1', highlight=highlight)
+        self.k1.labels += [1, 2]
+        self.k1.labels_xy += [[0, 0], [20, 0]]
+        self.k1.connections[1] = [[0, 0], LEFT]
+        self.k1.connections[2] = [[20, 0], RIGHT]
+        self.k2 = GraphWithConnection()
+        self.k2 += ContactOpen(name+' Вых.2', highlight=highlight)
+        self.k2.labels += [3, 4]
+        self.k2.labels_xy += [[0, 0], [20, 0]]
+        self.k2.connections[3] = [[0, 0], LEFT]
+        self.k2.connections[4] = [[20, 0], RIGHT]
+        self.k3 = GraphWithConnection()
+        self.k3 += ContactOpen(name+' Вых.3', highlight=highlight)
+        self.k3.labels += [5, 6]
+        self.k3.labels_xy += [[0, 0], [20, 0]]
+        self.k3.connections[5] = [[0, 0], LEFT]
+        self.k3.connections[6] = [[20, 0], RIGHT]
+        self.k4 = GraphWithConnection()
+        self.k4 += ContactOpen(name+' Вых.4', highlight=highlight)
+        self.k4.labels += [7, 8]
+        self.k4.labels_xy += [[0, 0], [20, 0]]
+        self.k4.connections[7] = [[0, 0], LEFT]
+        self.k4.connections[8] = [[20, 0], RIGHT]
+        self.k5 = GraphWithConnection()
+        self.k5 += ContactOpen(name+' Вых.5', highlight=highlight)
+        self.k5.labels += [9, 10]
+        self.k5.labels_xy += [[0, 0], [20, 0]]
+        self.k5.connections[9] = [[0, 0], LEFT]
+        self.k5.connections[10] = [[20, 0], RIGHT]
+        self.k = GraphWithConnection()
+        self.k += ContactClose(name + ' Отказ', highlight=highlight)
+        self.k.labels += [9, 10]
+        self.k.labels_xy += [[0, 0], [20, 0]]
+        self.k.connections[11] = [[0, 0], LEFT]
+        self.k.connections[12] = [[20, 0], RIGHT]
+        self.w = GraphWithConnection()
+        self.w += Power(name+' Uн', highlight=highlight)
+        self.w.labels += [13, 14]
+        self.w.labels_xy += [[0, 0], [20, 0]]
+        self.w.connections[13] = [[0, 0], LEFT]
+        self.w.connections[14] = [[20, 0], RIGHT]
+        self.vertices += [[0, 1], [20, 1], [20, -77], [0, -77], [0, 1]]
+        self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.labels += ['ДУГА-О', name, 'Вых.1','Вых.2','Вых.3','Вых.4','Вых.5','Отказ']
+        self.labels_xy += [[10, -3], [10, 1],[8,-7],[9,-16],[9,-26],[9,-36],[9,-46],[10,-56]]
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -10)
+        self += k
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -20)
+        self += k
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -30)
+        self += k
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -40)
+        self += k
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -50)
+        self += k
+        k = ContactClose(highlight=highlight)
+        k.mov_to(0, -60)
+        self += k
+        w = Power(name='220В',highlight=highlight)
+        w.mov_to(0, -71)
+        self += w
+        self.connections[1] = [[0, -10], self.k1, LEFT]
+        self.connections[2] = [[20, -10], self.k1, RIGHT]
+        self.connections[3] = [[20, -20], self.k2, RIGHT]
+        self.connections[4] = [[0, -20], self.k2, LEFT]
+        self.connections[5] = [[20, -30], self.k3, RIGHT]
+        self.connections[6] = [[20, -30], self.k3, RIGHT]
+        self.connections[7] = [[0, -40], self.k4, LEFT]
+        self.connections[8] = [[20, -40], self.k4, RIGHT]
+        self.connections[9] = [[0, -50], self.k5, LEFT]
+        self.connections[10] = [[20, -50], self.k5, RIGHT]
+        self.connections[11] = [[0, -60], self.k, LEFT]
+        self.connections[12] = [[20, -60], self.k, RIGHT]
+        self.connections[13] = [[0, -70], self.w, LEFT]
+        self.connections[14] = [[20, -70], self.w, RIGHT]
+        for key, value in self.connections.items():
+            self.labels += [key]
+            dx = 3 if value[0][0] == 0 else -3
+            self.labels_xy += [[value[0][0] + dx, value[0][1]]]
 
 
 class PS12(GraphWithConnection):
