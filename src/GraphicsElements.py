@@ -4,6 +4,7 @@ from src.BasicElements import *
 
 
 class ContactOpen(ElementGraph):
+    '''Контакт нормально-разомкнутый.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -14,6 +15,7 @@ class ContactOpen(ElementGraph):
 
 
 class ContactClose(ElementGraph):
+    '''Контакт нормально-замкнутый.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -24,6 +26,7 @@ class ContactClose(ElementGraph):
 
 
 class ContactOpenClose(ElementGraph):
+    '''Контакт перекидной.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -34,6 +37,7 @@ class ContactOpenClose(ElementGraph):
 
 
 class ContactOpenTimeOn(ContactOpen):
+    '''Контакт нормально-разомкнутый с задержкой на срабатывание.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -46,6 +50,7 @@ class ContactOpenTimeOn(ContactOpen):
 
 
 class ContactOpenTimeOff(ContactOpen):
+    '''Контакт нормально-разомкнутый с задержкой на возврат.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -58,6 +63,7 @@ class ContactOpenTimeOff(ContactOpen):
 
 
 class ContactCloseTimeOn(ContactClose):
+    '''Контакт нормально-замкнутый с задержкой на срабатывание.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -70,6 +76,7 @@ class ContactCloseTimeOn(ContactClose):
 
 
 class ContactCloseTimeOff(ContactClose):
+    '''Контакт нормально-замкнутый с задержкой на возврат.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -82,6 +89,7 @@ class ContactCloseTimeOff(ContactClose):
 
 
 class Diode(ElementGraph):
+    '''Диод.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -93,6 +101,7 @@ class Diode(ElementGraph):
 
 
 class Winding(ElementGraph):
+    '''Обмотка реле.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight)
@@ -104,6 +113,7 @@ class Winding(ElementGraph):
 
 
 class CT_W(ElementGraph):
+    '''Обмотка трансформатора тока.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -116,6 +126,7 @@ class CT_W(ElementGraph):
 
 
 class ConnectionDetachable(ElementGraph):
+    '''Разъёмное соединение.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -126,6 +137,7 @@ class ConnectionDetachable(ElementGraph):
 
 
 class Resistor(ElementGraph):
+    '''Резистор.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -135,19 +147,41 @@ class Resistor(ElementGraph):
         self.labels = [name]
 
 
-class Сapacitor(ElementGraph):
+class Capacitor(ElementGraph):
+    '''Конденсатор.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [5, 0], [5, -5], [5, 5], [6, -5], [6,5],[6,0],[11,0]]
         self.codes = [Path.MOVETO, Path.LINETO,Path.MOVETO,Path.LINETO, Path.MOVETO,Path.LINETO, Path.MOVETO,Path.LINETO]
-        self.labels_xy = [[8, 6]]
+        self.labels_xy = [[8, 2]]
         self.labels = [name]
 
 
-class BI(ElementGraph):
+class Ground(ElementGraph):
+    '''Заземление.'''
 
     def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.vertices = [[0, 0], [0, -5], [-5, -5], [5, -5], [-3, -6], [3,-6],[-1,-7],[1,-7]]
+        self.codes = [Path.MOVETO, Path.LINETO,Path.MOVETO,Path.LINETO, Path.MOVETO,Path.LINETO, Path.MOVETO,Path.LINETO]
+
+
+class BI(ElementGraph):
+    '''Дискретный вход.'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.vertices = [[0, 0], [5, 0], [5, 5], [15, 5], [15, -5], [5, -5], [5, 5], [15, 0], [20, 0]]
+        self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,
+                      Path.MOVETO, Path.LINETO]
+        self.labels_xy = [[10, 0]]
+        self.labels = [name]
+
+class Power(ElementGraph):
+    '''Блок питания устройства.'''
+
+    def __init__(self, name='',highlight=False):
         super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [5, 0], [5, 5], [15, 5], [15, -5], [5, -5], [5, 5], [15, 0], [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,

@@ -216,6 +216,7 @@ class Wire(ElementCircuit):
 
 
 class ConnectionTerminal(GraphWithConnection):
+    '''Клемма.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -227,6 +228,7 @@ class ConnectionTerminal(GraphWithConnection):
 
 
 class Connector(GraphWithConnection):
+    '''Разъёмное соединение.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -236,6 +238,7 @@ class Connector(GraphWithConnection):
 
 
 class Connectors(GraphWithConnection):
+    '''Разъём на много соединений.'''
 
     def __init__(self, name='', quantity=32, highlight=False):
         super().__init__(name, highlight=highlight)
@@ -250,6 +253,7 @@ class Connectors(GraphWithConnection):
 
 
 class CT2(GraphWithConnection):
+    '''Трансформатор тока с двумя вторичными обмотками.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -274,6 +278,7 @@ class CT2(GraphWithConnection):
 
 
 class YA(GraphWithConnection):
+    '''Электромагнит управления коммутационным аппаратом.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -286,31 +291,98 @@ class YA(GraphWithConnection):
         self.connections[2] = [[15, 0], self.w, RIGHT]
 
 
-class Power(GraphWithConnection):
+class RP23(GraphWithConnection):
+    '''Реле промежуточное типа РП-23'''
 
-    def __init__(self, name='',highlight=False):
+    def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
-        self.vertices = [[0, 0], [5, 0], [5, 5], [15, 5], [15, -5], [5, -5], [5, 5], [15, 0], [20, 0]]
-        self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,
-                      Path.MOVETO, Path.LINETO]
-        self.labels_xy = [[10, 0]]
-        self.labels = [name]
+        self.type = 'РП-23'
+        self.k1 = GraphWithConnection()
+        self.k1 += ContactClose(name, highlight=highlight)
+        self.k1.labels += [1, 2]
+        self.k1.labels_xy += [[0, 0], [20, 0]]
+        self.k1.connections[1] = [[0, 0], LEFT]
+        self.k1.connections[2] = [[20, 0], RIGHT]
+        self.k2 = GraphWithConnection()
+        self.k2 += ContactOpen(name, highlight=highlight)
+        self.k2.labels += [3, 4]
+        self.k2.labels_xy += [[0, 0], [20, 0]]
+        self.k2.connections[3] = [[0, 0], LEFT]
+        self.k2.connections[4] = [[20, 0], RIGHT]
+        self.k3 = GraphWithConnection()
+        self.k3 += ContactOpen(name, highlight=highlight)
+        self.k3.labels += [5, 6]
+        self.k3.labels_xy += [[0, 0], [20, 0]]
+        self.k3.connections[5] = [[0, 0], LEFT]
+        self.k3.connections[6] = [[20, 0], RIGHT]
+        self.k4 = GraphWithConnection()
+        self.k4 += ContactOpen(name, highlight=highlight)
+        self.k4.labels += [7, 8]
+        self.k4.labels_xy += [[0, 0], [20, 0]]
+        self.k4.connections[7] = [[0, 0], LEFT]
+        self.k4.connections[8] = [[20, 0], RIGHT]
+        self.k5 = GraphWithConnection()
+        self.k5 += ContactOpen(name, highlight=highlight)
+        self.k5.labels += [9, 10]
+        self.k5.labels_xy += [[0, 0], [20, 0]]
+        self.k5.connections[9] = [[0, 0], LEFT]
+        self.k5.connections[10] = [[20, 0], RIGHT]
+        self.w = GraphWithConnection()
+        self.w += Winding(name, highlight=highlight)
+        self.w.labels += [11, 12]
+        self.w.labels_xy += [[0, 0], [15, 0]]
+        self.w.connections[11] = [[0, 0], LEFT]
+        self.w.connections[12] = [[15, 0], RIGHT]
+        self.vertices += [[0, 0], [20, 0], [20, -75], [0, -75], [0, 0]]
+        self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.labels += [self.type, name]
+        self.labels_xy += [[10, -4], [10, 0]]
+        k = ContactClose(highlight=highlight)
+        k.mov_to(0, -10)
+        self += k
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -20)
+        self += k
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -30)
+        self += k
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -40)
+        self += k
+        k = ContactOpen(highlight=highlight)
+        k.mov_to(0, -50)
+        self += k
+        w = Winding(highlight=highlight)
+        w.mov_to(2.5, -60)
+        self += w
+        self.connections[1] = [[0, -10], self.k1, LEFT]
+        self.connections[2] = [[20, -10], self.k1, RIGHT]
+        self.connections[3] = [[20, -20], self.k2, RIGHT]
+        self.connections[4] = [[0, -20], self.k2, LEFT]
+        self.connections[5] = [[20, -30], self.k3, RIGHT]
+        self.connections[6] = [[20, -30], self.k3, RIGHT]
+        self.connections[7] = [[0, -40], self.k4, LEFT]
+        self.connections[8] = [[20, -40], self.k4, RIGHT]
+        self.connections[9] = [[20, -50], self.k5, LEFT]
+        self.connections[10] = [[20, -50], self.k5, RIGHT]
+        self.connections[11] = [[0, -60], self.w, LEFT]
+        self.connections[12] = [[20, -60], self.w, RIGHT]
+        for key, value in self.connections.items():
+            self.labels += [key]
+            dx = 3 if value[0][0] == 0 else -3
+            self.labels_xy += [[value[0][0] + dx, value[0][1]]]
 
 
-class RP23_25(ElementCircuit):
+class RP25(RP23):
+    '''Реле промежуточное типа РП-25'''
 
-    def __init__(self, name=''):
-        super().__init__(name)
-        self.__w = Winding(name)
-        self.__k1 = ContactClose(name, '1', '2')
-        self.__k2 = ContactOpen(name, '3', '4')
-        self.__k3 = ContactOpen(name, '5', '6')
-        self.__k4 = ContactOpen(name, '7', '8')
-        self.__k5 = ContactOpen(name, '9', '10')
-        self.vertices = [(0, 0),   (30, 0),      (30, -60),     (0, -60),     (0, 0)]
-        self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.type = 'РП-25'
+
 
 class XT(GraphWithConnection):
+    '''Клеммник'''
 
     def __init__(self, name='', quantity=50, type='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -330,6 +402,7 @@ class XT(GraphWithConnection):
 
 
 class RP361(GraphWithConnection):
+    '''Реле РП-361'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -378,6 +451,7 @@ class RP361(GraphWithConnection):
 
 
 class BPT615(GraphWithConnection):
+    '''Блок питания БПТ-615 производства ОАО "БЭМН" г.Минск.'''
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
@@ -447,7 +521,7 @@ class MR5PO50(GraphWithConnection):
         self.x2_1_2.connections['X2:2'] = [[20, 0], RIGHT]
         self.x2_3_4 = GraphWithConnection(highlight=highlight)
         self.x2_3_4 += ContactOpen('Рвкл')
-        self.x2_3_4.labels += ['X2:3', 'X2:3']
+        self.x2_3_4.labels += ['X2:3', 'X2:4']
         self.x2_3_4.labels_xy += [[0, -4], [20, -4]]
         self.x2_3_4.connections['X2:3'] = [[0, 0], LEFT]
         self.x2_3_4.connections['X2:4'] = [[20, 0], RIGHT]
@@ -464,7 +538,7 @@ class MR5PO50(GraphWithConnection):
         self.x2_7_8.connections['X2:7'] = [[0, 0], LEFT]
         self.x2_7_8.connections['X2:8'] = [[20, 0], RIGHT]
         self.x1_1_2 = GraphWithConnection(highlight=highlight)
-        self.x1_1_2 = Power(name)
+        self.x1_1_2 += Power(name)
         self.x1_1_2.labels += ['Uп', 'X1:1', 'X1:2']
         self.x1_1_2.labels_xy += [[10, 0], [0, -4], [20, -4]]
         self.x1_1_2.connections['X1:1'] = [[0, 0], LEFT]
@@ -481,14 +555,16 @@ class MR5PO50(GraphWithConnection):
             self.x4[i].connections['X4:' + str(i * 2 + 2)] = [[20, 0], RIGHT]
             self.connections['X4:' + str(i * 2 + 1)] = [[0, -225 - i * 20], self.x4[i], LEFT]
             self.connections['X4:' + str(i * 2 + 2)] = [[0, -235 - i * 20], self.x4[i], LEFT]
-            self.x5.append(Power(name + 'Д' + str(i + 1),highlight=highlight))
+            self.x5.append(GraphWithConnection(highlight=highlight))
+            self.x5[i] += Power(name + 'Д' + str(i + 1),highlight=highlight)
             self.x5[i].labels += ['X5:' + str(i * 2 + 1), 'X5:' + str(i * 2 + 2)]
             self.x5[i].labels_xy += [[0, -2],[20,-2]]
             self.x5[i].connections['X5:' + str(i * 2 + 1)] = [[0,0],LEFT]
             self.x5[i].connections['X5:' + str(i * 2 + 2)] = [[20, 0], RIGHT]
             self.connections['X5:' + str(i * 2 + 1)] = [[25, -225 - i * 20], self.x5[i], RIGHT]
             self.connections['X5:' + str(i * 2 + 2)] = [[25, -235 - i * 20], self.x5[i], RIGHT]
-            self.x6.append(Power(name + 'Д' + str(i + 9),highlight=highlight))
+            self.x6.append(GraphWithConnection(highlight=highlight))
+            self.x6[i] += Power(name + 'Д' + str(i + 9),highlight=highlight)
             self.x6[i].labels += ['X6:' + str(i * 2 + 9), 'X6:' + str(i * 2 + 10)]
             self.x6[i].labels_xy += [[0, -2],[20,-2]]
             self.x6[i].connections['X6:' + str(i * 2 + 9)] = [[0,0],LEFT]
@@ -657,7 +733,8 @@ class PS7(GraphWithConnection):
             self.connections[i * 2 + 6] = [[i*20 + 60,-20], self.l_bi[-1], DOWN]
             self.labels += ['Вход ' + str(i+1), i * 2 + 5, i * 2 + 6]
             self.labels_xy += [[i*20 + 55,-12],[i*20 + 50,-18],[i*20 + 60,-18]]
-        self.p = Power('Сеть',highlight=highlight)
+        self.p = GraphWithConnection(highlight=highlight)
+        self.p += Power('Сеть',highlight=highlight)
         self.p.labels += [name, 1, 2]
         self.p.labels_xy += [[10,6], [0,0],[20,0]]
         self.p.connections[1] = [[0,0],LEFT]
@@ -783,14 +860,180 @@ class BP_TEL(GraphWithConnection):
                            [1, -40, 'BOTTOM_LEFT'], [1, -50, 'BOTTOM_LEFT'], [1, -60, 'BOTTOM_LEFT'], [1, -70, 'BOTTOM_LEFT'],
                            [1, -80, 'BOTTOM_LEFT'], [1, -90, 'BOTTOM_LEFT'], [1, -100, 'BOTTOM_LEFT'], [1, -110, 'BOTTOM_LEFT']]
 
-class MR500(GraphWithConnection):
-    pass
+class MR500_V2(GraphWithConnection):
+    '''Класс для описания микропроцессорного реле МР500 версии до 3.0 производства ОАО "БЭМН" г.Минск.'''
 
-class PS3(GraphWithConnection):
-    pass
+    def __init__(self, name='', highlight=False):
+        '''Конструктор класса МР5О0 версии до 3.0.'''
+        super().__init__(name, highlight)
+        self.x6 = GraphWithConnection(highlight=highlight)
+        self.x6.vertices += [[0, 0], [25, 0], [25, -70], [0, -70], [0, 0]]
+        self.x6.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.x6.connections['X6:1'] = [[0, -12], LEFT]
+        self.x6.connections['X6:2'] = [[25, -12], RIGHT]
+        self.x6.connections['X6:4'] = [[0, -37], LEFT]
+        self.x6.connections['X6:5'] = [[25, -37], RIGHT]
+        self.x6.connections['X6:7'] = [[0, -62], LEFT]
+        self.x6.connections['X6:8'] = [[25, -62], RIGHT]
+        self.x6.labels += [name, 'X6:1', 'X6:2', 'X6:4', 'X6:5', 'X6:7', 'X6:8', 'Ia', 'Ib', 'Ic']
+        self.x6.labels_xy += [[12, 5], [5, -14], [20, -14], [5, -39], [20, -39], [5, -64], [20, -64], [5, -114],
+                              [20, -139], [20, -114]]
+        self.x2_1_2 = GraphWithConnection(highlight=highlight)
+        self.x2_1_2 += ContactClose('Рн')
+        self.x2_1_2.labels += ['X2:1', 'X2:2']
+        self.x2_1_2.labels_xy += [[0, -4], [20, -4]]
+        self.x2_1_2.connections['X2:1'] = [[0, 0], LEFT]
+        self.x2_1_2.connections['X2:2'] = [[20, 0], RIGHT]
+        self.x2_3_4 = GraphWithConnection(highlight=highlight)
+        self.x2_3_4 += ContactOpen('Рвкл')
+        self.x2_3_4.labels += ['X2:3', 'X2:4']
+        self.x2_3_4.labels_xy += [[0, -4], [20, -4]]
+        self.x2_3_4.connections['X2:3'] = [[0, 0], LEFT]
+        self.x2_3_4.connections['X2:4'] = [[20, 0], RIGHT]
+        self.x2_5_6 = GraphWithConnection(highlight=highlight)
+        self.x2_5_6 += ContactOpen('Роткл1')
+        self.x2_5_6.labels += ['X2:5', 'X2:6']
+        self.x2_5_6.labels_xy += [[0, -4], [20, -4]]
+        self.x2_5_6.connections['X2:5'] = [[0, 0], LEFT]
+        self.x2_5_6.connections['X2:6'] = [[20, 0], RIGHT]
+        self.x1 = GraphWithConnection(highlight=highlight)
+        self.x1 += Power(name,highlight=highlight)
+        self.x1.labels += ['Uп', 'X1:2', 'X1:3']
+        self.x1.labels_xy += [[10, 0], [0, -4], [20, -4]]
+        self.x1.connections['X1:2'] = [[0, 0], LEFT]
+        self.x1.connections['X1:3'] = [[20, 0], RIGHT]
+        self.x7 = []
+        self.x8 = []
+        self.x9 = []
+        for i in range(8):
+            self.x7.append(GraphWithConnection(highlight=highlight))
+            self.x7[i] += ContactOpen(name + 'Р' + str(i + 1))
+            self.x7[i].labels += ['X7:' + str(i * 2 + 1), 'X7:' + str(i * 2 + 2)]
+            self.x7[i].labels_xy += [[0, -2],[20,-2]]
+            self.x7[i].connections['X7:' + str(i * 2 + 1)] = [[0,0],LEFT]
+            self.x7[i].connections['X7:' + str(i * 2 + 2)] = [[20, 0], RIGHT]
+            self.connections['X7:' + str(i * 2 + 1)] = [[0, -225 - i * 20], self.x7[i], LEFT]
+            self.connections['X7:' + str(i * 2 + 2)] = [[0, -235 - i * 20], self.x7[i], LEFT]
+            self.x8.append(GraphWithConnection(highlight=highlight))
+            self.x8[i] += Power(name + 'Д' + str(i + 1),highlight=highlight)
+            self.x8[i].labels += ['X8:' + str(i * 2 + 1), 'X8:' + str(i * 2 + 2)]
+            self.x8[i].labels_xy += [[0, -2],[20,-2]]
+            self.x8[i].connections['X8:' + str(i * 2 + 1)] = [[0,0],LEFT]
+            self.x8[i].connections['X8:' + str(i * 2 + 2)] = [[20, 0], RIGHT]
+            self.connections['X8:' + str(i * 2 + 1)] = [[25, -225 - i * 20], self.x8[i], RIGHT]
+            self.connections['X8:' + str(i * 2 + 2)] = [[25, -235 - i * 20], self.x8[i], RIGHT]
+            self.x9.append(GraphWithConnection(highlight=highlight))
+            self.x9[i] += Power(name + 'Д' + str(i + 9),highlight=highlight)
+            self.x9[i].labels += ['X9:' + str(i * 2 + 9), 'X9:' + str(i * 2 + 10)]
+            self.x9[i].labels_xy += [[0, -2],[20,-2]]
+            self.x9[i].connections['X9:' + str(i * 2 + 9)] = [[0,0],LEFT]
+            self.x9[i].connections['X9:' + str(i * 2 + 10)] = [[20, 0], RIGHT]
+            self.connections['X9:' + str(i * 2 + 9)] = [[25, -5 - i * 20], self.x9[i], RIGHT]
+            self.connections['X9:' + str(i * 2 + 10)] = [[25, -15 - i * 20], self.x9[i], RIGHT]
+        self.connections['X1:2'] = [[0, -195], self.x1, LEFT]
+        self.connections['X1:3'] = [[0, -205], self.x1, LEFT]
+        self.connections['X2:1'] = [[0, -105], self.x2_1_2, LEFT]
+        self.connections['X2:2'] = [[0, -115], self.x2_1_2, LEFT]
+        self.connections['X2:3'] = [[0, -125], self.x2_3_4, LEFT]
+        self.connections['X2:4'] = [[0, -135], self.x2_3_4, LEFT]
+        self.connections['X2:5'] = [[0, -145], self.x2_5_6, LEFT]
+        self.connections['X2:6'] = [[0, -155], self.x2_5_6, LEFT]
+        self.connections['X6:1'] = [[0, -5], self.x6, LEFT]
+        self.connections['X6:2'] = [[0, -15], self.x6, LEFT]
+        self.connections['X6:4'] = [[0, -25], self.x6, LEFT]
+        self.connections['X6:5'] = [[0, -35], self.x6, LEFT]
+        self.connections['X6:7'] = [[0, -45], self.x6, LEFT]
+        self.connections['X6:8'] = [[0, -55], self.x6, LEFT]
+        self.vertices += [[0,5],[25,5],[25,-380],[0,-380],[0,5]]
+        self.codes += [Path.MOVETO,Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO]
+        self.labels += [name, 'МР500_V2']
+        self.labels_xy += [[12,5], [12,0]]
+        for key, value in self.connections.items():
+            self.labels += [key]
+            dx = 4 if value[0][0] == 0 else -4
+            self.labels_xy += [[value[0][0]+dx,value[0][1]]]
+
+class PS3_old(GraphWithConnection):
+    '''Индикатор фаз ПС-3 Синтез-Электро'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.type = 'Индикатор фаз ПС-3 Синтез-Электро'
+        self.k1 = GraphWithConnection()
+        self.k1 += ContactOpenClose('K1',highlight=highlight)
+        self.k1.labels += [8,7,9]
+        self.k1.labels_xy += [[0,0],[20,7],[20,0]]
+        self.k1.connections[8] = [[0,0],LEFT]
+        self.k1.connections[7] = [[20, 10], RIGHT]
+        self.k1.connections[9] = [[20, 0], RIGHT]
+        self.k1_1 = GraphWithConnection()
+        self.k1_1 += ContactOpenClose('K1',highlight=highlight)
+        self.k1_1.labels += [11,12,10]
+        self.k1_1.labels_xy += [[0,0],[20,7],[20,0]]
+        self.k1_1.connections[11] = [[0,0],LEFT]
+        self.k1_1.connections[12] = [[20, 10], RIGHT]
+        self.k1_1.connections[10] = [[20, 0], RIGHT]
+        self.k2 = GraphWithConnection()
+        self.k2 += ContactOpenClose('K2',highlight=highlight)
+        self.k2.labels += [14,13,15]
+        self.k2.labels_xy += [[0,0],[20,7],[20,0]]
+        self.k2.connections[14] = [[0,0],LEFT]
+        self.k2.connections[13] = [[20, 10], RIGHT]
+        self.k2.connections[15] = [[20, 0], RIGHT]
+        self.p = GraphWithConnection()
+        self.p += Power('Пит.', highlight=highlight)
+        self.p.labels += [5,6]
+        self.p.labels_xy += [[0,0],[20,0]]
+        self.p.connections[5] = [[0,0],LEFT]
+        self.p.connections[6] = [[20, 0], RIGHT]
+        self.vertices += [[0,0],[20,0],[20,-105],[0,-105],[0,0],[20,-102],[25,-102]]
+        self.codes += [Path.MOVETO,Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO,Path.MOVETO,Path.LINETO]
+        self.labels += ['ПС-3', name, 1,2,3,4]
+        self.labels_xy += [[10,-4], [10,0],[2,-81],[2,-92],[2,-103],[18,-103]]
+        k = ContactOpenClose('K1', highlight=highlight)
+        k.mov_to(0,-30)
+        self += k
+        k = ContactOpenClose('K1', highlight=highlight)
+        k.mov_to(0, -50)
+        self += k
+        k = ContactOpenClose('K2', highlight=highlight)
+        k.mov_to(0, -70)
+        self += k
+        w= Power('Пит.', highlight=highlight)
+        w.mov_to(0, -10)
+        self +=w
+        c = Capacitor('C1', highlight=highlight)
+        c.mov_to(-11,-80)
+        self += c
+        c = Capacitor('C2', highlight=highlight)
+        c.mov_to(-11, -91)
+        self += c
+        c = Capacitor('C3', highlight=highlight)
+        c.mov_to(-11, -102)
+        self += c
+        g = Ground(highlight=highlight)
+        g.mov_to(25,-102)
+        self += g
+        self.connections[8] = [[0,-30],self.k1,LEFT]
+        self.connections[7] = [[20, -20], self.k1, RIGHT]
+        self.connections[9] = [[20, -30], self.k1, RIGHT]
+        self.connections[11] = [[0, -50], self.k1_1, LEFT]
+        self.connections[12] = [[20, -40], self.k1_1, RIGHT]
+        self.connections[10] = [[20, -50], self.k1_1, RIGHT]
+        self.connections[14] = [[0, -70], self.k2, LEFT]
+        self.connections[13] = [[20, -60], self.k2, RIGHT]
+        self.connections[15] = [[20, -70], self.k2, RIGHT]
+        self.connections[5] = [[0, -10], self.p, LEFT]
+        self.connections[6] = [[20, -10], self.p, RIGHT]
+        for key, value in self.connections.items():
+            self.labels += [key]
+            dx = 3 if value[0][0] == 0 else -3
+            self.labels_xy += [[value[0][0]+dx,value[0][1]]]
+
 
 class DUGA_O(GraphWithConnection):
     pass
+
 
 class PS12(GraphWithConnection):
     pass
@@ -801,10 +1044,10 @@ class C(GraphWithConnection):
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
         self.c = GraphWithConnection()
-        self.c += Сapacitor(name=name, highlight=highlight)
+        self.c += Capacitor(name=name, highlight=highlight)
         self.c.connections[1] = [[0,0],  LEFT]
         self.c.connections[2] = [[20, 0], RIGHT]
-        self += Сapacitor(name, highlight=highlight)
+        self += Capacitor(name, highlight=highlight)
         self.connections[1] = [[0, 0], self.c, LEFT]
         self.connections[2] = [[15, 0], self.c, RIGHT]
 

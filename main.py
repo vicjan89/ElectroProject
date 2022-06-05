@@ -4,8 +4,8 @@ a1=BB_TEL10(name='A1')
 a2=PS7('A2')
 a3=BU_TEL('A3')
 a4=BP_TEL('A4')
-a5=MR500('A5')
-a6=PS3('A6')
+a5=MR500_V2('A5')
+a6=PS3_old('A6')
 a8=DUGA_O('A8')
 a9=PS12('A9')
 c1 = C('C1', highlight=True)
@@ -78,10 +78,11 @@ list_elements = [[a2,[0,0]],
                   [ct_a,[200,0]],
                 [ct_b, [230,0]],
                  [a3,[0,-50]],
-                 [a4, [60,-50]]]
+                 [a4, [60,-50]],
+                 [a5, [-50,0]],
+                 [a6, [130,-60]]]
 
- #                ct_c,x, xt1, a1, r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,
- #              c1,c2,c3, kv1, kv2, kv3]
+
 WiringDiagram(list_elements, w, msp2)
 doc2.saveas("Монтажная схема.dxf", encoding='utf-8')
 
