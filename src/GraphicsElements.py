@@ -188,3 +188,45 @@ class Power(ElementGraph):
                       Path.MOVETO, Path.LINETO]
         self.labels_xy = [[10, 0]]
         self.labels = [name]
+
+class Measurement(ElementGraph):
+    '''Измерительный прибор.'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.centers = [[4, 0]]
+        self.radii = [4]
+        self.labels_xy = [[4, 0]]
+        self.labels = [name]
+
+class ButtonOpen(ContactOpen):
+    '''Кнопка управления нормально-разомкнутая.'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.vertices += [[10, 2.5], [10, 3.5], [10, 4.5], [10, 5.5],[7,5],[7,5.5],[13,5.5],[13,5]]
+        self.codes += [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO,Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.labels_xy = [[8, 6]]
+        self.labels = [name]
+
+class ButtonClose(ContactClose):
+    '''Кнопка управления нормально-замкнутая.'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.vertices += [[10,-1.5],[10,-0.5],[10,0.5],[10,1.5],[10, 2.5], [10, 3.5], [10, 4.5], [10, 5.5],[7,5],[7,5.5],[13,5.5],[13,5]]
+        self.codes += [Path.MOVETO, Path.LINETO,Path.MOVETO, Path.LINETO,Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO,Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO]
+        self.labels_xy = [[8, 6]]
+        self.labels = [name]
+
+class Bulb(ElementGraph):
+    '''Лампочка сигнальная.'''
+
+    def __init__(self, name='', highlight=False):
+        super().__init__(name, highlight=highlight)
+        self.centers = [[10, 0]]
+        self.radii = [4]
+        self.vertices += [[0,0],[6,0],[20,0],[14,0],[7.2,2.8],[12.8,-2.8],[7.2,-2.8],[12.8,2.8]]
+        self.codes += [Path.MOVETO,Path.LINETO,Path.MOVETO,Path.LINETO,Path.MOVETO,Path.LINETO,Path.MOVETO,Path.LINETO,Path.MOVETO,Path.LINETO]
+        self.labels_xy = [[10, 4]]
+        self.labels = [name]
