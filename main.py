@@ -1,5 +1,6 @@
 from src.electroproject import *
 import ezdxf
+
 a1=BB_TEL10(name='A1')
 a2=PS7('A2')
 a3=BU_TEL('A3')
@@ -297,11 +298,11 @@ w.append(Wire(ct_c,'3И2',sg3,7))
 rel_otc = MountingModule('Релейный отсек')
 sh8.add(yat_a, yat_c, kl1, kl2, a1)
 '''
-# doc1 = ezdxf.new()
-# doc1.units = ezdxf.units.MM
-# msp1 = doc1.modelspace()
-# CircuitDiagram(w, msp1)
-# doc1.saveas("Принципиальная схема.dxf", encoding='utf-8')
+doc1 = ezdxf.new()
+doc1.units = ezdxf.units.MM
+msp1 = doc1.modelspace()
+CircuitDiagram(w, msp1)
+#doc1.saveas("Принципиальная схема.dxf", encoding='utf-8')
 
 # doc2 = ezdxf.new()
 # doc2.units = ezdxf.units.MM
@@ -363,16 +364,16 @@ sh8.add(yat_a, yat_c, kl1, kl2, a1)
 # WiringDiagram(list_elements, w, msp3)
 # doc3.saveas("Монтажная схема двери.dxf", encoding='utf-8')
 
-doc4 = ezdxf.new()
-doc4.units = ezdxf.units.MM
-msp4 = doc4.modelspace()
-list_elements4 = [ [ct_a,[0,0]],
-                    [ct_b,[50,0]],
-                  [ct_c, [100, 0]],
-                  ]
-
-WiringDiagram(list_elements4, w, msp4)
-doc4.saveas("Монтажная схема отсека ТТ.dxf", encoding='utf-8')
+# doc4 = ezdxf.new()
+# doc4.units = ezdxf.units.MM
+# msp4 = doc4.modelspace()
+# list_elements4 = [ [ct_a,[0,0]],
+#                     [ct_b,[50,0]],
+#                   [ct_c, [100, 0]],
+#                   ]
+#
+# WiringDiagram(list_elements4, w, msp4)
+# doc4.saveas("Монтажная схема отсека ТТ.dxf", encoding='utf-8')
 
 # cm = CableMagazine()
 # cm.add(cab101, cab102, cab103)

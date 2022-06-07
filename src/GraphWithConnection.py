@@ -241,6 +241,14 @@ class Wire(ElementCircuit):
     def b_visible(self):
         return self.__b.connections[self.__key_b][1].visible
 
+    @property
+    def key_a(self):
+        return self.__key_a
+
+    @property
+    def key_b(self):
+        return self.__key_b
+
 
 class ConnectionTerminal(GraphWithConnection):
     '''Клемма.'''
