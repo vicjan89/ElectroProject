@@ -143,7 +143,7 @@ class Resistor(ElementGraph):
         super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [5, 0], [5, -2.5], [5, 2.5], [15, 2.5], [15,-2.5],[5,-2.5],[15,0],[20,0]]
         self.codes = [Path.MOVETO, Path.LINETO,Path.MOVETO,Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,Path.MOVETO,Path.LINETO]
-        self.labels_xy = [[8, 6]]
+        self.labels_xy = [[8, 3]]
         self.labels = [name]
 
 
