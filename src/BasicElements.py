@@ -2,11 +2,12 @@
 
 import math
 
-LEFT = 1
-RIGHT = 2
-BOTH = 3
-UP = 4
-DOWN = 5
+class Const:
+    LEFT = 1
+    RIGHT = 2
+    ALL = 3
+    UP = 4
+    DOWN = 5
 
 class Path:
     '''Описывает константы команд для рисования полилинии. Остались после перехода с MatPlotLib на ezdxf.'''

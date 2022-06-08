@@ -302,7 +302,7 @@ doc1 = ezdxf.new()
 doc1.units = ezdxf.units.MM
 msp1 = doc1.modelspace()
 CircuitDiagram(w, msp1)
-#doc1.saveas("Принципиальная схема.dxf", encoding='utf-8')
+doc1.saveas("Принципиальная схема.dxf", encoding='utf-8')
 
 # doc2 = ezdxf.new()
 # doc2.units = ezdxf.units.MM
