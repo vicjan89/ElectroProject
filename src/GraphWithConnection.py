@@ -1,6 +1,8 @@
 '''Графические элементы с коннекторами.'''
 
+import random
 from src.GraphicsElements import *
+
 
 class GraphWithConnection(ElementGraph):
     '''Базовый класс для графических элементов с коннекторами.'''
@@ -17,17 +19,46 @@ class GraphWithConnection(ElementGraph):
         for i in self.connections.values():
             i[0][0] += dx
             i[0][1] += dy
+        return self
 
     def rotate(self, angle):
+
+        def rotate90(num):
+            for n in range(num):
+                if i[1] == Const.LEFT:
+                    i[1] = Const.DOWN
+                elif i[1] == Const.UP:
+                    i[1] = Const.LEFT
+                elif i[1] == Const.RIGHT:
+                    i[1] = Const.UP
+                elif i[1] == Const.DOWN:
+                    i[1] = Const.RIGHT
+
         super().rotate(angle)
         for i in self.connections.values():
             i[0][0] = math.cos(math.radians(angle)) * i[0][0] - math.sin(math.radians(angle)) * i[0][1]
             i[0][1] = math.sin(math.radians(angle)) * i[0][0] - math.cos(math.radians(angle)) * i[0][1]
-            if angle > 90:
-                if i[1] ==Const.LEFT:
-                    i[1] =Const.RIGHT
-                elif i[1] ==Const.RIGHT:
-                    i[1] =Const.LEFT
+            if 45 < angle <= 135:
+                num = 1
+            elif 135 < angle <= 225:
+                num = 2
+            elif 225 < angle <= 315:
+                num = 3
+            else:
+                num = 0
+            rotate90(num)
+
+
+    def __str__(self):
+        return str(self.name)
+
+    @property
+    def contains(self):
+        list_elements = []
+        for value in self.connections.values():
+            if value[1] not in list_elements:
+                list_elements.append(value[1])
+        return list_elements
 
 
 class Wire(ElementCircuit):
@@ -67,10 +98,6 @@ class Wire(ElementCircuit):
         side_b = self.__b.connections[key_b][1].connections[key_b][1]
         visible_a = self.__a.connections[key_a][1].visible
         visible_b = self.__b.connections[key_b][1].visible
-        # if not visible_a and not visible_b:
-        #     self.__b.connections[key_b][1].mov_to()
-        #     self.__b.connections[key_b][1].show(ax)
-        #     visible_b = True
         if visible_a and visible_b:
             match side_a:
                 case Const.LEFT:
@@ -104,52 +131,127 @@ class Wire(ElementCircuit):
                 case Const.ALL:
                     dx_b = 0
                     dy_b = 0
-            ax.add_lwpolyline(((xa, ya), (xa + dx_a, ya+dy_a), (xb + dx_b, yb+dy_b), (xb, yb)), dxfattribs={'lineweight':lw})
+            xa1 = xa + dx_a
+            xa2 = xa1 + dx_a * random.random()
+            ya1 = ya + dy_a
+            ya2 = ya1 + dy_a * random.random()
+            xb1 = xb + dx_b
+            xb2 = xb1 + dx_b * random.random()
+            yb1 = yb + dy_b
+            yb2 = yb1 + dy_b * random.random()
+            xa3 = xa2
+            ya3 = ya2
+            xb3 = xb2
+            yb3 = yb2
+            dx = xb2 - xa2
+            dy = yb2 - ya2
+            if (side_a == Const.RIGHT or side_a == Const.LEFT) and (side_b == Const.UP or side_b == Const.DOWN):
+                xa3 = xb3 = xa2
+                ya3 = yb3 = yb2
+            if (side_a == Const.UP or side_a == Const.DOWN) and (side_b == Const.RIGHT or side_b == Const.LEFT):
+                xa3 = xb3 = xb2
+                ya3 = yb3 = ya2
+            if side_a == Const.LEFT and side_b == Const.LEFT:
+                if abs(ya2 - yb2) > 6:
+                    xa3 = xb3 = min(xa2,xb2)
+                    ya3 = ya2
+                    yb3 = yb2
+                else:
+                    xa3 = xa2
+                    xb3 = xb2
+                    ya3 = yb3 = min(ya2,yb2)-6
+            if side_a == Const.RIGHT and side_b == Const.RIGHT:
+                if abs(ya2 - yb2) >6:
+                    xa3 = xb3 = max(xa2,xb2)
+                    ya3 = ya2
+                    yb3 = yb2
+                else:
+                    xa3 = xa2
+                    xb3 = xb2
+                    ya3 = yb3 = min(ya2, yb2) - 6
+            if side_a == Const.UP and side_b == Const.UP:
+                if abs(xa2 - xb2) >6:
+                    ya3 = yb3 = max(ya2,yb2)
+                    xa3 = xa2
+                    xb3 = xb2
+                else:
+                    ya3 = ya2
+                    yb3 = yb2
+                    xa3 = xb3 = max(xa2,xb2) + 6
+            if side_a == Const.DOWN and side_b == Const.DOWN:
+                if abs(xa2 - xb2) > 6:
+                    ya3 = yb3 = min(ya2,yb2)
+                    xa3 = xa2
+                    xb3 = xb2
+                else:
+                    ya3 = ya2
+                    yb3 = yb2
+                    xa3 = xb3 = max(xa2, xb2) + 6
+            if (side_a == Const.UP and side_b == Const.DOWN) or (side_b == Const.UP and side_a == Const.DOWN):
+                if abs(xa2 - xb2) > 6:
+                    xa3 =xb3 = xa2 + (xb2-xa2)//2
+                elif (side_a == Const.UP and side_b == Const.DOWN and ya2 < yb2) or (side_b == Const.UP and side_a == Const.DOWN and ya2 > yb2):
+                    xa3 = xb3 =xa2
+                else:
+                    xa3 = xb3 = max(xa2, xb2) + 6
+                ya3 = ya2
+                yb3 = yb2
+            if (side_a == Const.LEFT and side_b == Const.RIGHT) or (side_b == Const.LEFT and side_a == Const.RIGHT):
+                if abs(ya2 - yb2) > 6:
+                    ya3 =yb3 = ya2 + (yb2-ya2)//2
+                elif (side_a == Const.LEFT and side_b == Const.RIGHT and xa2 > xb2) or (side_b == Const.LEFT and side_a == Const.RIGHT and xa2 < xb2):
+                    ya3 = yb3 = ya2
+                else:
+                    ya3 = yb3 = max(ya2, yb2) + 6
+                xa3 = xa2
+                xb3 = xb2
+            ax.add_lwpolyline(((xa, ya), (xa1, ya1), (xa2, ya2),(xa3,ya3),(xb3,yb3), (xb2, yb2), (xb1, yb1), (xb, yb)),
+                              dxfattribs={'lineweight':lw})
             ax.add_text(self.name, dxfattribs={'style' : 'cyrillic_ii'}).set_pos((xa, ya))
-        elif visible_a and not visible_b:
-            match side_a:
-                case Const.LEFT:
-                    dx_a = -10
-                    dy_a = 0
-                case Const.RIGHT:
-                    dx_a = 10
-                    dy_a = 0
-                case Const.UP:
-                    dx_a = 0
-                    dy_a = 10
-                case Const.DOWN:
-                    dx_a = 0
-                    dy_a = -10
-                case Const.ALL:
-                    dx_a = 0
-                    dy_a = 0
-            ax.add_line((xa, ya), (xa + dx_a, ya + dy_a), dxfattribs={'lineweight':lw})
-            ax.add_text(self.name, dxfattribs={'style' : 'cyrillic_ii'}).set_pos((xa + 5, ya + 5))
-            self.__b.connections[key_b][1].mov_to(base_point_key=key_b, x=xa+dx_a, y=ya+dy_a)
-            self.__b.connections[key_b][1].show(ax)
-            new_element = True
-        elif visible_b and not visible_a:
-            match side_b:
-                case Const.LEFT:
-                    dx_b = -10
-                    dy_b = 0
-                case Const.RIGHT:
-                    dx_b = 10
-                    dy_b = 0
-                case Const.UP:
-                    dx_b = 0
-                    dy_b = 10
-                case Const.DOWN:
-                    dx_b = 0
-                    dy_b = -10
-                case Const.ALL:
-                    dx_b = 0
-                    dy_b = 0
-            ax.add_line((xb, yb), (xb + dx_b, yb + dy_b), dxfattribs={'lineweight': lw})
-            ax.add_text(self.name, dxfattribs={'style': 'cyrillic_ii'}).set_pos((xb + 5, yb + 5))
-            self.__a.connections[key_a][1].mov_to(base_point_key=key_a, x=xb + dx_b, y=yb + dy_b)
-            self.__a.connections[key_a][1].show(ax)
-            new_element = True
+        # elif visible_a and not visible_b:
+        #     match side_a:
+        #         case Const.LEFT:
+        #             dx_a = -10
+        #             dy_a = 0
+        #         case Const.RIGHT:
+        #             dx_a = 10
+        #             dy_a = 0
+        #         case Const.UP:
+        #             dx_a = 0
+        #             dy_a = 10
+        #         case Const.DOWN:
+        #             dx_a = 0
+        #             dy_a = -10
+        #         case Const.ALL:
+        #             dx_a = 0
+        #             dy_a = 0
+        #     ax.add_line((xa, ya), (xa + dx_a, ya + dy_a), dxfattribs={'lineweight':lw})
+        #     ax.add_text(self.name, dxfattribs={'style' : 'cyrillic_ii'}).set_pos((xa + 5, ya + 5))
+        #     self.__b.connections[key_b][1].mov_to(base_point_key=key_b, x=xa+dx_a, y=ya+dy_a)
+        #     self.__b.connections[key_b][1].show(ax)
+        #     new_element = True
+        # elif visible_b and not visible_a:
+        #     match side_b:
+        #         case Const.LEFT:
+        #             dx_b = -10
+        #             dy_b = 0
+        #         case Const.RIGHT:
+        #             dx_b = 10
+        #             dy_b = 0
+        #         case Const.UP:
+        #             dx_b = 0
+        #             dy_b = 10
+        #         case Const.DOWN:
+        #             dx_b = 0
+        #             dy_b = -10
+        #         case Const.ALL:
+        #             dx_b = 0
+        #             dy_b = 0
+        #     ax.add_line((xb, yb), (xb + dx_b, yb + dy_b), dxfattribs={'lineweight': lw})
+        #     ax.add_text(self.name, dxfattribs={'style': 'cyrillic_ii'}).set_pos((xb + 5, yb + 5))
+        #     self.__a.connections[key_a][1].mov_to(base_point_key=key_a, x=xb + dx_b, y=yb + dy_b)
+        #     self.__a.connections[key_a][1].show(ax)
+        #     new_element = True
         return new_element
 
 
@@ -352,6 +454,7 @@ class CT2(GraphWithConnection):
         self.connections['1И2'] = [[0, -20], self.w1,Const.LEFT]
         self.connections['2И1'] = [[0, -35], self.w2,Const.LEFT]
         self.connections['2И2'] = [[0, -50], self.w2,Const.LEFT]
+
 
 class CT3(CT2):
     '''Трансформатор тока с тремя вторичными обмотками.'''
@@ -880,9 +983,9 @@ class BU_TEL(GraphWithConnection):
         self.ttc = GraphWithConnection(highlight=highlight)
         self.ttc += BI('TTC')
         self.ttc.labels += [name, 12, 13]
-        self.tta.labels_xy += [[10, 6], [0, 0], [20, 0]]
-        self.tta.connections[12] = [[0, 0],Const.LEFT]
-        self.tta.connections[13] = [[20, 0],Const.RIGHT]
+        self.ttc.labels_xy += [[10, 6], [0, 0], [20, 0]]
+        self.ttc.connections[12] = [[0, 0],Const.LEFT]
+        self.ttc.connections[13] = [[20, 0],Const.RIGHT]
         self.connections[1] = [[0,-10],self.xt1_9,Const.LEFT]
         self.connections[2] = [[0, -20], self.xt1_9,Const.LEFT]
         self.connections[3] = [[0, -30], self.xt1_9,Const.LEFT]
@@ -914,9 +1017,9 @@ class BP_TEL(GraphWithConnection):
         self.bp = GraphWithConnection(highlight=highlight)
         self.bp.vertices += [[0, 0], [20, 0], [20, -65], [0, -65], [0, 0]]
         self.bp.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
-        self.bp.labels += [name, '14 ~220', '15 ~220', '8 +220', '9 +220', '5 -220', '6 220']
-        self.bp.labels_xy += [[10, 0], [3, -10,'BOTTOM_LEFT'], [3, -20,'BOTTOM_LEFT'], [3, -30,'BOTTOM_RIGHT'],
-                                 [3, -40,'BOTTOM_RIGHT'], [3, -50,'BOTTOM_RIGHT'], [3, -60,'BOTTOM_RIGHT']]
+        self.bp.labels += [name, '14 ~220', '15 ~220', '+220 8', '+220 9', '-220 5', '-220 6']
+        self.bp.labels_xy += [[10, 0], [2, -12,'BOTTOM_LEFT'], [2, -22,'BOTTOM_LEFT'], [18, -32,'BOTTOM_RIGHT'],
+                                 [18, -42,'BOTTOM_RIGHT'], [18, -52,'BOTTOM_RIGHT'], [18, -62,'BOTTOM_RIGHT']]
         self.bp.connections[14] = [[0, -10],Const.LEFT]
         self.bp.connections[15] = [[0, -20],Const.LEFT]
         self.bp.connections[8] = [[20, -30],Const.RIGHT]
@@ -927,7 +1030,7 @@ class BP_TEL(GraphWithConnection):
         self.bp12.vertices += [[0, 0], [20, 0], [20, -25], [0, -25], [0, 0]]
         self.bp12.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
         self.bp12.labels += [name, '-12В 11', '+12В 12']
-        self.bp12.labels_xy += [[10, 0], [20, -10,'BOTTOM_RIGHT'], [20, -20,'BOTTOM_RIGHT']]
+        self.bp12.labels_xy += [[10, 0], [18, -10,'BOTTOM_RIGHT'], [18, -20,'BOTTOM_RIGHT']]
         self.bp12.connections[11] = [[20, -10],Const.RIGHT]
         self.bp12.connections[12] = [[20, -20],Const.RIGHT]
         self.k = GraphWithConnection()
@@ -1294,16 +1397,16 @@ class R3(GraphWithConnection):
         self.k2 += ContactOpenClose(name,highlight=highlight)
         self.k2.labels += [21,22,24]
         self.k2.labels_xy += [[0,0],[20,7],[20,0]]
-        self.k2.connections[11] = [[0,0], Const.LEFT]
-        self.k2.connections[12] = [[20, 10],Const.RIGHT]
-        self.k2.connections[14] = [[20, 0],Const.RIGHT]
+        self.k2.connections[21] = [[0,0], Const.LEFT]
+        self.k2.connections[22] = [[20, 10],Const.RIGHT]
+        self.k2.connections[24] = [[20, 0],Const.RIGHT]
         self.k3 = GraphWithConnection()
         self.k3 += ContactOpenClose(name,highlight=highlight)
         self.k3.labels += [31,32,34]
         self.k3.labels_xy += [[0,0],[20,7],[20,0]]
-        self.k3.connections[11] = [[0,0], Const.LEFT]
-        self.k3.connections[12] = [[20, 10],Const.RIGHT]
-        self.k3.connections[14] = [[20, 0],Const.RIGHT]
+        self.k3.connections[31] = [[0,0], Const.LEFT]
+        self.k3.connections[32] = [[20, 10],Const.RIGHT]
+        self.k3.connections[34] = [[20, 0],Const.RIGHT]
         self.w = GraphWithConnection()
         self.w += Winding(name, highlight=highlight)
         self.w.labels += ['A','B']
@@ -1396,15 +1499,15 @@ class CC301(GraphWithConnection):
         self.i.labels += [name, 1, 3, 4, 6, 7, 9]
         self.i.labels_xy += [[12, 5], [5, -14], [20, -14], [5, -39], [20, -39], [5, -64], [20, -64]]
         self.u = GraphWithConnection(highlight=highlight)
-        self.u.vertices += [[0, 0], [25, 0], [25, -150], [0, -150], [0, 0]]
+        self.u.vertices += [[0, 0], [100, 0], [100, -30], [0, -30], [0, 0]]
         self.u.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
-        self.u.connections[2] = [[0, -12],Const.LEFT]
-        self.u.connections[5] = [[25, -12],Const.RIGHT]
-        self.u.connections[8] = [[0, -37],Const.LEFT]
-        self.u.connections[10] = [[25, -37],Const.RIGHT]
-        self.u.connections[11] = [[0, -62],Const.LEFT]
-        self.u.labels += [name, 2, 5, 8, 10, 12]
-        self.u.labels_xy += [[12, 5], [5, -14], [20, -14], [5, -39], [20, -39], [5, -64], [20, -64]]
+        self.u.connections[2] = [[5, 0],Const.UP]
+        self.u.connections[5] = [[15, 0],Const.UP]
+        self.u.connections[8] = [[25, 0],Const.UP]
+        self.u.connections[10] = [[35, 0],Const.UP]
+        self.u.connections[11] = [[45, 0],Const.UP]
+        self.u.labels += [name, 2, 5, 8, 10, 11]
+        self.u.labels_xy += [[-5, -15], [5, -2], [15, -2], [25, -2], [35, -2], [45, -2]]
         self.connections[1] = [[5, -15], self.i, Const.DOWN]
         self.connections[2] = [[15, -15], self.u, Const.DOWN]
         self.connections[3] = [[25, -15], self.i, Const.DOWN]

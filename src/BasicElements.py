@@ -9,6 +9,8 @@ class Const:
     UP = 4
     DOWN = 5
 
+
+
 class Path:
     '''Описывает константы команд для рисования полилинии. Остались после перехода с MatPlotLib на ezdxf.'''
     MOVETO = 1
