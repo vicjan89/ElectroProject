@@ -143,8 +143,21 @@ class Wire(ElementCircuit):
             ya3 = ya2
             xb3 = xb2
             yb3 = yb2
-            dx = xb2 - xa2
-            dy = yb2 - ya2
+            if side_a == Const.ALL or side_b == Const.ALL:
+                dx = abs(xa2 - xb2)
+                dy = abs(ya2 - yb2)
+                if xa2 > xb2 and dx >= dy:
+                    if side_a == Const.ALL: side_a = Const.LEFT
+                    if side_b == Const.ALL: side_b = Const.RIGHT
+                if xa2 < xb2 and dx >= dy:
+                    if side_a == Const.ALL: side_a = Const.RIGHT
+                    if side_b == Const.ALL: side_b = Const.LEFT
+                if ya2 < yb2 and dx < dy:
+                    if side_a == Const.ALL: side_a = Const.UP
+                    if side_b == Const.ALL: side_b = Const.DOWN
+                if ya2 > yb2 and dx < dy:
+                    if side_a == Const.ALL: side_a = Const.DOWN
+                    if side_b == Const.ALL: side_b = Const.UP
             if (side_a == Const.RIGHT or side_a == Const.LEFT) and (side_b == Const.UP or side_b == Const.DOWN):
                 xa3 = xb3 = xa2
                 ya3 = yb3 = yb2
