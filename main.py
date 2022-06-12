@@ -717,15 +717,15 @@ elements_with_coords = [
 # ["XT1" ,119,0,0],
 # ["XT1" ,120,0,0],
 ]
-for key, value in d.items():
-	for key_e, value_e in value.connections.items():
-		if value_e[1] not in elements:
-			elements.append(value_e[1])
-			if isinstance(key_e,int):
-				suf = ''
-			else:
-				suf = '"'
-			print('["',key,'" ,',suf,key_e,suf,',0,0],', sep='')
+# for key, value in d.items():
+# 	for key_e, value_e in value.connections.items():
+# 		if value_e[1] not in elements:
+# 			elements.append(value_e[1])
+# 			if isinstance(key_e,int):
+# 				suf = ''
+# 			else:
+# 				suf = '"'
+# 			print('["',key,'" ,',suf,key_e,suf,',0,0],', sep='')
 
 
 CircuitDiagram('Оперативные цепи', w,elements_with_coords, d)

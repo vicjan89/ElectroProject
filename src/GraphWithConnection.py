@@ -143,27 +143,48 @@ class Wire(ElementCircuit):
             ya3 = ya2
             xb3 = xb2
             yb3 = yb2
-            if side_a == Const.ALL or side_b == Const.ALL:
-                dx = abs(xa2 - xb2)
-                dy = abs(ya2 - yb2)
-                if xa2 > xb2 and dx >= dy:
-                    if side_a == Const.ALL: side_a = Const.LEFT
-                    if side_b == Const.ALL: side_b = Const.RIGHT
-                if xa2 < xb2 and dx >= dy:
-                    if side_a == Const.ALL: side_a = Const.RIGHT
-                    if side_b == Const.ALL: side_b = Const.LEFT
-                if ya2 < yb2 and dx < dy:
-                    if side_a == Const.ALL: side_a = Const.UP
-                    if side_b == Const.ALL: side_b = Const.DOWN
-                if ya2 > yb2 and dx < dy:
-                    if side_a == Const.ALL: side_a = Const.DOWN
-                    if side_b == Const.ALL: side_b = Const.UP
+            if side_a == Const.ALL:
+                if ya2 == yb2:
+                    if xa2 > xb2:
+                        side_a = Const.LEFT
+                    else:
+                        side_a = Const.RIGHT
+                elif ya2 > yb2:
+                    side_a = Const.DOWN
+                else:
+                    side_a = Const.UP
+            if side_b == Const.ALL:
+                if ya2 == yb2:
+                    if xa2 > xb2:
+                        side_b = Const.RIGHT
+                    else:
+                        side_b = Const.LEFT
+                elif ya2 > yb2:
+                    side_b = Const.UP
+                else:
+                    side_b = Const.DOWN
+            lu = side_a == Const.LEFT and side_b == Const.UP
+            ld = side_a == Const.LEFT and side_b == Const.DOWN
+            ru = side_a == Const.RIGHT and side_b == Const.UP
+            rd = side_a == Const.RIGHT and side_b == Const.DOWN
+            ul = side_b == Const.LEFT and side_a == Const.UP
+            dl = side_b == Const.LEFT and side_a == Const.DOWN
+            ur = side_b == Const.RIGHT and side_a == Const.UP
+            dr = side_b == Const.RIGHT and side_a == Const.DOWN
             if (side_a == Const.RIGHT or side_a == Const.LEFT) and (side_b == Const.UP or side_b == Const.DOWN):
-                xa3 = xb3 = xa2
-                ya3 = yb3 = yb2
-            if (side_a == Const.UP or side_a == Const.DOWN) and (side_b == Const.RIGHT or side_b == Const.LEFT):
-                xa3 = xb3 = xb2
-                ya3 = yb3 = ya2
+                if (ld and (xa2 > xb2) and (ya2 < yb2)) or (lu and (xa2 > xb2) and (ya2 > yb2)) or (rd and (xa2 < xb2) and (ya2 < yb2)) or (ru and (xa2 < xb2) and (ya2 > yb2)):
+                    xa3 = xb3 = xb2
+                    ya3 = yb3 = ya2
+                else:
+                    xa3 = xb3 = xa2
+                    ya3 = yb3 = yb2
+            if ((side_a == Const.UP or side_a == Const.DOWN) and (side_b == Const.RIGHT or side_b == Const.LEFT)):
+                if (ul and (xa2 < xb2) and (ya2 < yb2)) or (ur and (xa2 > xb2) and (ya2 < yb2)) or (dl and (xa2 < xb2) and (ya2 > yb2)) or (dr and (xa2 > xb2) and (ya2 > yb2)):
+                    xa3 = xb3 = xa2
+                    ya3 = yb3 = yb2
+                else:
+                    xa3 = xb3 = xb2
+                    ya3 = yb3 = ya2
             if side_a == Const.LEFT and side_b == Const.LEFT:
                 if abs(ya2 - yb2) > 6:
                     xa3 = xb3 = min(xa2,xb2)
@@ -414,7 +435,7 @@ class ConnectionTerminal(GraphWithConnection):
         super().__init__(name, highlight=highlight)
         self.centers = [[0, 0], [0, 0], [0, 0]]
         self.radii = [0.5, 0.3, 0.1]
-        self.labels_xy = [[0, -5]]
+        self.labels_xy = [[3, -5]]
         self.labels = [name]
         self.connections[name] = [[0, 0], Const.ALL]
 
