@@ -22,7 +22,6 @@ class CircuitDiagram:
         doc = ezdxf.new()
         doc.units = ezdxf.units.MM
         msp = doc.modelspace()
-        num = 0
         blocks_list = []
         nx = 0
         ny = 0
@@ -30,24 +29,58 @@ class CircuitDiagram:
         for key, value in self.dict_el.items():
             for key_e, value_e in value.connections.items():
                 if value_e[1] not in elements:
-                    elements.append(value_e[1])
-                    blocks_list.append(doc.blocks.new(name=str(num)))
-                    value_e[1].show(blocks_list[-1])
                     x = nx * 30
                     y = ny * 30
-                    msp.add_blockref(str(num),(x,y))
-                    num += 1
+                    value_e[1].mov_to(x=x,y=y)
+                    elements.append(value_e[1])
+                    nm = key + '#' + str(key_e)
+                    nm = nm.replace(':','@')
+                    blocks_list.append(doc.blocks.new(name=nm))
+                    value_e[1].show(blocks_list[-1])
+                    msp.add_blockref(nm,(0,0))
                     if nx == 10:
                         nx = 0
                         ny +=1
                     else:
                         nx += 1
 
-        # for w in wires_list:
-        #     w.show(msp)
-
         doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
+    def update_coord_from_dxf(self,name_file):
+        doc1 = ezdxf.readfile(name_file)
+        msp1 = doc1.modelspace()
+        for e in msp1:
+            if e.dxftype() == "INSERT":
+                key = e.get_dxf_attrib('name').replace('@', ':')
+                key,key_e = key.split('#')
+                if key_e.isdigit():
+                    key_e = int(key_e)
+                x = e.get_dxf_attrib('insert').x
+                y = e.get_dxf_attrib('insert').y
+                self.dict_el[key].connections[key_e][1].mov_to(x=x,y=y)
+
+    def show_with_wires(self):
+        doc = ezdxf.new()
+        doc.units = ezdxf.units.MM
+        msp = doc.modelspace()
+        blocks_list = []
+        elements = []
+        for key, value in self.dict_el.items():
+            for key_e, value_e in value.connections.items():
+                if value_e[1] not in elements:
+                    elements.append(value_e[1])
+                    nm = key + '#' + str(key_e)
+                    nm = nm.replace(':', '@')
+                    blocks_list.append(doc.blocks.new(name=nm))
+                    value_e[1].show(blocks_list[-1])
+                    # x = value_e[0][0]
+                    # y = value_e[0][1]
+                    msp.add_blockref(nm,(0,0))
+
+
+        # for w in self.wires_list:
+        #     w.show(msp)
+        doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
 
 
