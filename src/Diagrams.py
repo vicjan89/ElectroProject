@@ -57,7 +57,8 @@ class CircuitDiagram:
                     key_e = int(key_e)
                 x = e.get_dxf_attrib('insert').x
                 y = e.get_dxf_attrib('insert').y
-                self.dict_el[key].connections[key_e][1].mov_to(x=x,y=y)
+                if x != 0 or y != 0:
+                    self.dict_el[key].connections[key_e][1].mov(dx=x,dy=y)
 
     def show_with_wires(self):
         doc = ezdxf.new()

@@ -21,6 +21,13 @@ class GraphWithConnection(ElementGraph):
             i[0][1] += dy
         return self
 
+    def mov(self, dx=0, dy=0):
+        super().mov(dx, dy)
+        for i in self.connections.values():
+            i[0][0] += dx
+            i[0][1] += dy
+        return self
+
     def rotate(self, angle):
 
         def rotate90(num):
