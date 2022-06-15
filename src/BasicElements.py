@@ -54,8 +54,12 @@ class ElementGraph(ElementCircuit):
         self.labels = []
 
     def mov_to(self, x, y):
-        dx = x - self.vertices[0][0]
-        dy = y - self.vertices[0][1]
+        if len(self.vertices) > 0:
+            dx = x - self.vertices[0][0]
+            dy = y - self.vertices[0][1]
+        else:
+            dx = x - self.centers[0][0]
+            dy = y - self.centers[0][1]
         self.mov(dx,dy)
 
     def mov(self, dx, dy):
