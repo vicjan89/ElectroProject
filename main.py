@@ -309,7 +309,7 @@ w.append(Wire(ct_c,'3И2',sg3,7))
 cd = CircuitDiagram('Оперативные цепи', w, d)
 # cd.place_elements()
 cd.update_coord_from_dxf('Оперативные цепи.dxf')
-cd.show_with_wires()
+# cd.show_with_wires()
 print('Чертёжи сформированы.')
 # doc2 = ezdxf.new()
 # doc2.units = ezdxf.units.MM

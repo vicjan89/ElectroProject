@@ -22,7 +22,6 @@ class CircuitDiagram:
         doc = ezdxf.new()
         doc.units = ezdxf.units.MM
         msp = doc.modelspace()
-        blocks_list = []
         nx = 0
         ny = 0
         elements = []
@@ -31,13 +30,13 @@ class CircuitDiagram:
                 if value_e[1] not in elements:
                     x = nx * 30
                     y = ny * 30
-                    value_e[1].mov_to(x=x,y=y)
+                    value_e[1].mov(x,y)
                     elements.append(value_e[1])
                     nm = key + '#' + str(key_e)
                     nm = nm.replace(':','@')
-                    blocks_list.append(doc.blocks.new(name=nm))
-                    value_e[1].show(blocks_list[-1])
-                    msp.add_blockref(nm,(0,0))
+                    blk = doc.blocks.new(name=nm)
+                    value_e[1].show(blk)
+                    msp.add_blockref(nm,(x,y))
                     if nx == 10:
                         nx = 0
                         ny +=1
@@ -47,9 +46,9 @@ class CircuitDiagram:
         doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
     def update_coord_from_dxf(self,name_file):
-        doc1 = ezdxf.readfile(name_file)
-        msp1 = doc1.modelspace()
-        for e in msp1:
+        doc = ezdxf.readfile(name_file)
+        msp = doc.modelspace()
+        for e in msp:
             if e.dxftype() == "INSERT":
                 key = e.get_dxf_attrib('name').replace('@', ':')
                 key,key_e = key.split('#')
@@ -57,8 +56,13 @@ class CircuitDiagram:
                     key_e = int(key_e)
                 x = e.get_dxf_attrib('insert').x
                 y = e.get_dxf_attrib('insert').y
-                if x != 0 or y != 0:
-                    self.dict_el[key].connections[key_e][1].mov(dx=x,dy=y)
+                self.dict_el[key].connections[key_e][1].mov(dx=x,dy=y)
+                self.dict_el[key].connections[key_e][1].visible = True
+            if e.dxftype() == 'LWPOLYLINE':
+                msp.delete_entity(e)
+        for w in self.wires_list:
+            w.show(msp)
+        doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
     def show_with_wires(self):
         doc = ezdxf.new()

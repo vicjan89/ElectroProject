@@ -33,6 +33,10 @@ class ElementCircuit:
         '''Свойство видимости объекта'''
         return self.__visible
 
+    @visible.setter
+    def visible(self,new):
+        self.__visible = new
+
     @property
     def highlight(self) -> bool:
         '''Свойство выделенности элемента.'''
