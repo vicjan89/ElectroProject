@@ -44,9 +44,15 @@ sx3=AC22_old('SX3')
 sx4=AC22_old('SX4')
 sx5=AC22_old('SX5')
 sx6=AC22_old('SX6')
-ct_a = CT3('TA-A')
-ct_b = CT3('TA-B')
-ct_c = CT3('TA-C')
+ct_a = CT2('TA-A')
+ct_a.w1.mirror()
+ct_a.w2.mirror()
+ct_b = CT2('TA-B')
+ct_b.w1.mirror()
+ct_b.w2.mirror()
+ct_c = CT2('TA-C')
+ct_c.w1.mirror()
+ct_c.w2.mirror()
 x = Connectors('X', 30)
 xt1 = XT('XT1', 120)
 xt2 = XT('XT2', 70)
@@ -117,10 +123,10 @@ w.append(Wire(sf2,1,xt1,11))
 w.append(Wire(sf2,2,xt2,24))
 w.append(Wire(sf2,3,xt1,12))
 w.append(Wire(sf2,4,xt2,52))
-w.append(Wire(sg1,1,ct_a,'1И1'))
-w.append(Wire(sg1,3,ct_b,'1И1'))
-w.append(Wire(sg1,5,ct_c,'1И1'))
-w.append(Wire(sg1,7,ct_c,'1И2'))
+w.append(Wire(sg3,1,ct_a,'1И1'))
+w.append(Wire(sg3,3,ct_b,'1И1'))
+w.append(Wire(sg3,5,ct_c,'1И1'))
+w.append(Wire(sg3,7,ct_c,'1И2'))
 w.append(Wire(sg1,2,pa,1))
 w.append(Wire(sg1,4,pik,4))
 w.append(Wire(sg1,6,pik,7))
@@ -132,7 +138,7 @@ w.append(Wire(sg2,7,ct_c,'2И2'))
 w.append(Wire(sg2,2,a3,10))
 w.append(Wire(sg2,4,a5,'X6:4'))
 w.append(Wire(sg2,6,a3,12))
-w.append(Wire(sg2,8,a5,'X6:2'))
+w.append(Wire(sg2,8,a5,'X6:2',style=Wire.DEL))
 w.append(Wire(pa,14,xt1,51))
 w.append(Wire(pa,2,pik,1))
 w.append(Wire(pa,4,xt2,26))
@@ -192,8 +198,8 @@ w.append(Wire(a5,'X2:5',xt2,17))
 w.append(Wire(a5,'X2:6',xt2,20))
 w.append(Wire(a5,'X1:2',xt2,4))
 w.append(Wire(a5,'X1:3',xt2,16))
-w.append(Wire(a5,'X6:2',a5,'X6:5'))
-w.append(Wire(a5,'X6:8',a5,'X6:5'))
+w.append(Wire(a5,'X6:2',a5,'X6:5',style=Wire.DEL))
+w.append(Wire(a5,'X6:8',a5,'X6:5',style=Wire.DEL))
 w.append(Wire(a5,'X7:1',xt2,18))
 w.append(Wire(a5,'X7:2',xt2,41))
 w.append(Wire(a5,'X7:5',xt1,55))
@@ -296,40 +302,23 @@ w.append(Wire(r18,1,xt3,31))
 w.append(Wire(r18,2,xt3,32))
 w.append(Wire(ct_a,'1И2',ct_b,'1И2'))
 w.append(Wire(ct_a,'2И2',ct_b,'2И2'))
-w.append(Wire(ct_a,'3И1',sg3,1))
-w.append(Wire(ct_a,'3И2',ct_b,'3И2'))
+w.append(Wire(a5,'X6:2',sg1,1))
 w.append(Wire(ct_b,'1И2',ct_c,'1И2'))
 w.append(Wire(ct_b,'2И2',ct_c,'2И2'))
-w.append(Wire(ct_b,'3И1',sg3,3))
-w.append(Wire(ct_b,'3И2',ct_c,'3И2'))
-w.append(Wire(ct_c,'3И1',sg3,5))
-w.append(Wire(ct_c,'3И2',sg3,7))
+w.append(Wire(a5,'X6:5',sg1,3))
+w.append(Wire(a5,'X6:8',sg1,5))
+w.append(Wire(sg2,8,sg1,7))
 
+xt2.add_jumper(((1,2),(2,3),(3,4),(4,5),(5,6),(6,7),(7,8),(13,14),(14,15),(15,16),(17,18),(19,20),(24,25),(25,26),(26,27),(27,28),(40,41),(52,53),(53,54)))
+w += xt2.jampers
 
 cd = CircuitDiagram('Оперативные цепи', w, d)
 # cd.place_elements()
-cd.update_coord_from_dxf('Оперативные цепи.dxf')
+# cd.update_coord_from_dxf('Оперативные цепи.dxf')
+cd.update_elements()
 # cd.show_with_wires()
 print('Чертёжи сформированы.')
-# doc2 = ezdxf.new()
-# doc2.units = ezdxf.units.MM
-# msp2 = doc2.modelspace()
-# list_elements = [[a3,[100,0]],
-#                  [a4, [30,0]],
-#                  [kv1,[30,-200]],
-#                  [kv2,[100,-200]],
-#                  [kv3, [170, -200]],
-#                  [sf1, [50,-280]],
-#                  [sf2, [120, -280]],
-#                  [r1,[50,-350]],
-#                  [r2, [100, -350]],
-#                  [sg1,[0,-400]],
-#                  [sg2,[70,-400]],
-#                  [sg3,[170,-400]],
-#                  [xt2,[-50,0]]]
-#
-#
-#
+
 # WiringDiagram(list_elements, w, msp2)
 # doc2.saveas("Монтажная схема шасси релейного отсека.dxf", encoding='utf-8')
 #

@@ -3,6 +3,7 @@
 from src.BasicElements import *
 
 
+
 class ContactOpen(ElementGraph):
     '''Контакт нормально-разомкнутый.'''
 
@@ -10,7 +11,7 @@ class ContactOpen(ElementGraph):
         super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [5, 0], [15, 5], [15, 0], [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO]
-        self.labels_xy = [[8, 6]]
+        self.labels_xy = [[6, 6]]
         self.labels = [name]
 
 
@@ -130,9 +131,9 @@ class ConnectionDetachable(ElementGraph):
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
-        self.vertices = [[5, 5], [0, 0], [5, -5], [7, 5], [2, 0], [7, -5]]
+        self.vertices = [[4, 4], [0, 0], [4, -4], [6, 4], [2, 0], [6, -4]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO]
-        self.labels_xy = [[1, 2]]
+        self.labels_xy = [[2, 3, MTEXT_BOTTOM_RIGHT]]
         self.labels = [name]
 
 
@@ -186,7 +187,7 @@ class Power(ElementGraph):
         self.vertices = [[0, 0], [5, 0], [5, 5], [15, 5], [15, -5], [5, -5], [5, 5], [15, 0], [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,
                       Path.MOVETO, Path.LINETO]
-        self.labels_xy = [[10, 0]]
+        self.labels_xy = [[6, 0]]
         self.labels = [name]
 
 class Measurement(ElementGraph):

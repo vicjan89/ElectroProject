@@ -4,6 +4,7 @@ import random
 from src.GraphicsElements import *
 
 
+
 class GraphWithConnection(ElementGraph):
     '''Базовый класс для графических элементов с коннекторами.'''
     def __init__(self, name='', highlight=False):
@@ -54,6 +55,14 @@ class GraphWithConnection(ElementGraph):
                 num = 0
             rotate90(num)
 
+    def mirror(self):
+        super().mirror()
+        for i in self.connections.values():
+            i[0][0] = -i[0][0]
+            if i[1] == Const.LEFT:
+                i[1] = Const.RIGHT
+            elif i[1] == Const.RIGHT:
+                i[1] = Const.LEFT
 
     def __str__(self):
         return str(self.name)
@@ -69,13 +78,16 @@ class GraphWithConnection(ElementGraph):
 
 class Wire(ElementCircuit):
     '''Умный соединитель.'''
-
-    def __init__(self, a, key_a, b, key_b, name='', cable=None, highlight=False):
-        super().__init__(name, highlight=highlight)
+    NORMAL = 1
+    ADD = 2
+    DEL = 3
+    def __init__(self, a, key_a, b, key_b, name='', cable=None, style=NORMAL):
+        super().__init__(name)
         self.__a = a
         self.__key_a = key_a
         self.__b = b
         self.__key_b = key_b
+        self.style = style
         if cable != None:
             cable.add(self)
 
@@ -84,10 +96,6 @@ class Wire(ElementCircuit):
 
     def show(self, ax):
         new_element = False
-        if self.highlight:
-            lw = 50
-        else:
-            lw = 0
         if type(self.__key_a) is int:
             key_a = abs(self.__key_a)
         else:
@@ -104,47 +112,47 @@ class Wire(ElementCircuit):
         side_b = self.__b.connections[key_b][1].connections[key_b][1]
         visible_a = self.__a.connections[key_a][1].visible
         visible_b = self.__b.connections[key_b][1].visible
-        if visible_a and visible_b:
+        if visible_a and visible_b and xa > 360 and xb > 360:
             match side_a:
                 case Const.LEFT:
-                    dx_a = -10
+                    dx_a = -5
                     dy_a = 0
                 case Const.RIGHT:
-                    dx_a = 10
+                    dx_a = 5
                     dy_a = 0
                 case Const.UP:
                     dx_a = 0
-                    dy_a = 10
+                    dy_a = 5
                 case Const.DOWN:
                     dx_a = 0
-                    dy_a = -10
+                    dy_a = -5
                 case Const.ALL:
                     dx_a = 0
                     dy_a = 0
             match side_b:
                 case Const.LEFT:
-                    dx_b = -10
+                    dx_b = -5
                     dy_b = 0
                 case Const.RIGHT:
-                    dx_b = 10
+                    dx_b = 5
                     dy_b = 0
                 case Const.UP:
                     dx_b = 0
-                    dy_b = 10
+                    dy_b = 5
                 case Const.DOWN:
                     dx_b = 0
-                    dy_b = -10
+                    dy_b = -5
                 case Const.ALL:
                     dx_b = 0
                     dy_b = 0
             xa1 = xa + dx_a
-            xa2 = xa1 + dx_a * random.random()
+            xa2 = xa1 #+ dx_a * random.random()
             ya1 = ya + dy_a
-            ya2 = ya1 + dy_a * random.random()
+            ya2 = ya1 #+ dy_a * random.random()
             xb1 = xb + dx_b
-            xb2 = xb1 + dx_b * random.random()
+            xb2 = xb1 #+ dx_b * random.random()
             yb1 = yb + dy_b
-            yb2 = yb1 + dy_b * random.random()
+            yb2 = yb1 #+ dy_b * random.random()
             xa3 = xa2
             ya3 = ya2
             xb3 = xb2
@@ -245,8 +253,18 @@ class Wire(ElementCircuit):
                     ya3 = yb3 = max(ya2, yb2) + 6
                 xa3 = xa2
                 xb3 = xb2
+            match self.style:
+                case Wire.NORMAL:
+                    lw = 0
+                    lt = 'continuous'
+                case Wire.ADD:
+                    lw = 50
+                    lt = 'continuous'
+                case Wire.DEL:
+                    lw = 0
+                    lt = 'dotted'
             ax.add_lwpolyline(((xa, ya), (xa1, ya1), (xa2, ya2),(xa3,ya3),(xb3,yb3), (xb2, yb2), (xb1, yb1), (xb, yb)),
-                              dxfattribs={'lineweight':lw})
+                              dxfattribs={'lineweight':lw,'linetype':lt})
             ax.add_text(self.name, dxfattribs={'style' : 'cyrillic_ii'}).set_pos((xa, ya))
         # elif visible_a and not visible_b:
         #     match side_a:
@@ -340,25 +358,25 @@ class Wire(ElementCircuit):
                 dx = -5
                 d2x = -10
                 d2y = 0
-                a = 'BOTTOM_RIGHT'
+                a = MTEXT_BOTTOM_RIGHT
                 f = 0
             elif side_a ==Const.RIGHT:
                 dx = 5
                 d2x = 10
                 d2y = 0
-                a = 'BOTTOM_LEFT'
+                a = MTEXT_BOTTOM_LEFT
                 f = 0
             elif side_a == Const.DOWN:
                 dy = -5
                 d2x = 0
                 d2y = -10
-                a = 'BOTTOM_RIGHT'
+                a = MTEXT_BOTTOM_RIGHT
                 f = 90
             elif side_a ==Const.UP:
                 dy = 5
                 d2x = 0
                 d2y = 10
-                a = 'BOTTOM_LEFT'
+                a = MTEXT_BOTTOM_LEFT
                 f = 90
             ax.add_lwpolyline(((xa, ya), (xa + dx, ya + dy), (xa + dx + d2x, ya + dy + d2y)), dxfattribs={'lineweight':lw})
             ax.add_text(name_b, dxfattribs={'style' : 'cyrillic_ii', 'rotation':f}).set_pos((xa + dx, ya + dy), align=a)
@@ -384,25 +402,25 @@ class Wire(ElementCircuit):
                 dx = -5
                 d2x = -10
                 d2y = 0
-                a = 'BOTTOM_RIGHT'
+                a = MTEXT_BOTTOM_RIGHT
                 f = 0
             elif side_b ==Const.RIGHT:
                 dx = 5
                 d2x = 10
                 d2y = 0
-                a = 'BOTTOM_LEFT'
+                a = MTEXT_BOTTOM_LEFT
                 f = 0
             elif side_b == Const.DOWN:
                 dy = -5
                 d2x = 0
                 d2y = -10
-                a = 'BOTTOM_RIGHT'
+                a = MTEXT_BOTTOM_RIGHT
                 f = 90
             elif side_b ==Const.UP:
                 dy = 5
                 d2x = 0
                 d2y = 10
-                a = 'BOTTOM_LEFT'
+                a = MTEXT_BOTTOM_LEFT
                 f = 90
             ax.add_lwpolyline(((xb, yb), (xb + dx, yb + dy), (xb + dx + d2x, yb + dy + d2y)), dxfattribs={'lineweight':lw})
             ax.add_text(name_a, dxfattribs={'style' : 'cyrillic_ii', 'rotation':f}).set_pos((xb + dx, yb + dy), align=a)
@@ -441,7 +459,7 @@ class ConnectionTerminal(GraphWithConnection):
         super().__init__(name, highlight=highlight)
         self.centers = [[0, 0], [0, 0], [0, 0]]
         self.radii = [0.5, 0.3, 0.1]
-        self.labels_xy = [[3, -5]]
+        self.labels_xy = [[1, -1, MTEXT_TOP_LEFT]]
         self.labels = [name]
         self.connections[name] = [[0, 0], Const.ALL]
 
@@ -451,7 +469,7 @@ class Connector(GraphWithConnection):
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
-        self += ConnectionDetachable()
+        self += ConnectionDetachable(name=name, highlight=highlight)
         self.connections['s' + str(name)] = [[0, 0],Const.LEFT]
         self.connections['p' + str(name)] = [[2, 0],Const.RIGHT]
 
@@ -626,9 +644,12 @@ class XT(GraphWithConnection):
         super().__init__(name, highlight=highlight)
         self.__type = type
         self.n = [None]
+        self.list_jampers = []
         h = 6
         for i in range(1, quantity + 1):
             self.n.append(ConnectionTerminal(i, highlight=highlight))
+            self.n[-1].labels += [name]
+            self.n[-1].labels_xy += [[-1,-1,MTEXT_TOP_RIGHT]]
             self.connections[i] = [[0, -i * h - 3], self.n[-1],Const.LEFT]
             self.connections[-i] = [[20, -i * h - 3], self.n[-1],Const.RIGHT]
             self.vertices += [[0, -i * h], [20, -i * h], [20, -i * h - h], [0, -i * h - h], [0, -i * h]]
@@ -637,6 +658,16 @@ class XT(GraphWithConnection):
             self.labels_xy += [[10, -i * h - h + 1]]
         self.labels += [name]
         self.labels_xy += [[10, 0]]
+
+    def add_jumper(self, list_jampers):
+        self.list_jampers += list_jampers
+
+    @property
+    def jampers(self):
+        wires = []
+        for j in self.list_jampers:
+            wires.append(Wire(self,j[0],self,j[1]))
+        return wires
 
 
 class RP361(GraphWithConnection):
@@ -1004,7 +1035,9 @@ class BU_TEL(GraphWithConnection):
         self.xt1_9.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
         self.xt1_9.labels += [name,'1 +220','2 -220', '3 ЭМ1','4 ЭМ2','5 БК1','6 БК2','7 ВО',
                               '8 ВКЛ','9 ОТКЛ']
-        self.xt1_9.labels_xy += [[10,0],[3,-10],[3,-20],[3,-30],[3,-40],[3,-50],[3,-60],[3,-70],[3,-80],[3,-90]]
+        self.xt1_9.labels_xy += [[10,1,MTEXT_BOTTOM_CENTER],[3,-10,MTEXT_MIDDLE_LEFT],[3,-20,MTEXT_MIDDLE_LEFT],[3,-30,MTEXT_MIDDLE_LEFT],
+                                 [3,-40,MTEXT_MIDDLE_LEFT],[3,-50,MTEXT_MIDDLE_LEFT],[3,-60,MTEXT_MIDDLE_LEFT],[3,-70,MTEXT_MIDDLE_LEFT],
+                                 [3,-80,MTEXT_MIDDLE_LEFT],[3,-90,MTEXT_MIDDLE_LEFT]]
         self.xt1_9.connections[1] = [[0,-10], Const.LEFT]
         self.xt1_9.connections[2] = [[0, -20],Const.LEFT]
         self.xt1_9.connections[3] = [[0, -30],Const.LEFT]
@@ -1017,13 +1050,13 @@ class BU_TEL(GraphWithConnection):
         self.tta = GraphWithConnection(highlight=highlight)
         self.tta += BI('TTA')
         self.tta.labels += [name, 10,11]
-        self.tta.labels_xy += [[10,6],[0,0],[20,0]]
+        self.tta.labels_xy += [[10,6,MTEXT_BOTTOM_CENTER],[0,-1,MTEXT_TOP_RIGHT],[20,-1,MTEXT_TOP_LEFT]]
         self.tta.connections[10] = [[0,0],Const.LEFT]
         self.tta.connections[11] = [[20, 0],Const.RIGHT]
         self.ttc = GraphWithConnection(highlight=highlight)
         self.ttc += BI('TTC')
         self.ttc.labels += [name, 12, 13]
-        self.ttc.labels_xy += [[10, 6], [0, 0], [20, 0]]
+        self.ttc.labels_xy += [[10,6,MTEXT_BOTTOM_CENTER],[0,-1,MTEXT_TOP_RIGHT],[20,-1,MTEXT_TOP_LEFT]]
         self.ttc.connections[12] = [[0, 0],Const.LEFT]
         self.ttc.connections[13] = [[20, 0],Const.RIGHT]
         self.connections[1] = [[0,-10],self.xt1_9,Const.LEFT]
@@ -1043,9 +1076,9 @@ class BU_TEL(GraphWithConnection):
         self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
         self.labels += [name, 'BU/TEL-220-05A',' 1 +220', ' 2 -220', ' 3 ЭМ1 ', ' 4 ЭМ2 ', ' 5 БК1 ', ' 6 БК2 ',
                         ' 7 ВО   ', ' 8 ВКЛ ', ' 9 ОТКЛ', '10 TTA1','11 TTA2','12 TTC1','13 TTC2']
-        self.labels_xy += [[17, 0], [17,-5],[1, -10, 'BOTTOM_LEFT'], [1, -20, 'BOTTOM_LEFT'], [1, -30, 'BOTTOM_LEFT'],
-                           [1, -40, 'BOTTOM_LEFT'], [1, -50, 'BOTTOM_LEFT'], [1, -60, 'BOTTOM_LEFT'], [1, -70, 'BOTTOM_LEFT'],
-                [1, -80, 'BOTTOM_LEFT'], [1, -90, 'BOTTOM_LEFT'],[1,-100, 'BOTTOM_LEFT'],[1,-110, 'BOTTOM_LEFT'],[1,-120, 'BOTTOM_LEFT'],[1,-130, 'BOTTOM_LEFT']]
+        self.labels_xy += [[17, 1,MTEXT_BOTTOM_CENTER], [17,-5],[1, -10, MTEXT_BOTTOM_LEFT], [1, -20, MTEXT_BOTTOM_LEFT], [1, -30, MTEXT_BOTTOM_LEFT],
+                           [1, -40, MTEXT_BOTTOM_LEFT], [1, -50, MTEXT_BOTTOM_LEFT], [1, -60, MTEXT_BOTTOM_LEFT], [1, -70, MTEXT_BOTTOM_LEFT],
+                [1, -80, MTEXT_BOTTOM_LEFT], [1, -90, MTEXT_BOTTOM_LEFT],[1,-100, MTEXT_BOTTOM_LEFT],[1,-110, MTEXT_BOTTOM_LEFT],[1,-120, MTEXT_BOTTOM_LEFT],[1,-130, MTEXT_BOTTOM_LEFT]]
 
 
 class BP_TEL(GraphWithConnection):
@@ -1058,8 +1091,8 @@ class BP_TEL(GraphWithConnection):
         self.bp.vertices += [[0, 0], [20, 0], [20, -65], [0, -65], [0, 0]]
         self.bp.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
         self.bp.labels += [name, '14 ~220', '15 ~220', '+220 8', '+220 9', '-220 5', '-220 6']
-        self.bp.labels_xy += [[10, 0], [2, -12,'BOTTOM_LEFT'], [2, -22,'BOTTOM_LEFT'], [18, -32,'BOTTOM_RIGHT'],
-                                 [18, -42,'BOTTOM_RIGHT'], [18, -52,'BOTTOM_RIGHT'], [18, -62,'BOTTOM_RIGHT']]
+        self.bp.labels_xy += [[10, 1,MTEXT_BOTTOM_CENTER], [2, -12,MTEXT_BOTTOM_LEFT], [2, -22,MTEXT_BOTTOM_LEFT], [18, -32,MTEXT_BOTTOM_RIGHT],
+                                 [18, -42,MTEXT_BOTTOM_RIGHT], [18, -52,MTEXT_BOTTOM_RIGHT], [18, -62,MTEXT_BOTTOM_RIGHT]]
         self.bp.connections[14] = [[0, -10],Const.LEFT]
         self.bp.connections[15] = [[0, -20],Const.LEFT]
         self.bp.connections[8] = [[20, -30],Const.RIGHT]
@@ -1070,7 +1103,7 @@ class BP_TEL(GraphWithConnection):
         self.bp12.vertices += [[0, 0], [20, 0], [20, -25], [0, -25], [0, 0]]
         self.bp12.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
         self.bp12.labels += [name, '-12В 11', '+12В 12']
-        self.bp12.labels_xy += [[10, 0], [18, -10,'BOTTOM_RIGHT'], [18, -20,'BOTTOM_RIGHT']]
+        self.bp12.labels_xy += [[10, 1,MTEXT_BOTTOM_CENTER], [19, -10,MTEXT_MIDDLE_RIGHT], [19, -20,MTEXT_MIDDLE_RIGHT]]
         self.bp12.connections[11] = [[20, -10],Const.RIGHT]
         self.bp12.connections[12] = [[20, -20],Const.RIGHT]
         self.k = GraphWithConnection()
@@ -1095,9 +1128,9 @@ class BP_TEL(GraphWithConnection):
         self.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
         self.labels += [name, 'BP/TEL-220-02A', ' 5 -220', ' 6 -220', ' 8 +220', ' 9 +220', '11 -12В', '12 +12В',
                         '14 ~220В', '15 ~220В', '16 Конт.Uвых 3', '17 Конт.Uвых 1', '18 Конт.Uвых 2']
-        self.labels_xy += [[17, 0], [17, -5], [1, -10, 'BOTTOM_LEFT'], [1, -20, 'BOTTOM_LEFT'], [1, -30, 'BOTTOM_LEFT'],
-                           [1, -40, 'BOTTOM_LEFT'], [1, -50, 'BOTTOM_LEFT'], [1, -60, 'BOTTOM_LEFT'], [1, -70, 'BOTTOM_LEFT'],
-                           [1, -80, 'BOTTOM_LEFT'], [1, -90, 'BOTTOM_LEFT'], [1, -100, 'BOTTOM_LEFT'], [1, -110, 'BOTTOM_LEFT']]
+        self.labels_xy += [[17, 0], [17, -5], [1, -10, MTEXT_BOTTOM_LEFT], [1, -20, MTEXT_BOTTOM_LEFT], [1, -30, MTEXT_BOTTOM_LEFT],
+                           [1, -40, MTEXT_BOTTOM_LEFT], [1, -50, MTEXT_BOTTOM_LEFT], [1, -60, MTEXT_BOTTOM_LEFT], [1, -70, MTEXT_BOTTOM_LEFT],
+                           [1, -80, MTEXT_BOTTOM_LEFT], [1, -90, MTEXT_BOTTOM_LEFT], [1, -100, MTEXT_BOTTOM_LEFT], [1, -110, MTEXT_BOTTOM_LEFT]]
 
 
 class MR500_V2(GraphWithConnection):
@@ -1116,8 +1149,8 @@ class MR500_V2(GraphWithConnection):
         self.x6.connections['X6:7'] = [[0, -62],Const.LEFT]
         self.x6.connections['X6:8'] = [[25, -62],Const.RIGHT]
         self.x6.labels += [name, 'X6:1', 'X6:2', 'X6:4', 'X6:5', 'X6:7', 'X6:8', 'Ia', 'Ib', 'Ic']
-        self.x6.labels_xy += [[12, 5], [5, -14], [20, -14], [5, -39], [20, -39], [5, -64], [20, -64], [5, -114],
-                              [20, -139], [20, -114]]
+        self.x6.labels_xy += [[12, 5], [5, -14], [20, -14], [5, -39], [20, -39], [5, -64], [20, -64], [12, -12],
+                              [12, -37], [20, -62]]
         self.x2_1_2 = GraphWithConnection(highlight=highlight)
         self.x2_1_2 += ContactClose('Рн')
         self.x2_1_2.labels += ['X2:1', 'X2:2']
@@ -1147,25 +1180,25 @@ class MR500_V2(GraphWithConnection):
         self.x9 = []
         for i in range(8):
             self.x7.append(GraphWithConnection(highlight=highlight))
-            self.x7[i] += ContactOpen(name + 'Р' + str(i + 1))
+            self.x7[i] += ContactOpen(name + '-Р' + str(i + 1))
             self.x7[i].labels += ['X7:' + str(i * 2 + 1), 'X7:' + str(i * 2 + 2)]
-            self.x7[i].labels_xy += [[0, -2],[20,-2]]
+            self.x7[i].labels_xy += [[-5, -4],[16,-4]]
             self.x7[i].connections['X7:' + str(i * 2 + 1)] = [[0,0], Const.LEFT]
             self.x7[i].connections['X7:' + str(i * 2 + 2)] = [[20, 0],Const.RIGHT]
             self.connections['X7:' + str(i * 2 + 1)] = [[0, -225 - i * 20], self.x7[i],Const.LEFT]
             self.connections['X7:' + str(i * 2 + 2)] = [[0, -235 - i * 20], self.x7[i],Const.LEFT]
             self.x8.append(GraphWithConnection(highlight=highlight))
-            self.x8[i] += Power(name + 'Д' + str(i + 1),highlight=highlight)
-            self.x8[i].labels += ['X8:' + str(i * 2 + 1), 'X8:' + str(i * 2 + 2)]
-            self.x8[i].labels_xy += [[0, -2],[20,-2]]
+            self.x8[i] += Power('Д' + str(i + 1),highlight=highlight)
+            self.x8[i].labels += ['X8:' + str(i * 2 + 1), 'X8:' + str(i * 2 + 2),name]
+            self.x8[i].labels_xy += [[-5, -4],[16,-4],[8,6]]
             self.x8[i].connections['X8:' + str(i * 2 + 1)] = [[0,0], Const.LEFT]
             self.x8[i].connections['X8:' + str(i * 2 + 2)] = [[20, 0],Const.RIGHT]
             self.connections['X8:' + str(i * 2 + 1)] = [[25, -225 - i * 20], self.x8[i],Const.RIGHT]
             self.connections['X8:' + str(i * 2 + 2)] = [[25, -235 - i * 20], self.x8[i],Const.RIGHT]
             self.x9.append(GraphWithConnection(highlight=highlight))
-            self.x9[i] += Power(name + 'Д' + str(i + 9),highlight=highlight)
-            self.x9[i].labels += ['X9:' + str(i * 2 + 9), 'X9:' + str(i * 2 + 10)]
-            self.x9[i].labels_xy += [[0, -2],[20,-2]]
+            self.x9[i] += Power('Д' + str(i + 9),highlight=highlight)
+            self.x9[i].labels += ['X9:' + str(i * 2 + 9), 'X9:' + str(i * 2 + 10), name]
+            self.x9[i].labels_xy += [[-5, -4],[16,-4],[8,6]]
             self.x9[i].connections['X9:' + str(i * 2 + 1)] = [[0,0], Const.LEFT]
             self.x9[i].connections['X9:' + str(i * 2 + 2)] = [[20, 0],Const.RIGHT]
             self.connections['X9:' + str(i * 2 + 1)] = [[25, -5 - i * 20], self.x9[i],Const.RIGHT]
@@ -1528,7 +1561,7 @@ class CC301(GraphWithConnection):
         super().__init__(name, highlight)
         self.type = 'Счётчик электроэнергии СС-301.'
         self.i = GraphWithConnection(highlight=highlight)
-        self.i.vertices += [[0, 0], [25, 0], [25, -150], [0, -150], [0, 0]]
+        self.i.vertices += [[0, 0], [25, 0], [25, -70], [0, -70], [0, 0]]
         self.i.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
         self.i.connections[1] = [[0, -12],Const.LEFT]
         self.i.connections[3] = [[25, -12],Const.RIGHT]
@@ -1690,7 +1723,7 @@ class BI4(GraphWithConnection):
             self.n.append(GraphWithConnection())
             self.n[-1] += ConnectionDetachable(name,highlight=highlight)
             self.n[-1].labels += [i*2+1,i*2+2]
-            self.n[-1].labels_xy += [[-1,0],[3,0]]
+            self.n[-1].labels_xy += [[-1,-1,MTEXT_TOP_RIGHT],[6,-1,MTEXT_TOP_LEFT]]
             self.n[-1].connections[i*2+1] = [[0,0], Const.LEFT]
             self.n[-1].connections[i * 2 + 2] = [[2, 0],Const.RIGHT]
             c = ConnectionDetachable()
@@ -1717,7 +1750,7 @@ class BI6(GraphWithConnection):
             self.n.append(GraphWithConnection())
             self.n[-1] += ConnectionDetachable(name, highlight=highlight)
             self.n[-1].labels += [i * 2 + 1, i * 2 + 2]
-            self.n[-1].labels_xy += [[-1, 0], [3, 0]]
+            self.n[-1].labels_xy += [[-1,-1,MTEXT_TOP_RIGHT],[6,-1,MTEXT_TOP_LEFT]]
             self.n[-1].connections[i * 2 + 1] = [[0, 0],Const.LEFT]
             self.n[-1].connections[i * 2 + 2] = [[2, 0],Const.RIGHT]
             c = ConnectionDetachable()

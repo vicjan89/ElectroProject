@@ -2,6 +2,9 @@
 
 import math
 
+from ezdxf.lldxf.const import *
+
+
 class Const:
     LEFT = 1
     RIGHT = 2
@@ -15,6 +18,7 @@ class Path:
     '''Описывает константы команд для рисования полилинии. Остались после перехода с MatPlotLib на ezdxf.'''
     MOVETO = 1
     LINETO = 2
+
 
 
 class ElementCircuit:
@@ -91,6 +95,15 @@ class ElementGraph(ElementCircuit):
             i[0] = math.cos(math.radians(angle)) * x - math.sin(math.radians(angle)) * i[1]
             i[1] = math.sin(math.radians(angle)) * x - math.cos(math.radians(angle)) * i[1]
 
+    def mirror(self):
+        for i in self.vertices:
+            i[0] = -i[0]
+        for i in self.centers:
+            i[0] = -i[0]
+        for i in self.labels_xy:
+            i[0] = -i[0]
+
+
     def __add__(self, other):
         self.vertices += other.vertices
         self.codes += other.codes
@@ -121,4 +134,7 @@ class ElementGraph(ElementCircuit):
         for i in range(len(self.centers)):
             ax.add_circle(self.centers[i], radius=self.radii[i], dxfattribs={'lineweight':lw})
         for i in range(len(self.labels_xy)):
-            ax.add_text(self.labels[i], dxfattribs={'style' : 'cyrillic_ii'}).set_pos((self.labels_xy[i][0], self.labels_xy[i][1]), align='BOTTOM_CENTER' if len(self.labels_xy[i])==2 else self.labels_xy[i][2])
+            ax.add_mtext(self.labels[i],
+                         dxfattribs={'style' : 'cyrillic_ii'}).set_location(insert=(self.labels_xy[i][0],
+                                                                                    self.labels_xy[i][1]),
+                                                                            attachment_point=MTEXT_MIDDLE_CENTER if len(self.labels_xy[i]) == 2 else self.labels_xy[i][2])

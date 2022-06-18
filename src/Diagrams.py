@@ -2,6 +2,7 @@
 import random
 import ezdxf
 from src.GraphWithConnection import *
+from ezdxf.tools.standards import linetypes
 
 class CircuitDiagram:
     '''Вывод принципиальной схемы в формат DXF.'''
@@ -45,6 +46,7 @@ class CircuitDiagram:
 
         doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
+
     def update_coord_from_dxf(self,name_file):
         doc = ezdxf.readfile(name_file)
         msp = doc.modelspace()
@@ -64,29 +66,50 @@ class CircuitDiagram:
             w.show(msp)
         doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
-    def show_with_wires(self):
-        doc = ezdxf.new()
-        doc.units = ezdxf.units.MM
+    def update_elements(self):
+        doc = ezdxf.readfile(self.name_file+'.dxf')
+        # doc.layers.remove('dotted')
+        my_line_types = [
+            (
+                "DASHED",
+                "Dashed . . . . . . . .",
+                [5, 3, -2],
+            )]
+        for name, desc, pattern in my_line_types:
+            if name not in doc.linetypes:
+                doc.linetypes.add(
+                    name=name,
+                    pattern=pattern,
+                    description=desc,
+                )
         msp = doc.modelspace()
-        blocks_list = []
-        elements = []
-        for key, value in self.dict_el.items():
-            for key_e, value_e in value.connections.items():
-                if value_e[1] not in elements:
-                    elements.append(value_e[1])
-                    nm = key + '#' + str(key_e)
-                    nm = nm.replace(':', '@')
-                    blocks_list.append(doc.blocks.new(name=nm))
-                    value_e[1].show(blocks_list[-1])
-                    # x = value_e[0][0]
-                    # y = value_e[0][1]
-                    msp.add_blockref(nm,(0,0))
-
-
-        # for w in self.wires_list:
-        #     w.show(msp)
+        for e in msp:
+            if e.dxftype() == "INSERT":
+                key = e.get_dxf_attrib('name').replace('@', ':')
+                key,key_e = key.split('#')
+                if key_e.isdigit():
+                    key_e = int(key_e)
+                x = e.get_dxf_attrib('insert').x
+                y = e.get_dxf_attrib('insert').y
+                self.dict_el[key].connections[key_e][1].mov(dx=x,dy=y)
+                self.dict_el[key].connections[key_e][1].visible = True
+            if e.dxftype() == 'LWPOLYLINE':
+                msp.delete_entity(e)
+        blocks_names = []
+        for block in doc.blocks.block_records:
+            blocks_names.append(block.get_dxf_attrib(key='name'))
+        for name in blocks_names:
+            if name != "*Model_Space" and name != '*Paper_Space':
+                key = name.replace('@', ':')
+                key, key_e = key.split('#')
+                if key_e.isdigit():
+                    key_e = int(key_e)
+                doc.blocks.delete_block(name=name, safe=False)
+                blk = doc.blocks.new(name=name)
+                self.dict_el[key].connections[key_e][1].show(blk)
+        for w in self.wires_list:
+            w.show(msp)
         doc.saveas(self.name_file + '.dxf', encoding='utf-8')
-
 
 
 
