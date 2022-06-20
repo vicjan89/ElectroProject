@@ -46,7 +46,6 @@ class CircuitDiagram:
 
         doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
-
     def update_coord_from_dxf(self,name_file):
         doc = ezdxf.readfile(name_file)
         msp = doc.modelspace()
@@ -68,20 +67,6 @@ class CircuitDiagram:
 
     def update_elements(self):
         doc = ezdxf.readfile(self.name_file+'.dxf')
-        # doc.layers.remove('dotted')
-        my_line_types = [
-            (
-                "DASHED",
-                "Dashed . . . . . . . .",
-                [5, 3, -2],
-            )]
-        for name, desc, pattern in my_line_types:
-            if name not in doc.linetypes:
-                doc.linetypes.add(
-                    name=name,
-                    pattern=pattern,
-                    description=desc,
-                )
         msp = doc.modelspace()
         for e in msp:
             if e.dxftype() == "INSERT":
@@ -111,6 +96,7 @@ class CircuitDiagram:
             w.show(msp)
         doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
+    def save_json(self):
 
 
 class WiringDiagram:

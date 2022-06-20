@@ -261,8 +261,8 @@ class Wire(ElementCircuit):
                     lw = 50
                     lt = 'continuous'
                 case Wire.DEL:
-                    lw = 0
-                    lt = 'dotted'
+                    lw = 100
+                    lt = 'DOT'
             ax.add_lwpolyline(((xa, ya), (xa1, ya1), (xa2, ya2),(xa3,ya3),(xb3,yb3), (xb2, yb2), (xb1, yb1), (xb, yb)),
                               dxfattribs={'lineweight':lw,'linetype':lt})
             ax.add_text(self.name, dxfattribs={'style' : 'cyrillic_ii'}).set_pos((xa, ya))
@@ -1086,7 +1086,8 @@ class BP_TEL(GraphWithConnection):
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
-        self.type = 'Блок питания BP/TEL-220-02A выключателя BB/TEL-10'
+        self.description = 'Блок питания BP/TEL-220-02A выключателя BB/TEL-10'
+        self.type = 'BP/TEL-220-02A'
         self.bp = GraphWithConnection(highlight=highlight)
         self.bp.vertices += [[0, 0], [20, 0], [20, -65], [0, -65], [0, 0]]
         self.bp.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
@@ -1139,6 +1140,7 @@ class MR500_V2(GraphWithConnection):
     def __init__(self, name='', highlight=False):
         '''Конструктор класса МР5О0 версии до 3.0.'''
         super().__init__(name, highlight)
+        self.type = 'МР500 v.2'
         self.x6 = GraphWithConnection(highlight=highlight)
         self.x6.vertices += [[0, 0], [25, 0], [25, -70], [0, -70], [0, 0]]
         self.x6.codes += [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO]
@@ -1148,9 +1150,9 @@ class MR500_V2(GraphWithConnection):
         self.x6.connections['X6:5'] = [[25, -37],Const.RIGHT]
         self.x6.connections['X6:7'] = [[0, -62],Const.LEFT]
         self.x6.connections['X6:8'] = [[25, -62],Const.RIGHT]
-        self.x6.labels += [name, 'X6:1', 'X6:2', 'X6:4', 'X6:5', 'X6:7', 'X6:8', 'Ia', 'Ib', 'Ic']
-        self.x6.labels_xy += [[12, 5], [5, -14], [20, -14], [5, -39], [20, -39], [5, -64], [20, -64], [12, -12],
-                              [12, -37], [20, -62]]
+        self.x6.labels += [name, self.type, 'X6:1', 'X6:2', 'X6:4', 'X6:5', 'X6:7', 'X6:8', 'Ia', 'Ib', 'Ic']
+        self.x6.labels_xy += [[12, 5], [12,-1,MTEXT_TOP_CENTER], [5, -14], [20, -14], [5, -39], [20, -39], [5, -64], [20, -64], [12, -12],
+                              [12, -37], [12, -62]]
         self.x2_1_2 = GraphWithConnection(highlight=highlight)
         self.x2_1_2 += ContactClose('Рн')
         self.x2_1_2.labels += ['X2:1', 'X2:2']
@@ -1219,7 +1221,7 @@ class MR500_V2(GraphWithConnection):
         self.connections['X6:8'] = [[0, -55], self.x6,Const.LEFT]
         self.vertices += [[0,5],[25,5],[25,-380],[0,-380],[0,5]]
         self.codes += [Path.MOVETO,Path.LINETO,Path.LINETO,Path.LINETO,Path.LINETO]
-        self.labels += [name, 'МР500_V2']
+        self.labels += [name, self.type]
         self.labels_xy += [[12,5], [12,0]]
         for key, value in self.connections.items():
             self.labels += [key]

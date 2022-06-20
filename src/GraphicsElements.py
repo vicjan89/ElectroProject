@@ -106,7 +106,7 @@ class Winding(ElementGraph):
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight)
-        self.vertices = [[0, 0], [5, 0], [5, 5], [10, 5], [10, -5], [5, -5], [5, 0], [10, 0], [15, 0]]
+        self.vertices = [[0, 1,MTEXT_BOTTOM_CENTER], [5, 0], [5, 5], [10, 5], [10, -5], [5, -5], [5, 0], [10, 0], [15, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,
                       Path.MOVETO, Path.LINETO]
         self.labels_xy = [[7, 6]]
