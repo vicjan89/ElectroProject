@@ -81,15 +81,29 @@ class Wire(ElementCircuit):
     NORMAL = 1
     ADD = 2
     DEL = 3
-    def __init__(self, a, key_a, b, key_b, name='', cable=None, style=NORMAL):
+
+    def __init__(self, a=None, key_a=None, b=None, key_b=None, name='', style=NORMAL):
         super().__init__(name)
         self.__a = a
         self.__key_a = key_a
         self.__b = b
         self.__key_b = key_b
         self.style = style
-        if cable != None:
-            cable.add(self)
+
+
+    def encoder(self):
+        return {'a':self.__a.name,
+                'key_a':self.key_a,
+                'b':self.__b.name,
+                'key_b':self.__key_b,
+                'name':self.name,
+                'style':self.style}
+
+    def decoder(self,dict_wire):
+        if 'a' in dict_wire:
+            return Wire(**dict_wire)
+        else:
+            return dict_wire
 
     def __str__(self):
         return 'Wire: '+ str(self.a) + '/' + str(self.__key_a) + ' - ' + str(self.b) + '/' + str(self.__key_b)
@@ -877,71 +891,99 @@ class BB_TEL10(GraphWithConnection):
         self.sf1 = GraphWithConnection(highlight=highlight)
         k = ContactOpen(name+'-SF1')
         self.sf1 += k
+        self.sf1.labels += [1,2]
+        self.sf1.labels_xy += [[0,-1,MTEXT_TOP_CENTER],[20,-1,MTEXT_TOP_CENTER]]
         self.sf1.connections[1] = [[0, 0],Const.LEFT]
         self.sf1.connections[2] = [[20, 0],Const.RIGHT]
         self.sf2 = GraphWithConnection(highlight=highlight)
         k = ContactOpen(name + '-SF2')
         self.sf2 += k
+        self.sf2.labels += [3, 4]
+        self.sf2.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf2.connections[3] = [[0, 0],Const.LEFT]
         self.sf2.connections[4] = [[20, 0],Const.RIGHT]
         self.sf3 = GraphWithConnection(highlight=highlight)
         k = ContactOpen(name + '-SF3')
         self.sf3 += k
+        self.sf3.labels += [5, 6]
+        self.sf3.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf3.connections[5] = [[0, 0],Const.LEFT]
         self.sf3.connections[6] = [[20, 0],Const.RIGHT]
         self.sf4 = GraphWithConnection(highlight=highlight)
         k = ContactOpen(name + '-SF4')
         self.sf4 += k
+        self.sf4.labels += [7, 8]
+        self.sf4.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf4.connections[7] = [[0, 0],Const.LEFT]
         self.sf4.connections[8] = [[20, 0],Const.RIGHT]
         self.sf5 = GraphWithConnection(highlight=highlight)
         k = ContactOpen(name + '-SF5')
         self.sf5 += k
+        self.sf5.labels += [9, 10]
+        self.sf5.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf5.connections[9] = [[0, 0],Const.LEFT]
         self.sf5.connections[10] = [[20, 0],Const.RIGHT]
         self.sf6 = GraphWithConnection(highlight=highlight)
         k = ContactOpen(name + '-SF6')
         self.sf6 += k
+        self.sf6.labels += [11, 12]
+        self.sf6.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf6.connections[11] = [[0, 0],Const.LEFT]
         self.sf6.connections[12] = [[20, 0],Const.RIGHT]
         self.em = GraphWithConnection(highlight=highlight)
         k = Winding(name + '-ЭМ1')
         self.em += k
+        self.em.labels += [13,14]
+        self.em.labels_xy += [[0,-1,MTEXT_TOP_CENTER], [15,-1,MTEXT_TOP_CENTER]]
         self.em.connections[13] = [[0, 0],Const.LEFT]
-        self.em.connections[14] = [[20, 0],Const.RIGHT]
+        self.em.connections[14] = [[15, 0],Const.RIGHT]
         self.bk = GraphWithConnection(highlight=highlight)
         k = ContactClose(name + '-БК')
         self.bk += k
+        self.bk.labels += [15, 16]
+        self.bk.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.bk.connections[15] = [[0, 0],Const.LEFT]
         self.bk.connections[16] = [[20, 0],Const.RIGHT]
         self.sf7 = GraphWithConnection(highlight=highlight)
         k = ContactClose(name + '-SF7')
         self.sf7 += k
+        self.sf7.labels += [17, 18]
+        self.sf7.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf7.connections[17] = [[0, 0],Const.LEFT]
         self.sf7.connections[18] = [[20, 0],Const.RIGHT]
         self.sf8 = GraphWithConnection(highlight=highlight)
         k = ContactClose(name + '-SF8')
         self.sf8 += k
+        self.sf8.labels += [19, 20]
+        self.sf8.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf8.connections[19] = [[0, 0],Const.LEFT]
         self.sf8.connections[20] = [[20, 0],Const.RIGHT]
         self.sf9 = GraphWithConnection(highlight=highlight)
         k = ContactClose(name + '-SF9')
         self.sf9 += k
+        self.sf9.labels += [21, 22]
+        self.sf9.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf9.connections[21] = [[0, 0],Const.LEFT]
         self.sf9.connections[22] = [[20, 0],Const.RIGHT]
         self.sf10 = GraphWithConnection(highlight=highlight)
         k = ContactClose(name + '-SF10')
         self.sf10 += k
+        self.sf10.labels += [23, 24]
+        self.sf10.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf10.connections[23] = [[0, 0],Const.LEFT]
         self.sf10.connections[24] = [[20, 0],Const.RIGHT]
         self.sf11 = GraphWithConnection(highlight=highlight)
         k = ContactClose(name + '-SF11')
         self.sf11 += k
+        self.sf11.labels += [25, 26]
+        self.sf11.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf11.connections[25] = [[0, 0],Const.LEFT]
         self.sf11.connections[26] = [[20, 0],Const.RIGHT]
         self.sf12 = GraphWithConnection(highlight=highlight)
         k = ContactClose(name + '-SF12')
         self.sf12 += k
+        self.sf12.labels += [27, 28]
+        self.sf12.labels_xy += [[0, -1, MTEXT_TOP_CENTER], [20, -1, MTEXT_TOP_CENTER]]
         self.sf12.connections[27] = [[0, 0],Const.LEFT]
         self.sf12.connections[28] = [[20, 0],Const.RIGHT]
         self.connections[1] = [[0, -10], self.sf1,Const.LEFT]
@@ -1184,7 +1226,7 @@ class MR500_V2(GraphWithConnection):
             self.x7.append(GraphWithConnection(highlight=highlight))
             self.x7[i] += ContactOpen(name + '-Р' + str(i + 1))
             self.x7[i].labels += ['X7:' + str(i * 2 + 1), 'X7:' + str(i * 2 + 2)]
-            self.x7[i].labels_xy += [[-5, -4],[16,-4]]
+            self.x7[i].labels_xy += [[0, -1,MTEXT_TOP_CENTER],[20,-1,MTEXT_TOP_CENTER]]
             self.x7[i].connections['X7:' + str(i * 2 + 1)] = [[0,0], Const.LEFT]
             self.x7[i].connections['X7:' + str(i * 2 + 2)] = [[20, 0],Const.RIGHT]
             self.connections['X7:' + str(i * 2 + 1)] = [[0, -225 - i * 20], self.x7[i],Const.LEFT]
@@ -1192,7 +1234,7 @@ class MR500_V2(GraphWithConnection):
             self.x8.append(GraphWithConnection(highlight=highlight))
             self.x8[i] += Power('Д' + str(i + 1),highlight=highlight)
             self.x8[i].labels += ['X8:' + str(i * 2 + 1), 'X8:' + str(i * 2 + 2),name]
-            self.x8[i].labels_xy += [[-5, -4],[16,-4],[8,6]]
+            self.x8[i].labels_xy += [[-1, -1,MTEXT_TOP_CENTER],[21,-1,MTEXT_TOP_CENTER],[10,6,MTEXT_BOTTOM_CENTER]]
             self.x8[i].connections['X8:' + str(i * 2 + 1)] = [[0,0], Const.LEFT]
             self.x8[i].connections['X8:' + str(i * 2 + 2)] = [[20, 0],Const.RIGHT]
             self.connections['X8:' + str(i * 2 + 1)] = [[25, -225 - i * 20], self.x8[i],Const.RIGHT]
@@ -1200,7 +1242,7 @@ class MR500_V2(GraphWithConnection):
             self.x9.append(GraphWithConnection(highlight=highlight))
             self.x9[i] += Power('Д' + str(i + 9),highlight=highlight)
             self.x9[i].labels += ['X9:' + str(i * 2 + 9), 'X9:' + str(i * 2 + 10), name]
-            self.x9[i].labels_xy += [[-5, -4],[16,-4],[8,6]]
+            self.x9[i].labels_xy += [[-1, -1,MTEXT_TOP_CENTER],[21,-1,MTEXT_TOP_CENTER],[10,6,MTEXT_BOTTOM_CENTER]]
             self.x9[i].connections['X9:' + str(i * 2 + 1)] = [[0,0], Const.LEFT]
             self.x9[i].connections['X9:' + str(i * 2 + 2)] = [[20, 0],Const.RIGHT]
             self.connections['X9:' + str(i * 2 + 1)] = [[25, -5 - i * 20], self.x9[i],Const.RIGHT]
@@ -1777,7 +1819,7 @@ class AC22_old(GraphWithConnection):
         self.k1 = GraphWithConnection()
         self.k1 += ContactOpen(name,highlight=highlight)
         self.k1.labels += [1,2]
-        self.k1.labels_xy += [[0,0],[20,0]]
+        self.k1.labels_xy += [[0,-1,MTEXT_TOP_CENTER],[20,-1,MTEXT_TOP_CENTER]]
         self.k1.connections[1] = [[0,0], Const.LEFT]
         self.k1.connections[2] = [[20, 0],Const.RIGHT]
         self += ContactOpen(name,highlight=highlight)

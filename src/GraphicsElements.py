@@ -106,10 +106,10 @@ class Winding(ElementGraph):
 
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight)
-        self.vertices = [[0, 1,MTEXT_BOTTOM_CENTER], [5, 0], [5, 5], [10, 5], [10, -5], [5, -5], [5, 0], [10, 0], [15, 0]]
+        self.vertices = [[0, 0], [5, 0], [5, 5], [10, 5], [10, -5], [5, -5], [5, 0], [10, 0], [15, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,
                       Path.MOVETO, Path.LINETO]
-        self.labels_xy = [[7, 6]]
+        self.labels_xy = [[7, 6,MTEXT_BOTTOM_CENTER]]
         self.labels = [name]
 
 
@@ -144,7 +144,7 @@ class Resistor(ElementGraph):
         super().__init__(name, highlight=highlight)
         self.vertices = [[0, 0], [5, 0], [5, -2.5], [5, 2.5], [15, 2.5], [15,-2.5],[5,-2.5],[15,0],[20,0]]
         self.codes = [Path.MOVETO, Path.LINETO,Path.MOVETO,Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,Path.MOVETO,Path.LINETO]
-        self.labels_xy = [[8, 3]]
+        self.labels_xy = [[10, 3,MTEXT_BOTTOM_CENTER]]
         self.labels = [name]
 
 
@@ -187,7 +187,7 @@ class Power(ElementGraph):
         self.vertices = [[0, 0], [5, 0], [5, 5], [15, 5], [15, -5], [5, -5], [5, 5], [15, 0], [20, 0]]
         self.codes = [Path.MOVETO, Path.LINETO, Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.LINETO,
                       Path.MOVETO, Path.LINETO]
-        self.labels_xy = [[6, 0]]
+        self.labels_xy = [[10, 0,MTEXT_MIDDLE_CENTER]]
         self.labels = [name]
 
 class Measurement(ElementGraph):

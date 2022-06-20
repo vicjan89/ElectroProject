@@ -1,22 +1,49 @@
 '''Модуль прорисовки проектной документации.'''
 import random
 import ezdxf
+import json
 from src.GraphWithConnection import *
 from ezdxf.tools.standards import linetypes
+
+class Wires:
+    '''Класс для управления коллекциями соединителей Wire'''
+    def __init__(self, name_file, dict_elements):
+        self.__wires = []
+        self.__name_file = name_file
+        self.__dict_elements = dict_elements
+
+    def add(self,w):
+        self.__wires = w
+
+    @property
+    def get(self):
+        return self.__wires
+
+    def save_json(self):
+        with open(self.__name_file + ".json", "w") as write_file:
+            json.dump(self.__wires, write_file, default=Wire.encoder, indent=4)
+
+    def load_json(self):
+        with open(self.__name_file + ".json", "r") as read_file:
+            wires_list = json.load(read_file)
+            for i in wires_list:
+                i['a'] = self.__dict_elements[i['a']]
+                i['b'] = self.__dict_elements[i['b']]
+                self.__wires.append(Wire(**i))
 
 class CircuitDiagram:
     '''Вывод принципиальной схемы в формат DXF.'''
 
-    def __init__(self, name_file: str, wires_list: list, d):
+    def __init__(self, name_file: str, wires: Wires, d):
         '''Вывод принципиальной схемы в формат DXF.
 
         :param name_file: имя файла
-        :param wires_list: список проводников.
+        :param wires: объект хранения проводников.
         :param d: словарь с элементами схемы.
         '''
 
         self.name_file = name_file
-        self.wires_list = wires_list
+        self.wires_list = wires.get
         self.dict_el = d
 
     def place_elements(self):
@@ -97,7 +124,10 @@ class CircuitDiagram:
         doc.saveas(self.name_file + '.dxf', encoding='utf-8')
 
     def save_json(self):
-
+        out = {}
+        out['elements'] = self.dict_el
+        out['wires'] = self.wires_list
+        print(pickle.dumps(out))
 
 class WiringDiagram:
     '''Вывод монтажной схемы в формат DXF.'''
@@ -108,5 +138,6 @@ class WiringDiagram:
         coords = []
         for i in wires:
             coords += i.show_wd(msp, coords)
+
 
 
