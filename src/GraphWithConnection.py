@@ -10,8 +10,12 @@ class GraphWithConnection(ElementGraph):
     def __init__(self, name='', highlight=False):
         super().__init__(name, highlight=highlight)
         self.connections = {}
+        self.__x = 0
+        self.__y = 0
 
     def mov_to(self, base_point_key=None, x=0, y=0):
+        self.__x = x
+        self.__y = y
         if base_point_key == None:
             base_point_key = list(self.connections.keys())[0]
         dx = x - self.connections[base_point_key][0][0]
@@ -23,6 +27,8 @@ class GraphWithConnection(ElementGraph):
         return self
 
     def mov(self, dx=0, dy=0):
+        self.__x += dx
+        self.__y += dy
         for i in self.connections.values():
             i[0][0] += dx
             i[0][1] += dy
@@ -75,6 +81,13 @@ class GraphWithConnection(ElementGraph):
                 list_elements.append(value[1])
         return list_elements
 
+    @property
+    def x(self):
+        return self.__x
+
+    @property
+    def y(self):
+        return self.__y
 
 class Wire(ElementCircuit):
     '''Умный соединитель.'''
@@ -1057,7 +1070,7 @@ class PS7(GraphWithConnection):
         self.r = GraphWithConnection()
         self.r += ContactOpen('Реле', highlight=highlight)
         self.r.labels += [name, 3, 4]
-        self.r.labels_xy += [[5, 6], [0, 0], [20, 0]]
+        self.r.labels_xy += [[10, 6,MTEXT_BOTTOM_CENTER], [0, -1,MTEXT_TOP_CENTER], [20, -1,MTEXT_TOP_CENTER]]
         self.r.connections[3] = [[0, 0],Const.LEFT]
         self.r.connections[4] = [[20, 0],Const.RIGHT]
         self.connections[3] = [[30, -20], self.r, Const.DOWN]
@@ -1214,9 +1227,9 @@ class MR500_V2(GraphWithConnection):
         self.x2_5_6.connections['X2:5'] = [[0, 0],Const.LEFT]
         self.x2_5_6.connections['X2:6'] = [[20, 0],Const.RIGHT]
         self.x1 = GraphWithConnection(highlight=highlight)
-        self.x1 += Power(name,highlight=highlight)
-        self.x1.labels += ['Uп', 'X1:2', 'X1:3']
-        self.x1.labels_xy += [[10, 0], [0, -4], [20, -4]]
+        self.x1 += Power('Uп',highlight=highlight)
+        self.x1.labels += [name, 'X1:2', 'X1:3']
+        self.x1.labels_xy += [[10, 6,MTEXT_BOTTOM_CENTER], [0, -1,MTEXT_TOP_CENTER], [20, -1,MTEXT_TOP_CENTER]]
         self.x1.connections['X1:2'] = [[0, 0],Const.LEFT]
         self.x1.connections['X1:3'] = [[20, 0],Const.RIGHT]
         self.x7 = []
@@ -1241,7 +1254,7 @@ class MR500_V2(GraphWithConnection):
             self.connections['X8:' + str(i * 2 + 2)] = [[25, -235 - i * 20], self.x8[i],Const.RIGHT]
             self.x9.append(GraphWithConnection(highlight=highlight))
             self.x9[i] += Power('Д' + str(i + 9),highlight=highlight)
-            self.x9[i].labels += ['X9:' + str(i * 2 + 9), 'X9:' + str(i * 2 + 10), name]
+            self.x9[i].labels += ['X9:' + str(i * 2 + 1), 'X9:' + str(i * 2 + 2), name]
             self.x9[i].labels_xy += [[-1, -1,MTEXT_TOP_CENTER],[21,-1,MTEXT_TOP_CENTER],[10,6,MTEXT_BOTTOM_CENTER]]
             self.x9[i].connections['X9:' + str(i * 2 + 1)] = [[0,0], Const.LEFT]
             self.x9[i].connections['X9:' + str(i * 2 + 2)] = [[20, 0],Const.RIGHT]
