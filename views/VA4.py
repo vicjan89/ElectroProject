@@ -9,6 +9,3 @@ class VA4(View):
 
     def draw(self):
         self.te.background('A4.pdf')
-
-    def encode(self):
-        return super().encode('VA4')

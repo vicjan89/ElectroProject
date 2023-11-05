@@ -16,6 +16,7 @@ class Element:
     storage: Storage | None = None
     cabinet: str | None = None
     location: str | None = None
+    model: str | None = None
 
     def save(self):
         self.storage.write(self.encode())
@@ -23,10 +24,10 @@ class Element:
     def load(self):
         self.decode(self.storage.read())
 
-    def encode(self, cls: str):
-        res = {'class': cls}
+    def encode(self):
+        res = {'class': self.__class__.__name__}
         for key, value in self.__dict__.items():
-            if isinstance(value, (int, float, str, dict)):
+            if isinstance(value, (int, float, str, dict, tuple, list)):
                 res[key] = value
         return res
 
@@ -36,7 +37,7 @@ class Element:
     def get_connections(self):
         for n, i in self.__dict__.items():
             if isinstance(i, Connection):
-                yield i
+                yield i, n
             else:
                 if isinstance(i, Element):
                     for j in i.get_connections():
@@ -45,6 +46,22 @@ class Element:
     def ge(self):
         for i in self.gef(lambda x: True):
             yield i
+
+    def print_elements(self, elements):
+        c = 6
+        for i in elements:
+            if c:
+                sep = '\t'
+            else:
+                sep = '\n'
+                c = 7
+            print(i.slug, end=sep)
+            c -= 1
+
+    @property
+    def e(self):
+        self.print_elements(self.gef(lambda e: not isinstance(e, Connection)))
+
 
     def gef(self, f):
         for n, i in self.__dict__.items():
@@ -56,7 +73,7 @@ class Element:
                         yield j
 
     @property
-    def slag(self):
+    def slug(self):
         parent_name = getattr(self, 'parent', False)
         if parent_name:
             parent_name = parent_name.name
@@ -70,6 +87,11 @@ class Connection(Element):
         self.parent = parent
         self.cabinet = parent.cabinet
 
+    def __eq__(self, other):
+        if isinstance(other, Connection):
+            return self.slug == other.slug
+        return False
+
     def c(self, to: Element):
         self.parent.wires.add(self, to)
 
@@ -80,6 +102,9 @@ class Connection(Element):
     def label(self):
         return f'{self.parent.name}:{self.name}'
 
+    def get_connections(self):
+        yield self, ''
+
 
 class Wires(Element):
 
@@ -89,8 +114,8 @@ class Wires(Element):
 
     def __repr__(self):
         res = ''
-        for wire in self.wires:
-            res += f'{wire[0].label} / {wire[1].label}\n'
+        for num, wire in enumerate(self.wires):
+            res += f'{num})\t{wire[0].label}\t/\t{wire[1].label}\n'
         return res
 
     def encode(self):
@@ -110,16 +135,9 @@ class Wires(Element):
                 connected.append(wire[f.index(False)])
         return connected
 
-# @dataclass
-# class Cabinet:
-#     name: str
-#
-#     def __setattr__(self, name, value):
-#         if name not in ('name', 'storage', 'wires') and not isinstance(value, (int, float, tuple, str, list, dict)):
-#             value.wires = self.wires
-#         self.__dict__[name] = value
-
-
+    def slug_wire(self, num):
+        wire = self.wires[num]
+        return f'{wire[0].slug}/{wire[1].slug}'
 
 class TextStorage(Storage):
 
@@ -161,8 +179,58 @@ class TomlStorage(Storage):
 
 @dataclass
 class View(Element):
+    c: tuple | list | None = None
     e: Element | None = None
     x: int | None = None
     y: int | None = None
     te: TextEngine | None = None
+    correspondence: dict = None
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}(x={self.x}, y={self.y}, c={self.c}, e={self.e.slug})'
+
+    def get_coords(self, c: Connection):
+        if self.e:
+            for con, name in self.e.get_connections():
+                if c == con:
+                    if self.correspondence:
+                        coords = self.correspondence.get(name, False)
+                        if coords:
+                            x, y = coords
+                            return x + self.x, y + self.y
+                    else:
+                        return self.x, self.y
+
+    def xy(self, x, y):
+        self.x = x
+        self.y = y
+
+    def r(self, d=10):
+        self.x += d
+
+    def l(self, d=10):
+        self.x -= d
+
+    def u(self, d=10):
+        self.y += d
+
+    def d(self, d=10):
+        self.y -= d
+
+    def encode(self):
+        res = super().encode()
+        if self.e:
+            res.update({'e': self.e.slug})
+        res.pop('correspondence', None)
+        return res
+
+class Apparatus(Element):
+    '''Класс для описания всех аппаратов'''
+    trans = tuple()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        kwargs['parent'] = self
+        for con in self.trans:
+            kwargs['name'] = con[1]
+            self.__dict__[con[0]] = Connection(*args, **kwargs)

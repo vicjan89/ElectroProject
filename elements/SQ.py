@@ -12,31 +12,25 @@ class Contact(Element):
         self.b = Connection(parent=self, name=n2)
         self.type = type
 
-    def encode(self):
-        return super().encode('Contact')
 
 class SQ_Seom(Element):
     '''Концевой выключатель'''
 
     def __init__(self, model: str = 'Концевой выключатель', *args, **kwargs):
+        kwargs['model'] = model
         super().__init__(*args, **kwargs)
-        self.model = model
-        self.c1 = Contact(type='no', n1='1', n2='2', *args, **kwargs)
-        self.c2 = Contact(type='no', n1='3', n2='4', *args, **kwargs)
-        self.c3 = Contact(type='no', n1='5', n2='6', *args, **kwargs)
-        self.c4 = Contact(type='nc', n1='7', n2='8', *args, **kwargs)
-        self.c5 = Contact(type='nc', n1='9', n2='10', *args, **kwargs)
-        self.c6 = Contact(type='nc', n1='11', n2='12', *args, **kwargs)
+        kwargs['parent'] = self
+        for i in range(1,13):
+            kwargs['name'] = str(i)
+            self.__dict__[f'k{i}'] = Connection(*args, **kwargs)
 
     def __setattr__(self, name, value):
         self.__dict__[name] = value
         if name == 'wires':
             for name, value_attr in self.__dict__.items():
-                if value_attr and name != 'wires' and not isinstance(value_attr, (int, str, float)):
+                if isinstance(value_attr, (Connection)):
                     value_attr.wires = self.wires
 
-    def encode(self):
-        return super().encode('SQ_Seom')
 
 class Blocklock(Element):
     '''Блок-замок электромагнитной блокировки'''
@@ -46,5 +40,3 @@ class Blocklock(Element):
         self.k1 = Connection(parent=self, name='1')
         self.k2 = Connection(parent=self, name='2')
 
-    def encode(self):
-        return super().encode('Blocklock')

@@ -1,0 +1,91 @@
+doc:
+- class: VA4
+- class: VXT
+  e: "\u0421\u0420-1/XT/XT-1"
+  x: 100
+  y: 50
+- class: VXT
+  e: "\u0421\u0420-1/XT/XT-2"
+  x: 200
+  y: 50
+- class: VDiode_bridge
+  e: "\u0421\u0420-1/VD1"
+  x: 150
+  y: 30
+- class: VSQ
+  c:
+    - k7
+    - k8
+  e: "\u0412\u0432\u043E\u0434 1/SQS1"
+  x: 40
+  y: 0
+- class: VSQ
+  c:
+    - k7
+    - k8
+  e: "\u0422\u0440-\u0440 1/SQS1"
+  x: 90
+  y: 0
+- class: Vrelay
+  c:
+    - k1
+    - k2
+  e: "\u0421\u0420-1/YG1"
+  x: 150
+  y: 0
+docwires:
+  "\u0421\u0420-1/VD1/+/\u0412\u0432\u043E\u0434 1/SQS1/7": 2
+  "\u0421\u0420-1/XT/XT-1/\u0421\u0420-1/VD1/~1": 1
+  "\u0421\u0420-1/XT/XT-2/\u0421\u0420-1/VD1/~2": 2
+sqs1_1:
+  cabinet: "\u0412\u0432\u043E\u0434 1"
+  class: SQ_Seom
+  model: "\u041A\u043E\u043D\u0446\u0435\u0432\u043E\u0439 \u0432\u044B\u043A\u043B\
+    \u044E\u0447\u0430\u0442\u0435\u043B\u044C"
+  name: SQS1
+sqs1_2:
+  cabinet: "\u0422\u0440-\u0440 1"
+  class: SQ_Seom
+  model: "\u041A\u043E\u043D\u0446\u0435\u0432\u043E\u0439 \u0432\u044B\u043A\u043B\
+    \u044E\u0447\u0430\u0442\u0435\u043B\u044C"
+  name: SQS1
+vd1:
+  cabinet: "\u0421\u0420-1"
+  class: Diode_bridge
+  name: VD1
+wires:
+  class: Wires
+  wires:
+  - - XT:XT-1
+    - VD1:~1
+    - "\u0421\u0420-1"
+    - "\u0421\u0420-1"
+  - - XT:XT-2
+    - VD1:~2
+    - "\u0421\u0420-1"
+    - "\u0421\u0420-1"
+  - - VD1:-
+    - YG1:2
+    - "\u0421\u0420-1"
+    - "\u0421\u0420-1"
+  - - SQS1:8
+    - YG1:1
+    - "\u0422\u0440-\u0440 1"
+    - "\u0421\u0420-1"
+  - - VD1:+
+    - SQS1:7
+    - "\u0421\u0420-1"
+    - "\u0412\u0432\u043E\u0434 1"
+  - - SQS1:8
+    - SQS1:7
+    - "\u0412\u0432\u043E\u0434 1"
+    - "\u0422\u0440-\u0440 1"
+xt:
+  cabinet: "\u0421\u0420-1"
+  class: XT
+  name: XT
+  size: 50
+yg1_3:
+  cabinet: "\u0421\u0420-1"
+  class: Blocklock
+  name: YG1

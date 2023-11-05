@@ -7,8 +7,6 @@ class Diode(Element):
         self.anode = Connection(parent=self, name='анод')
         self.cathode = Connection(parent=self, name='катод')
 
-    def encode(self):
-        return super().encode('Diode')
 
 class Diode_bridge(Element):
 
@@ -19,5 +17,3 @@ class Diode_bridge(Element):
         self.in1 = Connection(parent=self, name='~1')
         self.in2 = Connection(parent=self, name='~2')
 
-    def encode(self):
-        return super().encode('Diode_bridge')

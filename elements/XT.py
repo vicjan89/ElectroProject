@@ -1,4 +1,4 @@
-from classes import Element, Connection
+from classes import Element, Connection, Apparatus
 
 class XT(Element):
 
@@ -8,5 +8,6 @@ class XT(Element):
         for i in range(size):
             self.__dict__[f'k{i+1}'] = Connection(name=f'{self.name}-{i+1}', parent=self)
 
-    def encode(self):
-        return super().encode('XT')
+class Ground(Apparatus):
+
+    trans = (('g', ''),)

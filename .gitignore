@@ -1,5 +1,7 @@
-
 /docs/build/
 *.xml
 *.iml
-
+*.pdf
+*.aux
+*.log
+*.tex

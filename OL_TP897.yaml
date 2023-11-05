@@ -1,0 +1,207 @@
+a:
+  class: PA
+  name: PA1
+ct0:
+  class: CT1
+  name: 13T4
+cta:
+  class: CT3
+  name: 14T1
+ctb:
+  class: CT3
+  name: 14T2
+ctc:
+  class: CT3
+  name: 14T3
+doc:
+- docitems:
+  - c:
+    - i31
+    - i32
+    class: VCT
+    e: 14T1
+    x: 20
+    y: 250
+  - c:
+    - i31
+    - i32
+    class: VCT
+    e: 14T2
+    x: 20
+    y: 235
+  - c:
+    - i31
+    - i32
+    class: VCT
+    e: 14T3
+    x: 20
+    y: 220
+  - class: VXT
+    e: XT2/XT2-1
+    x: 60
+    y: 250
+  - c: !!python/tuple
+    - Ia
+    - Ia5
+    - Ib
+    - Ib5
+    - Ic
+    - Ic5
+    - In
+    - In5
+    class: Vbox
+    e: A1
+    x: 100
+    y: 250
+  - class: VXT
+    e: XT2/XT2-2
+    x: 60
+    y: 235
+  - class: VXT
+    e: XT2/XT2-3
+    x: 60
+    y: 220
+  - class: VXT
+    e: XT2/XT2-4
+    x: 60
+    y: 195
+  - c: !!python/tuple
+    - i11
+    - i12
+    class: VCT
+    e: 14T1
+    x: 20
+    y: 180
+  docwires:
+    "14T1/3\u04181/14T2/3\u04181": 3
+    "14T2/3\u04181/14T3/3\u04181": 3
+    "14T3/3\u04181/XT2/XT2-4": 1
+    A1/X8-2/A1/X8-5: 4
+    A1/X8-5/A1/X8-8: 4
+    A1/X8-8/XT2/XT2-4: 4
+  num: 1
+g:
+  class: Ground
+  name: ground
+mr5:
+  class: MR5PO50
+  name: A1
+pik:
+  class: PIK
+  name: PIK1
+sg:
+  class: SGm
+  model: "\u0418\u0441\u043F\u044B\u0442\u0430\u0442\u0435\u043B\u044C\u043D\u0430\
+    \u044F \u043A\u043E\u0440\u043E\u0431\u043A\u0430 \u0418\u041A\u041F"
+  name: SG1
+wires:
+  class: Wires
+  wires:
+  - - "14T1:3\u04182"
+    - XT2:XT2-1
+    - null
+    - null
+  - - XT2:XT2-1
+    - A1:X8-1
+    - null
+    - null
+  - - "14T2:3\u04182"
+    - XT2:XT2-2
+    - null
+    - null
+  - - "14T3:3\u04182"
+    - XT2:XT2-3
+    - null
+    - null
+  - - "14T1:3\u04181"
+    - "14T2:3\u04181"
+    - null
+    - null
+  - - "14T2:3\u04181"
+    - "14T3:3\u04181"
+    - null
+    - null
+  - - "14T3:3\u04181"
+    - XT2:XT2-4
+    - null
+    - null
+  - - XT2:XT2-5
+    - 'ground:'
+    - null
+    - null
+  - - XT2:XT2-2
+    - A1:X8-4
+    - null
+    - null
+  - - XT2:XT2-3
+    - A1:X8-7
+    - null
+    - null
+  - - A1:X8-2
+    - A1:X8-5
+    - null
+    - null
+  - - A1:X8-5
+    - A1:X8-8
+    - null
+    - null
+  - - A1:X8-8
+    - XT2:XT2-4
+    - null
+    - null
+  - - "14T1:1\u04181"
+    - SG1:6
+    - null
+    - null
+  - - "14T2:1\u04181"
+    - SG1:4
+    - null
+    - null
+  - - "14T3:1\u04181"
+    - SG1:2
+    - null
+    - null
+  - - "14T1:1\u04182"
+    - "14T2:1\u04182"
+    - null
+    - null
+  - - "14T2:1\u04182"
+    - "14T3:1\u04182"
+    - null
+    - null
+  - - "14T3:1\u04182"
+    - SG1:1
+    - null
+    - null
+  - - SG1:1
+    - 'ground:'
+    - null
+    - null
+  - - SG1:7
+    - PIK1:1
+    - null
+    - null
+  - - SG1:5
+    - PIK1:4
+    - null
+    - null
+  - - SG1:3
+    - PIK1:7
+    - null
+    - null
+  - - SG1:1
+    - PIK1:9
+    - null
+    - null
+  - - PIK1:3
+    - PIK1:6
+    - null
+    - null
+  - - PIK1:6
+    - PIK1:9
+    - null
+    - null
+xt:
+  class: XT
+  name: XT2
+  size: 20
