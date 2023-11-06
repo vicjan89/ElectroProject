@@ -36,8 +36,178 @@ doc:
     e: 14T3
     x: 20
     y: 220
-  - class: VXT
-    e: XT2/XT2-1
+  - class: VXTm
+    c:
+      - k1
+      - k1_
+    e: XT2
+    x: 60
+    y: 250
+  - c:
+    - Ia
+    - Ia5
+    - Ib
+    - Ib5
+    - Ic
+    - Ic5
+    class: Vbox
+    e: A1
+    x: 100
+    y: 250
+  - class: VXTm
+    c:
+      - k2
+      - k2_
+    e: XT2
+    x: 60
+    y: 235
+  - class: VXTm
+    c:
+      - k3
+      - k3_
+    e: XT2
+    x: 60
+    y: 220
+  - class: VXTm
+    c:
+      - k4
+      - k4_
+    e: XT2
+    x: 60
+    y: 205
+  - c:
+    - i12
+    - i11
+    class: VCT
+    e: 14T1
+    x: 20
+    y: 165
+  - c: !!python/tuple
+    - i12
+    - i11
+    class: VCT
+    e: 14T2
+    x: 20
+    y: 135
+  - c: !!python/tuple
+    - i12
+    - i11
+    class: VCT
+    e: 14T3
+    x: 20
+    y: 105
+  - c: !!python/tuple
+    - iaOut
+    - iaOut_
+    - iaIn
+    - iaIn_
+    - ibOut
+    - ibOut_
+    - ibIn
+    - ibIn_
+    - icOut
+    - icOut_
+    - icIn
+    - icIn_
+    - i0In
+    - i0In_
+    class: Vbox
+    e: SG1
+    x: 60
+    y: 180
+  - c:
+    - ia
+    - ia_
+    - ib
+    - ib_
+    - ic
+    - ic_
+    class: Vbox
+    e: PIK1
+    x: 120
+    y: 180
+  - c: !!python/tuple
+    - i22
+    - i21
+    class: VCT
+    e: 14T1
+    x: 20
+    y: 65
+  - c: !!python/tuple
+    - i22
+    - i21
+    class: VCT
+    e: 14T2
+    x: 20
+    y: 50
+  - c: !!python/tuple
+    - i22
+    - i21
+    class: VCT
+    e: 14T3
+    x: 20
+    y: 35
+  - class: VXTm
+    c:
+      - k10
+      - k10_
+    e: XT2
+    x: 60
+    y: 65
+  - class: VXTm
+    c:
+      - k11
+      - k11_
+    e: XT2
+    x: 60
+    y: 50
+  - class: VXTm
+    c:
+      - k12
+      - k12_
+    e: XT2
+    x: 60
+    y: 35
+  - c:
+    - i
+    - i_
+    class: VPA
+    e: PA1
+    x: 100
+    y: 65
+  - class: VXTm
+    c:
+      - k13
+      - k13_
+    e: XT2
+    x: 60
+    y: 20
+  - c:
+    - i31
+    - i32
+    class: VCT
+    e: 14T1
+    x: 20
+    y: 250
+  - c:
+    - i31
+    - i32
+    class: VCT
+    e: 14T2
+    x: 20
+    y: 235
+  - c:
+    - i31
+    - i32
+    class: VCT
+    e: 14T3
+    x: 20
+    y: 220
+  - class: VXTm
+    c:
+      - k1
+      - k1_
+    e: XT2
     x: 60
     y: 250
   - c: !!python/tuple
@@ -47,45 +217,216 @@ doc:
     - Ib5
     - Ic
     - Ic5
-    - In
-    - In5
     class: Vbox
     e: A1
     x: 100
     y: 250
-  - class: VXT
-    e: XT2/XT2-2
+  - class: VXTm
+    c:
+      - k2
+      - k2_
+    e: XT2
     x: 60
     y: 235
-  - class: VXT
-    e: XT2/XT2-3
+  - class: VXTm
+    c:
+      - k3
+      - k3_
+    e: XT2
     x: 60
     y: 220
-  - class: VXT
-    e: XT2/XT2-4
+  - class: VXTm
+    c:
+      - k4
+      - k4_
+    e: XT2
     x: 60
-    y: 195
+    y: 205
   - c: !!python/tuple
-    - i11
     - i12
+    - i11
     class: VCT
     e: 14T1
     x: 20
+    y: 165
+  - c: !!python/tuple
+    - i12
+    - i11
+    class: VCT
+    e: 14T2
+    x: 20
+    y: 135
+  - c: !!python/tuple
+    - i12
+    - i11
+    class: VCT
+    e: 14T3
+    x: 20
+    y: 105
+  - c: !!python/tuple
+    - iaOut
+    - iaOut_
+    - iaIn
+    - iaIn_
+    - ibOut
+    - ibOut_
+    - ibIn
+    - ibIn_
+    - icOut
+    - icOut_
+    - icIn
+    - icIn_
+    - i0In
+    - i0In_
+    class: Vbox
+    e: SG1
+    x: 60
     y: 180
+  - c:
+    - ia
+    - ia_
+    - ib
+    - ib_
+    - ic
+    - ic_
+    class: Vbox
+    e: PIK1
+    x: 120
+    y: 180
+  - c: !!python/tuple
+    - i22
+    - i21
+    class: VCT
+    e: 14T1
+    x: 20
+    y: 65
+  - c: !!python/tuple
+    - i22
+    - i21
+    class: VCT
+    e: 14T2
+    x: 20
+    y: 50
+  - c: !!python/tuple
+    - i22
+    - i21
+    class: VCT
+    e: 14T3
+    x: 20
+    y: 35
+  - class: VG
+    e: ground1
+    x: 55
+    y: 85
+  - class: VXTm
+    c:
+      - k10
+      - k10_
+    e: XT2
+    x: 60
+    y: 65
+  - class: VXTm
+    c:
+      - k11
+      - k11_
+    e: XT2
+    x: 60
+    y: 50
+  - class: VXTm
+    c:
+      - k12
+      - k12_
+    e: XT2
+    x: 60
+    y: 35
+  - c:
+    - i
+    - i_
+    class: VPA
+    e: PA1
+    x: 100
+    y: 65
+  - class: VG
+    e: ground
+    x: 60
+    y: 200
+  - class: VXTm
+    c:
+      - k13
+      - k13_
+    e: XT2
+    x: 60
+    y: 20
+  - class: VG
+    e: ground2
+    x: 60
+    y: 20
+  - class: VXTm
+    c:
+      - k5
+      - k5_
+    e: XT2
+    x: 60
+    y: 200
   docwires:
+    "14T1/1\u04182/14T2/1\u04182": 3
+    "14T1/2\u04182/14T2/2\u04182": 3
     "14T1/3\u04181/14T2/3\u04181": 3
+    "14T2/1\u04182/14T3/1\u04182": 3
+    "14T2/2\u04182/14T3/2\u04182": 3
     "14T2/3\u04181/14T3/3\u04181": 3
+    "14T3/1\u04182/SG1/1": 1
+    "14T3/2\u04182/XT2/XT2-13": 1
     "14T3/3\u04181/XT2/XT2-4": 1
     A1/X8-2/A1/X8-5: 4
     A1/X8-5/A1/X8-8: 4
     A1/X8-8/XT2/XT2-4: 4
+    PA1/2/XT2/XT2-11: 4
+    PIK1/3/PIK1/6: 4
+    PIK1/6/PIK1/9: 4
+    SG1/1`/PIK1/9: 4
+    SG1/3`/PIK1/7: 5
+    SG1/5`/PIK1/4: 6
   num: 1
+- docitems:
+  - c:
+    - i1
+    - i2
+    class: VCT
+    e: 13T4
+    x: 20
+    y: 250
+  - class: VXTm
+    c:
+      - k6
+      - k6_
+    e: XT2
+    x: 60
+    y: 250
+  - c:
+    - In
+    - In5
+    class: Vlbox
+    e: A1
+    x: 100
+    y: 250
+  docwires: {}
+  num: 2
 g:
   class: Ground
   name: ground
+g1:
+  class: Ground
+  name: ground1
+g2:
+  class: Ground
+  name: ground2
 mr5:
   class: MR5PO50
   name: A1
+pa:
+  class: PA
+  name: PA1
 pik:
   class: PIK
   name: PIK1
@@ -174,22 +515,22 @@ wires:
     - null
     - null
   - - SG1:1
-    - 'ground:'
+    - 'ground1:'
     - null
     - null
-  - - SG1:7
-    - PIK1:1
+  - - PIK1:1
+    - SG1:7`
     - null
     - null
-  - - SG1:5
+  - - SG1:5`
     - PIK1:4
     - null
     - null
-  - - SG1:3
+  - - SG1:3`
     - PIK1:7
     - null
     - null
-  - - SG1:1
+  - - SG1:1`
     - PIK1:9
     - null
     - null
@@ -201,7 +542,64 @@ wires:
     - PIK1:9
     - null
     - null
+  - - "14T1:2\u04181"
+    - XT2:XT2-10
+    - null
+    - null
+  - - "14T3:2\u04181"
+    - XT2:XT2-12
+    - null
+    - null
+  - - "14T2:2\u04181"
+    - XT2:XT2-11
+    - null
+    - null
+  - - PA1:1
+    - XT2:XT2-10
+    - null
+    - null
+  - - PA1:2
+    - XT2:XT2-11
+    - null
+    - null
+  - - XT2:XT2-13
+    - 'ground2:'
+    - null
+    - null
+  - - "14T1:2\u04182"
+    - "14T2:2\u04182"
+    - null
+    - null
+  - - "14T2:2\u04182"
+    - "14T3:2\u04182"
+    - null
+    - null
+  - - "14T3:2\u04182"
+    - XT2:XT2-13
+    - null
+    - null
 xt:
-  class: XT
+  class: XTm
+  jumpers:
+  - false
+  - false
+  - false
+  - false
+  - true
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - true
+  - true
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
   name: XT2
   size: 20
