@@ -9,11 +9,11 @@ def diode_bridge(x, y, name):
 
 
 def contact_no(x: int, y:int, x_name='', y_name='', name=''):
-    return (f'\\draw ({x},{y}) -- ({x + 10}, {y}) -- ({x+20}, {y+5});\n' +
-            f'\\draw ({x+20},{y}) -- ({x+30}, {y});\n' +
-            f'\draw ({x+15}, {y+7}) node [above, align=center] {{${name}$}};\n' +
+    return (f'\\draw ({x},{y}) -- ({x + 3}, {y}) -- ({x+13}, {y+5});\n' +
+            f'\\draw ({x+13},{y}) -- ({x+16}, {y});\n' +
+            f'\draw ({x+8}, {y+5}) node [above, align=center] {{$\\text{{{name}}}$}};\n' +
             f'\draw ({x}, {y}) node [below, align=center] {{${x_name}$}};\n' +
-            f'\draw ({x+30}, {y}) node [below, align=center] {{${y_name}$}};\n')
+            f'\draw ({x+16}, {y}) node [below, align=center] {{${y_name}$}};\n')
 
 def contact_nc(x: int, y: int, x_name='', y_name='', name=''):
     return (f'\\draw ({x},{y}) -- ({x + 10}, {y}) -- ({x+20}, {y-5});\n' +

@@ -44,8 +44,7 @@ class Element:
                         yield j
 
     def ge(self):
-        for i in self.gef(lambda x: True):
-            yield i
+        return self.gef(lambda x: True)
 
     def print_elements(self, elements):
         c = 6
@@ -64,13 +63,16 @@ class Element:
 
 
     def gef(self, f):
+        res = []
         for n, i in self.__dict__.items():
             if isinstance(i, Element):
                 if n not in ('parent', 'wires'):
                     if not f or f(i):
-                        yield i
-                    for j in i.gef(f):
-                        yield j
+                        res.append(i)
+                    res_i = i.gef(f)
+                    if res_i:
+                        res += res_i
+        return res
 
     @property
     def slug(self):
@@ -79,6 +81,11 @@ class Element:
             parent_name = parent_name.name
         res = tuple(filter(lambda x: x, (self.cabinet, self.location, parent_name, self.name)))
         return '/'.join(res)
+
+    @property
+    def tr(self):
+        '''Возвращает список названий атрибутов объекта Element'''
+        return [c[0] for c in self.trans]
 
 class Connection(Element):
     
@@ -92,8 +99,8 @@ class Connection(Element):
             return self.slug == other.slug
         return False
 
-    def c(self, to: Element):
-        self.parent.wires.add(self, to)
+    def c(self, to: Element, name: str = ''):
+        self.parent.wires.add(self, to, name=name)
 
     def connected(self):
         return self.parent.wires.get(self)
@@ -118,14 +125,34 @@ class Wires(Element):
             res += f'{num})\t{wire[0].label}\t/\t{wire[1].label}\n'
         return res
 
+    def set_name(self, num, name):
+        if len(self.wires[num]) == 4:
+            self.wires[num].append(name)
+        else:
+            self.wires[num][4] = name
+
+    def f(self, s: str):
+        '''
+        Поиск провода имеющего в label Connection переданную подстроку
+        :param s: подстрока для поиска
+        :return:  найденные провода в виде строки вывода
+        '''
+        res = ''
+        for num, wire in enumerate(self.wires):
+            wire_name =  f'{num})\t{wire[0].label}\t/\t{wire[1].label}\n'
+            if s in wire_name:
+                res += wire_name
+        print(res)
+
+
     def encode(self):
         res = {'class': 'Wires', 'wires': []}
-        for c1, c2, *other in self.wires:
-            res['wires'].append([c1.label, c2.label, c1.cabinet, c2.cabinet])
+        for c1, c2, _, _, name in self.wires:
+            res['wires'].append([c1.label, c2.label, c1.cabinet, c2.cabinet, name]) #TODO: потом переделать на слаги
         return res
 
-    def add(self, c1: Connection, c2: Connection):
-       self.wires.append((c1, c2))
+    def add(self, c1: Connection, c2: Connection, name: str = ''):
+       self.wires.append([c1, c2, None, None, name])
 
     def get(self, e: Element):
         connected = []

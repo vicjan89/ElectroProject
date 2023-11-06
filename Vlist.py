@@ -6,29 +6,46 @@ from textengines.interfaces import TextEngine
 
 
 from views.VA4 import VA4
-from views.VXT import VXT
+from views.VXT import *
 from views.Vradio_component import *
 from views.VSQ import VSQ
 from views.Vrelay_component import Vrelay
 from views.Vtratsformers import *
-from views.Vbox import Vbox
+from views.Vbox import *
+from views.Vmeasurements import *
+from views.Vswitches import *
+from elements.XT import *
 
-
-@dataclass
 class Vlist:
-    num: str
-    docitems = []
-    docwires = dict()
-    project: Element
-    te: TextEngine
-    classes = {'Wires': Wires,
-               'VXT': VXT,
-               'VA4': VA4,
-               'VDiode_bridge': VDiode_bridge,
-               'VSQ': VSQ,
-               'Vrelay': Vrelay,
-               'VCT': VCT,
-               'Vbox': Vbox}
+
+    def __init__(self, num: str, project: Element, te: TextEngine, docitems: list | None = None, docwires: dict | None = None):
+        self.num = num
+        if docitems:
+            self.docitems = docitems
+        else:
+            self.docitems = []
+        if docwires:
+            self.docwires = docwires
+        else:
+            self.docwires = dict()
+        self.project = project
+        self.te = te
+        self.classes = {'Wires': Wires,
+                   'VXT': VXT,
+                   'VXTm': VXTm,
+                   'VXTcross': VXTcross,
+                   'VA4': VA4,
+                   'VDiode_bridge': VDiode_bridge,
+                   'VSQ': VSQ,
+                   'Vrelay': Vrelay,
+                   'VCT': VCT,
+                   'Vbox': Vbox,
+                   'Vlbox': Vlbox,
+                   'VboxNo': VboxNo,
+                   'VboxTxt': VboxTxt,
+                   'VG': VG,
+                   'VSACno': VSACno,
+                   'VPA': VPA}
 
     def av(self, view: View, atr: str = None):
         view.te = self.te
@@ -36,9 +53,14 @@ class Vlist:
             self.__dict__[atr] = view
         self.docitems.append(view)
 
-    def tw(self, wire_number: int, type_wire: int):
-        slug = self.project.wires.slug_wire(wire_number)
-        self.docwires[slug] = type_wire
+    def tw(self, wire_number: int | list | tuple, type_wire: int):
+        if isinstance(wire_number, int):
+            slug = self.project.wires.slug_wire(wire_number)
+            self.docwires[slug] = type_wire
+        else:
+            for wire in wire_number:
+                slug = self.project.wires.slug_wire(wire)
+                self.docwires[slug] = type_wire
 
     def search_coords(self, c: Connection):
         for v in self.docitems:
@@ -47,16 +69,33 @@ class Vlist:
                 return coord
         return False
 
+    def draw_wire(self, c0: Connection, c1: Connection, num: int | None = None, name: str = ''):
+        coord0 = self.search_coords(c0)
+        coord1 = self.search_coords(c1)
+        if coord0 and coord1:
+            if num:
+                tw = self.docwires.get(self.project.wires.slug_wire(num), 0)
+            else:
+                tw = 0
+            self.te.wire(coord0, coord1, tw, name=name)
+
     def draw(self):
         self.te.picture_begin()
         for num, wire in enumerate(self.project.wires.wires):
-            coord0 = self.search_coords(wire[0])
-            coord1 = self.search_coords(wire[1])
-            if coord0 and coord1:
-                tw = self.docwires.get(self.project.wires.slug_wire(num), 0)
-                self.te.wire(coord0, coord1, tw)
+            name = '' if wire[4] is None else wire[4]
+            self.draw_wire(wire[0], wire[1], num=num, name=name)
         for item in self.docitems:
-            item.draw()
+            if not isinstance(item, VXT):
+                item.draw()
+        # рисуем перемычки на клеммниках
+        for name, element in self.project.__dict__.items():
+            if isinstance(element, XT) or isinstance(element, XTm):
+                for num, jum in enumerate(element.jumpers):
+                    if jum:
+                        self.draw_wire(element.__dict__[f'k{num}'], element.__dict__[f'k{num+1}'])
+        for item in self.docitems:
+            if isinstance(item, VXT) or isinstance(item, VXTm):
+                item.draw()
         self.te.picture_end()
 
     def encode(self):
@@ -80,6 +119,7 @@ class Vlist:
 
     @property
     def v(self):
+        '''Печатает список графических элементов текущей страницы'''
         for num, item in enumerate(self.docitems):
             print(f'{num})\t{item}')
 
@@ -89,6 +129,21 @@ class Vlist:
 
 
     def gef(self, f):
+        '''Возарвщает список графических элементов для которых функция f вернёт True'''
+        res = []
         for item in self.docitems:
             if f(item):
-                yield item
+                res.append(item)
+        return res
+
+    def f(self, s: str):
+        '''Печатает список элементов содержащих в выводе __repr__ подстроку s'''
+        res = ''
+        for num, item in enumerate(self.docitems):
+            view_name = f'{num})\t{item}\n'
+            if s in view_name:
+                res += view_name
+        print(res)
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(num={self.num}, docitems={len(self.docitems)}, docwires={len(self.docwires)})'

@@ -12,14 +12,18 @@ from elements.XT import *
 from elements.SQ import *
 from elements.CT import *
 from elements.measurements import *
+from elements.switches import *
 
 class Project(Element):
     '''Функционал управления созанием проекта'''
     classes = {'Terminal': Terminal,
+               'XB5AD21_ZBE102': XB5AD21_ZBE102,
+               'PS4': PS4,
                'MR5PO50': MR5PO50,
                'Diode': Diode,
                'Diode_bridge': Diode_bridge,
                'XT': XT,
+               'XTm': XTm,
                'Ground': Ground,
                'SQ_Seom': SQ_Seom,
                'Blocklock': Blocklock,
@@ -59,8 +63,9 @@ class Project(Element):
             else:
                 self.te.newpage()
             l.draw()
-            self.te.save()
-            os.system(f'pdflatex "{self.te.path}"')
+        self.te.save()
+        os.system(f'pdflatex "{self.te.path}"')
+            # print('Документ сформирован')
 
     def encode(self):
         res = dict()

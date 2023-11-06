@@ -2,11 +2,6 @@ from textengines.LaTeX import LaTeX
 
 from Project import *
 from Vlist import *
-# from views.VA4 import VA4
-# from views.VXT import VXT
-# from views.Vradio_component import *
-# from views.VSQ import VSQ
-# from views.Vrelay_component import *
 
 
 prj = (('Отходящая линия 10кВ ТП-897', 'OL_TP897'),
@@ -29,5 +24,6 @@ p = Project(name=name, storage=YamlStorage(file), te=te)
 p.wires = w
 if c:
     p.load()
-
+l1 = p.l1
+l2 = p.l2
 # p.draw()

@@ -36,10 +36,10 @@ doc:
     e: 14T3
     x: 20
     y: 220
-  - class: VXTm
-    c:
-      - k1
-      - k1_
+  - c:
+    - k1
+    - k1_
+    class: VXTm
     e: XT2
     x: 60
     y: 250
@@ -54,24 +54,24 @@ doc:
     e: A1
     x: 100
     y: 250
-  - class: VXTm
-    c:
-      - k2
-      - k2_
+  - c:
+    - k2
+    - k2_
+    class: VXTm
     e: XT2
     x: 60
     y: 235
-  - class: VXTm
-    c:
-      - k3
-      - k3_
+  - c:
+    - k3
+    - k3_
+    class: VXTm
     e: XT2
     x: 60
     y: 220
-  - class: VXTm
-    c:
-      - k4
-      - k4_
+  - c:
+    - k4
+    - k4_
+    class: VXTm
     e: XT2
     x: 60
     y: 205
@@ -147,24 +147,24 @@ doc:
     e: 14T3
     x: 20
     y: 35
-  - class: VXTm
-    c:
-      - k10
-      - k10_
+  - c:
+    - k10
+    - k10_
+    class: VXTm
     e: XT2
     x: 60
     y: 65
-  - class: VXTm
-    c:
-      - k11
-      - k11_
+  - c:
+    - k11
+    - k11_
+    class: VXTm
     e: XT2
     x: 60
     y: 50
-  - class: VXTm
-    c:
-      - k12
-      - k12_
+  - c:
+    - k12
+    - k12_
+    class: VXTm
     e: XT2
     x: 60
     y: 35
@@ -175,10 +175,10 @@ doc:
     e: PA1
     x: 100
     y: 65
-  - class: VXTm
-    c:
-      - k13
-      - k13_
+  - c:
+    - k13
+    - k13_
+    class: VXTm
     e: XT2
     x: 60
     y: 20
@@ -203,10 +203,10 @@ doc:
     e: 14T3
     x: 20
     y: 220
-  - class: VXTm
-    c:
-      - k1
-      - k1_
+  - c:
+    - k1
+    - k1_
+    class: VXTm
     e: XT2
     x: 60
     y: 250
@@ -221,24 +221,24 @@ doc:
     e: A1
     x: 100
     y: 250
-  - class: VXTm
-    c:
-      - k2
-      - k2_
+  - c:
+    - k2
+    - k2_
+    class: VXTm
     e: XT2
     x: 60
     y: 235
-  - class: VXTm
-    c:
-      - k3
-      - k3_
+  - c:
+    - k3
+    - k3_
+    class: VXTm
     e: XT2
     x: 60
     y: 220
-  - class: VXTm
-    c:
-      - k4
-      - k4_
+  - c:
+    - k4
+    - k4_
+    class: VXTm
     e: XT2
     x: 60
     y: 205
@@ -318,24 +318,24 @@ doc:
     e: ground1
     x: 55
     y: 85
-  - class: VXTm
-    c:
-      - k10
-      - k10_
+  - c:
+    - k10
+    - k10_
+    class: VXTm
     e: XT2
     x: 60
     y: 65
-  - class: VXTm
-    c:
-      - k11
-      - k11_
+  - c:
+    - k11
+    - k11_
+    class: VXTm
     e: XT2
     x: 60
     y: 50
-  - class: VXTm
-    c:
-      - k12
-      - k12_
+  - c:
+    - k12
+    - k12_
+    class: VXTm
     e: XT2
     x: 60
     y: 35
@@ -350,10 +350,10 @@ doc:
     e: ground
     x: 60
     y: 200
-  - class: VXTm
-    c:
-      - k13
-      - k13_
+  - c:
+    - k13
+    - k13_
+    class: VXTm
     e: XT2
     x: 60
     y: 20
@@ -361,10 +361,10 @@ doc:
     e: ground2
     x: 60
     y: 20
-  - class: VXTm
-    c:
-      - k5
-      - k5_
+  - c:
+    - k5
+    - k5_
+    class: VXTm
     e: XT2
     x: 60
     y: 200
@@ -396,10 +396,10 @@ doc:
     e: 13T4
     x: 20
     y: 250
-  - class: VXTm
-    c:
-      - k6
-      - k6_
+  - c:
+    - k6
+    - k6_
+    class: VXTm
     e: XT2
     x: 60
     y: 250
@@ -410,8 +410,120 @@ doc:
     e: A1
     x: 100
     y: 250
-  docwires: {}
+  - c:
+    - k7
+    - k7_
+    class: VXTm
+    e: XT2
+    x: 60
+    y: 235
+  - class: VXTcross
+    e: XT11/XT11-3
+    x: 20
+    y: 220
+  - class: VXTcross
+    e: XT11/XT11-2
+    x: 40
+    y: 220
+  - class: VXTcross
+    e: XT11/XT11-1
+    x: 60
+    y: 220
+  - class: VXTcross
+    e: XT11/XT11-4
+    x: 80
+    y: 220
+  - c:
+    - u0In
+    - u0Out
+    - uaIn
+    - uaOut
+    - ubIn
+    - ubOut
+    - ucIn
+    - ucOut
+    class: Vbox
+    e: SG1
+    x: 105
+    y: 210
+  - c:
+    - u0
+    - ua
+    - ub
+    - uc
+    class: Vlbox
+    e: PIK1
+    x: 160
+    y: 210
+  - c:
+    - r1
+    - r1o
+    - r2
+    - r2o
+    - r3
+    - r3o
+    class: VboxNo
+    e: A3
+    labels:
+    - "\u0420\u0435\u043B\u04351"
+    - "\u0420\u0435\u043B\u04352"
+    - "\u0420\u0435\u043B\u04353"
+    x: 90
+    y: 120
+  - c:
+    - no1
+    - no1_
+    class: VSACno
+    e: SAC5
+    x: 45
+    y: 120
+  - class: VXTcross
+    e: XT11/XT11-32
+    x: 20
+    y: 140
+  - class: VXTcross
+    e: XT11/XT11-33
+    x: 140
+    y: 140
+  - class: VXTcross
+    e: XT11/XT11-34
+    x: 160
+    y: 140
+  - class: VXTcross
+    e: XT11/XT11-35
+    x: 180
+    y: 140
+  - c:
+    - plus
+    - minus
+    class: VboxTxt
+    e: A3
+    labels:
+    - =24
+    x: 90
+    y: 70
+  - class: VXT
+    e: XT5/XT5-19
+    x: 140
+    y: 90
+  docwires:
+    "13T4/\u04181/XT2/XT2-7": 1
+    A3/3/XT11/XT11-35: 2
+    A3/6/XT11/XT11-33: 2
+    A3/7/A3/10: 3
+    A3/7/A3/4: 3
+    A3/9/XT5/XT5-19: 2
+    SAC5/3/A3/2: 3
+    XT11/XT11-1/SG1/A: 1
+    XT11/XT11-2/SG1/B: 1
+    XT11/XT11-3/SG1/C: 1
+    XT11/XT11-32/SAC5/3: 1
+    XT11/XT11-4/SG1/0: 1
   num: 2
+dug:
+  class: PS4
+  model: "\u0423\u0414\u0417.\u041F\u0421-4"
+  name: A3
 g:
   class: Ground
   name: ground
@@ -430,6 +542,9 @@ pa:
 pik:
   class: PIK
   name: PIK1
+sac5:
+  class: XB5AD21_ZBE102
+  name: SAC5
 sg:
   class: SGm
   model: "\u0418\u0441\u043F\u044B\u0442\u0430\u0442\u0435\u043B\u044C\u043D\u0430\
@@ -442,142 +557,282 @@ wires:
     - XT2:XT2-1
     - null
     - null
+    - A411
   - - XT2:XT2-1
     - A1:X8-1
+    - null
     - null
     - null
   - - "14T2:3\u04182"
     - XT2:XT2-2
     - null
     - null
+    - B411
   - - "14T3:3\u04182"
     - XT2:XT2-3
     - null
     - null
+    - C411
   - - "14T1:3\u04181"
     - "14T2:3\u04181"
+    - null
     - null
     - null
   - - "14T2:3\u04181"
     - "14T3:3\u04181"
     - null
     - null
+    - null
   - - "14T3:3\u04181"
     - XT2:XT2-4
     - null
     - null
+    - N411
   - - XT2:XT2-5
     - 'ground:'
+    - null
     - null
     - null
   - - XT2:XT2-2
     - A1:X8-4
     - null
     - null
+    - null
   - - XT2:XT2-3
     - A1:X8-7
+    - null
     - null
     - null
   - - A1:X8-2
     - A1:X8-5
     - null
     - null
+    - null
   - - A1:X8-5
     - A1:X8-8
+    - null
     - null
     - null
   - - A1:X8-8
     - XT2:XT2-4
     - null
     - null
+    - null
   - - "14T1:1\u04181"
     - SG1:6
     - null
     - null
+    - A421
   - - "14T2:1\u04181"
     - SG1:4
     - null
     - null
+    - B421
   - - "14T3:1\u04181"
     - SG1:2
     - null
     - null
+    - C421
   - - "14T1:1\u04182"
     - "14T2:1\u04182"
+    - null
     - null
     - null
   - - "14T2:1\u04182"
     - "14T3:1\u04182"
     - null
     - null
+    - null
   - - "14T3:1\u04182"
     - SG1:1
     - null
     - null
+    - N421
   - - SG1:1
     - 'ground1:'
+    - null
     - null
     - null
   - - PIK1:1
     - SG1:7`
     - null
     - null
+    - A422
   - - SG1:5`
     - PIK1:4
     - null
     - null
+    - B422
   - - SG1:3`
     - PIK1:7
     - null
     - null
+    - C422
   - - SG1:1`
     - PIK1:9
     - null
     - null
+    - N422
   - - PIK1:3
     - PIK1:6
+    - null
     - null
     - null
   - - PIK1:6
     - PIK1:9
     - null
     - null
+    - null
   - - "14T1:2\u04181"
     - XT2:XT2-10
     - null
     - null
+    - A442
   - - "14T3:2\u04181"
     - XT2:XT2-12
     - null
     - null
+    - C442
   - - "14T2:2\u04181"
     - XT2:XT2-11
     - null
     - null
+    - B442
   - - PA1:1
     - XT2:XT2-10
+    - null
     - null
     - null
   - - PA1:2
     - XT2:XT2-11
     - null
     - null
+    - null
   - - XT2:XT2-13
     - 'ground2:'
+    - null
     - null
     - null
   - - "14T1:2\u04182"
     - "14T2:2\u04182"
     - null
     - null
+    - null
   - - "14T2:2\u04182"
     - "14T3:2\u04182"
+    - null
     - null
     - null
   - - "14T3:2\u04182"
     - XT2:XT2-13
     - null
     - null
+    - N442
+  - - "13T4:\u04182"
+    - XT2:XT2-6
+    - null
+    - null
+    - N431
+  - - XT2:XT2-6_
+    - A1:X8-10
+    - null
+    - null
+    - null
+  - - "13T4:\u04181"
+    - XT2:XT2-7
+    - null
+    - null
+    - N432
+  - - XT2:XT2-7_
+    - A1:X8-11
+    - null
+    - null
+    - null
+  - - XT11:XT11-3
+    - SG1:C
+    - null
+    - null
+    - C632
+  - - XT11:XT11-2
+    - SG1:B
+    - null
+    - null
+    - B632
+  - - XT11:XT11-1
+    - SG1:A
+    - null
+    - null
+    - A632
+  - - XT11:XT11-4
+    - SG1:0
+    - null
+    - null
+    - N632
+  - - SG1:C`
+    - PIK1:8
+    - null
+    - null
+    - ''
+  - - SG1:B`
+    - PIK1:5
+    - null
+    - null
+    - ''
+  - - SG1:A`
+    - PIK1:2
+    - null
+    - null
+    - ''
+  - - SG1:0`
+    - PIK1:10
+    - null
+    - null
+    - ''
+  - - XT11:XT11-32
+    - SAC5:3
+    - null
+    - null
+    - ''
+  - - SAC5:4
+    - A3:4
+    - null
+    - null
+    - ''
+  - - A3:7
+    - A3:10
+    - null
+    - null
+    - ''
+  - - SAC5:3
+    - A3:2
+    - null
+    - null
+    - ''
+  - - A3:7
+    - A3:4
+    - null
+    - null
+    - ''
+  - - A3:6
+    - XT11:XT11-33
+    - null
+    - null
+    - ''
+  - - A3:3
+    - XT11:XT11-35
+    - null
+    - null
+    - ''
+  - - A3:12
+    - XT5:XT5-19
+    - null
+    - null
+    - ''
+  - - A3:9
+    - XT5:XT5-19
+    - null
+    - null
+    - ''
 xt:
   class: XTm
   jumpers:
@@ -603,3 +858,103 @@ xt:
   - false
   name: XT2
   size: 20
+xt5:
+  class: XT
+  jumpers:
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  name: XT5
+  size: 50
+xtcr:
+  class: XT
+  jumpers:
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  name: XT11
+  size: 40
