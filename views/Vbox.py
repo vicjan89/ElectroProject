@@ -1,4 +1,4 @@
-from classes import View
+from classes import View, Connection
 from views.func_graph_elements import *
 
 
@@ -14,7 +14,7 @@ class Vbox(View):
                 i += 1
 
     def draw(self):
-        y = self.y - len(self.c) // 2 * 15 + 10
+        y = self.y - (len(self.c)+1) // 2 * 15 + 10
         self.te.lines((self.x, self.y+10), (self.x+30, self.y+10), (self.x+30, y), (self.x, y), cycle=True)
         i = 0
         while i < len(self.c):
@@ -32,7 +32,18 @@ class VboxNo(Vbox):
     def draw(self):
         super().draw()
         for i in range(len(self.c)//2):
-            self.te.latex(contact_no(self.x+7, self.y - i * 15, name=self.labels[i]))
+            self.te.latex(contact_no(self.x+7, self.y - i * 15-2, name=self.labels[i]))
+
+class VboxNc(Vbox):
+
+    def __init__(self, labels: list | tuple, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.labels = labels
+
+    def draw(self):
+        super().draw()
+        for i in range(len(self.c)//2):
+            self.te.latex(contact_nc(self.x+7, self.y - i * 15+2, name=self.labels[i]))
 
 class VboxTxt(Vbox):
 
@@ -66,3 +77,40 @@ class Vlbox(View):
         self.te.label(self.x + 10, self.y + 10, self.e.name, 's')
 
 
+class Vlbox_mount(View):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        len_trans = len(self.e.trans)
+        len_trans = len_trans if len_trans <= 45 else 45
+        y = self.y - len_trans  * 6
+        print(f'Координата низа {self.e.name} y={y-15}')
+
+    def draw(self):
+        begin = 0
+        x = self.x
+        while begin < len(self.e.trans):
+            trans = self.e.trans[begin:begin+40]
+            y = self.y - len(trans)  * 6
+            self.te.lines((x, self.y+5), (x+20, self.y+5), (x+20, y), (x, y), cycle=True)
+            for num, item in enumerate(trans):
+                yc = self.y - num * 6
+                self.te.label(x, yc, item[1], 'e', 2)
+                my_con = getattr(self.e, item[0])
+                connected = my_con.connected()
+                for n, connect in enumerate(connected):
+                    label = connect.label.replace('_','')
+                    if n == 0:
+                        self.te.lines((x, yc), (x - 5, yc))
+                        self.te.label(x - 5, yc, label, 'w', 2)
+                    elif n == 1:
+                        self.te.lines((x, yc), (x - 5, yc + 3))
+                        self.te.label(x - 5, yc+3, label, 'w', 2)
+                    else:
+                        assert False, f'На вывод {item[1]} аппарата {self.e.name} подключено более 2 проводов'
+            self.te.label(x + 10, self.y + 5, self.e.name, 'n')
+            begin += 40
+            x += 60
+
+    def get_coords(self, c: Connection):
+        return None

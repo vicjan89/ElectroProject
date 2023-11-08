@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-from classes import Element, View
+from classes import Connection, View
 
 
 class VXT(View):
@@ -41,6 +41,7 @@ class VXTm(View):
 
 
 class VG(View):
+    '''Класс для описания земли'''
 
     def draw(self):
         x, y = self.x, self.y
@@ -48,3 +49,78 @@ class VG(View):
         self.te.lines((x-5, y-5), (x+5, y - 5))
         self.te.lines((x-3, y-6), (x+3, y - 6))
         self.te.lines((x-1, y-7), (x+1, y - 7))
+
+class VXTmount(View):
+    '''Класс для описания клеммника на монтажной схеме'''
+
+    def draw(self):
+        x, y = self.x, self.y
+        self.te.label(x+10,y,self.e.name,'n')
+        for c in range(self.e.size):
+            yc = y-c*6
+            self.te.lines((x,yc),(x+20,yc), (x+20,yc-6),(x,yc-6),cycle=True)
+            self.te.label(x+5,yc-3,c+1,'e',2)
+            if self.e.jumpers[c]:
+                self.te.lines((x+2,yc-3),(x+2,yc+3))
+                self.te.circle(x+2,yc-3,1,True)
+                self.te.circle(x+2,yc+3,1,True)
+            con = self.e.__dict__.get(f'k{c+1}')
+            connected = con.connected()
+            for num, connect in enumerate(connected):
+                if num == 0:
+                    self.te.lines((x,yc-3), (x-5,yc-3))
+                    self.te.label(x-5,yc-3,connect.label,'w',2)
+                elif num == 1:
+                    self.te.lines((x+20,yc-3), (x+25,yc-3))
+                    self.te.label(x+25,yc-3,connect.label,'e',2)
+                if num == 2:
+                    self.te.lines((x, yc - 3), (x - 5, yc))
+                    self.te.label(x - 5, yc, connect.label, 'w', 2)
+                elif num == 3:
+                    self.te.lines((x+20,yc-3), (x+25,yc))
+                    self.te.label(x+25,yc,connect.label,'e',2)
+
+
+    def get_coords(self, c: Connection):
+        return None
+
+
+class VXTmountM(View):
+    '''Класс для описания испытательного клеммника на монтажной схеме'''
+
+    def draw(self):
+        x, y = self.x, self.y
+        self.te.label(x + 10, y, self.e.name, 'n')
+        for c in range(self.e.size):
+            yc = y - c * 6
+            self.te.lines((x, yc), (x + 30, yc), (x + 30, yc - 6), (x, yc - 6), cycle=True)
+            self.te.label(x + 10, yc - 3, c + 1, 'e', 2)
+            if self.e.jumpers[c]:
+                self.te.lines((x + 2, yc - 3), (x + 2, yc + 3))
+                self.te.circle(x + 2, yc - 3, 1, True)
+                self.te.circle(x + 2, yc + 3, 1, True)
+            con = self.e.__dict__.get(f'k{c + 1}')
+            con_ = self.e.__dict__.get(f'k{c + 1}_')
+            connected = con.connected()
+            for num, connect in enumerate(connected):
+                if num == 0:
+                    self.te.lines((x, yc - 3), (x - 5, yc - 3))
+                    self.te.label(x - 5, yc - 3, connect.label, 'w', 2)
+                elif num == 1:
+                    self.te.lines((x, yc - 3), (x - 5, yc))
+                    self.te.label(x - 5, yc, connect.label, 'w', 2)
+                else:
+                    assert False, f'На измерительную клемму {c+1} клеммника {self.e.name} подключено более 2 проводов'
+            connected_ = con_.connected()
+            for num, connect in enumerate(connected_):
+                if num == 0:
+                    self.te.lines((x + 30, yc - 3), (x + 35, yc - 3))
+                    self.te.label(x + 35, yc - 3, connect.label, 'e', 2)
+                elif num == 1:
+                    self.te.lines((x + 30, yc - 3), (x + 35, yc))
+                    self.te.label(x + 35, yc, connect.label, 'e', 2)
+                else:
+                    assert False, f'На измерительную клемму {c+1} клеммника {self.e.name} подключено более 2 проводов'
+
+    def get_coords(self, c: Connection):
+        return None

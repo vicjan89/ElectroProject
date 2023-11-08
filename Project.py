@@ -13,15 +13,35 @@ from elements.SQ import *
 from elements.CT import *
 from elements.measurements import *
 from elements.switches import *
+from elements.relay import *
+from elements.SF import *
+from elements.CB import *
 
 class Project(Element):
     '''Функционал управления созанием проекта'''
     classes = {'Terminal': Terminal,
-               'XB5AD21_ZBE102': XB5AD21_ZBE102,
+               'XB5AD21_ZBE101': XB5AD21_ZBE101,
+               'XB5AD21_ZBE101_ZBE102': XB5AD21_ZBE101_ZBE102,
+               'XB5AD21_2ZBE101_2ZBE102': XB5AD21_2ZBE101_2ZBE102,
+               'XB5AD21_3ZBE101_3ZBE102': XB5AD21_3ZBE101_3ZBE102,
+               'XB5AA33': XB5AA33,
+               'XB5AA43': XB5AA43,
+               'KL': KL,
+               'REU11_24V_DC': REU11_24V_DC,
+               'REU11_50mA_DC': REU11_50mA_DC,
+               'SF2': SF2,
+               'A9N26924': A9N26924,
                'PS4': PS4,
                'MR5PO50': MR5PO50,
                'Diode': Diode,
                'Diode_bridge': Diode_bridge,
+               'EL': EL,
+               'XS': XS,
+               'EK': EK,
+               'SA': SA,
+               'HL': HL,
+               'HLG': HLG,
+               'HLR': HLR,
                'XT': XT,
                'XTm': XTm,
                'Ground': Ground,
@@ -32,7 +52,10 @@ class Project(Element):
                'PIK': PIK,
                'PA': PA,
                'SGm': SGm,
-               'CT1': CT1}
+               'CT1': CT1,
+               'SQGZPUE': SQGZPUE,
+               'TGI': TGI}
+
     def __init__(self, te: TextEngine, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__dict__['te'] = te

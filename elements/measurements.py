@@ -3,6 +3,7 @@ from classes import Apparatus
 
 class PIK(Apparatus):
     '''Класс для описания счётчика электроэнергии'''
+    model = 'Счётчик электрической энергии'
     trans = (('ia', '1'),
              ('ia_', '3'),
              ('ib', '4'),
@@ -17,6 +18,7 @@ class PIK(Apparatus):
 
 class PA(Apparatus):
     '''Класс для описания амперметра'''
+    model = 'Амперметр'
     trans = (('i', '1'),
              ('i_', '2'))
 

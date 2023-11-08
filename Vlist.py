@@ -9,11 +9,13 @@ from views.VA4 import VA4
 from views.VXT import *
 from views.Vradio_component import *
 from views.VSQ import VSQ
-from views.Vrelay_component import Vrelay
+from views.Vrelay_component import *
 from views.Vtratsformers import *
 from views.Vbox import *
 from views.Vmeasurements import *
 from views.Vswitches import *
+from views.VSF import *
+from views.tables import *
 from elements.XT import *
 
 class Vlist:
@@ -34,18 +36,32 @@ class Vlist:
                    'VXT': VXT,
                    'VXTm': VXTm,
                    'VXTcross': VXTcross,
+                   'VXTmount': VXTmount,
+                   'VXTmountM': VXTmountM,
+                   'Vlbox_mount': Vlbox_mount,
                    'VA4': VA4,
                    'VDiode_bridge': VDiode_bridge,
+                   'VHL': VHL,
                    'VSQ': VSQ,
                    'Vrelay': Vrelay,
+                   'VcontNo': VcontNo,
+                   'VcontNc': VcontNc,
+                   'VcontNoc': VcontNoc,
+                   'VR': VR,
                    'VCT': VCT,
                    'Vbox': Vbox,
                    'Vlbox': Vlbox,
                    'VboxNo': VboxNo,
+                   'VboxNc': VboxNc,
                    'VboxTxt': VboxTxt,
                    'VG': VG,
                    'VSACno': VSACno,
-                   'VPA': VPA}
+                   'VSACnc': VSACno,
+                   'VSAC2': VSAC2,
+                   'VSB': VSB,
+                   'VPA': VPA,
+                   'VSF': VSF,
+                   'TableApparatus': TableApparatus}
 
     def av(self, view: View, atr: str = None):
         view.te = self.te
@@ -53,14 +69,20 @@ class Vlist:
             self.__dict__[atr] = view
         self.docitems.append(view)
 
-    def tw(self, wire_number: int | list | tuple, type_wire: int):
+    def tw(self, wire_number: int | list | tuple, type_wire: int | None = None):
         if isinstance(wire_number, int):
             slug = self.project.wires.slug_wire(wire_number)
-            self.docwires[slug] = type_wire
+            if type_wire is None:
+                print(f'{wire_number})\t{slug}\t{self.docwires[slug]}')
+            else:
+                self.docwires[slug] = type_wire
         else:
             for wire in wire_number:
                 slug = self.project.wires.slug_wire(wire)
-                self.docwires[slug] = type_wire
+                if type_wire is None:
+                    print(f'{wire})\t{slug}\t{self.docwires[slug]}')
+                else:
+                    self.docwires[slug] = type_wire
 
     def search_coords(self, c: Connection):
         for v in self.docitems:
@@ -70,14 +92,45 @@ class Vlist:
         return False
 
     def draw_wire(self, c0: Connection, c1: Connection, num: int | None = None, name: str = ''):
-        coord0 = self.search_coords(c0)
-        coord1 = self.search_coords(c1)
-        if coord0 and coord1:
-            if num:
-                tw = self.docwires.get(self.project.wires.slug_wire(num), 0)
-            else:
-                tw = 0
-            self.te.wire(coord0, coord1, tw, name=name)
+        '''Рисует проводник. Тип линии запрашивает по номеру num в словаре типов линий листа.
+        Если тип равен 10 то линия не рисуется'''
+        if num:
+            tw = self.docwires.get(self.project.wires.slug_wire(num), 0)
+        else:
+            tw = 0
+        if tw != 10:
+            coord0 = self.search_coords(c0)
+            coord1 = self.search_coords(c1)
+            if coord0 and coord1:
+                self.te.wire(coord0, coord1, tw, name=name)
+            elif (coord0 and not coord1) or (not coord0 and coord1):
+                if coord0 and not coord1:
+                    x1,y1 = coord0
+                else:
+                    x1,y1 = coord1
+                # if tw in (11, 21,15,25):
+                #     x2 = x1
+                # elif tw in (12,22,13,23,14,24):
+                #     x2 = x1 +10
+                # else:
+                #     x2 = x1 - 10
+                # if tw in (13, 23,17,27):
+                #     y2 = y1
+                # elif tw in (18,28,11,21,12,22):
+                #     y2 = y1 +10
+                # else:
+                #     y2 = y1 - 10
+                # arrow = (21 <= tw <= 28)
+                # if tw in (11,21,13,23,15,25,17,27):
+                #     tw = 0
+                # else:
+                #     tw = 2
+                if abs(x1 - 20) < abs(x1-230):
+                    x2 = 30
+                else:
+                    x2 = 175
+                y2 = y1
+                self.te.wire((x1,y1), (x2, y2), tw, name=name)
 
     def draw(self):
         self.te.picture_begin()
@@ -85,7 +138,7 @@ class Vlist:
             name = '' if wire[4] is None else wire[4]
             self.draw_wire(wire[0], wire[1], num=num, name=name)
         for item in self.docitems:
-            if not isinstance(item, VXT):
+            if not isinstance(item, VXT) and not isinstance(item, VXTm):
                 item.draw()
         # рисуем перемычки на клеммниках
         for name, element in self.project.__dict__.items():
@@ -113,7 +166,11 @@ class Vlist:
             slug = item.pop('e', False)
             if slug:
                 obj = self.project.gef(lambda x: x.slug == slug)
-                item['e'] = list(obj)[0]
+                if obj:
+                    item['e'] = list(obj)[0]
+            if name == 'TableApparatus':
+                item['e'] = self.project
+
             self.docitems.append(self.classes[name](te=self.te, **item))
         self.docwires = data.get('docwires', dict())
 

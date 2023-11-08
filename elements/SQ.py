@@ -1,6 +1,23 @@
 from classes import Element, Connection
+from classes import Apparatus
 
 
+class SQZPUE(Apparatus):
+    '''Класс для описания концевого выключателя положения тележки ячейки ZPUE'''
+    trans = (('n', '11'),
+             ('nc', '8'),
+             ('no', '9'))
+    name = '4K2'
+    model = 'Концевой выключатель положения тележки ZPUE'
+
+class SQGZPUE(Apparatus):
+    '''Класс для описания концевого выключателя положения заземляющих ножей ячейки ZPUE'''
+    trans = (('no', '1'),
+             ('no_', '2'),
+             ('nc', '3'),
+             ('nc_', '4'))
+    name = '89T'
+    model = 'Концевой выключатель положения заземляющих ножей ячейки ZPUE'
 
 class Contact(Element):
     '''Контакт реле, выключателя...'''

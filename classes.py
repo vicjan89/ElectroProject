@@ -12,11 +12,29 @@ from interfaces import Storage
 
 @dataclass
 class Element:
-    name: str | None = None
-    storage: Storage | None = None
-    cabinet: str | None = None
-    location: str | None = None
-    model: str | None = None
+
+    def __init__(self, name: str | None = None,
+                 storage: Storage | None = None,
+                 cabinet: str | None = None,
+                 location: str | None = None,
+                 model: str | None = None):
+        if not hasattr(self, 'name'):
+            self.name = name
+        else:
+            if name:
+                self.name = name
+        self.storage = storage
+        self.cabinet = cabinet
+        self.location = location
+        if not hasattr(self, 'model'):
+            self.model = model
+        else:
+            if model:
+                self.model = model
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(name={self.name}, model={self.model}, cabinet={self.cabinet}, ' \
+               f'location={self.location})'
 
     def save(self):
         self.storage.write(self.encode())
@@ -86,6 +104,11 @@ class Element:
     def tr(self):
         '''Возвращает список названий атрибутов объекта Element'''
         return [c[0] for c in self.trans]
+
+    @property
+    def trp(self):
+        for n, c in enumerate(self.trans):
+            print(f'{n})\t{c[0]}')
 
 class Connection(Element):
     
@@ -157,7 +180,7 @@ class Wires(Element):
     def get(self, e: Element):
         connected = []
         for wire in self.wires:
-            f = filter(lambda c: c == e, wire)
+            f = [wire[0] == e, wire[1] == e]
             if any(f):
                 connected.append(wire[f.index(False)])
         return connected

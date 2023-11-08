@@ -26,4 +26,13 @@ if c:
     p.load()
 l1 = p.l1
 l2 = p.l2
+l3 = p.l3
+l4 = p.l4
+l5 = p.l5
+l6 = p.l6
+l7 = p.l7
+l8 = p.l8
+l9 = p.l9
+# p.sac1 = XB5AD21_2ZBE101_2ZBE102(name='SAC1')
+
 # p.draw()
