@@ -1,6 +1,9 @@
 a:
   class: PA
   name: PA1
+cb:
+  class: TGI
+  name: Q1
 ct0:
   class: CT1
   name: 13T4
@@ -471,8 +474,8 @@ doc:
     x: 90
     y: 120
   - c:
-    - no1
-    - no1_
+    - 'no'
+    - no_
     class: VSACno
     e: SAC5
     x: 45
@@ -506,6 +509,13 @@ doc:
     e: XT5/XT5-19
     x: 140
     y: 90
+  - c:
+    - a1
+    - a2
+    class: Vrelay
+    e: KLD1
+    x: 145
+    y: 90
   docwires:
     "13T4/\u04181/XT2/XT2-7": 1
     A3/3/XT11/XT11-35: 2
@@ -520,6 +530,485 @@ doc:
     XT11/XT11-32/SAC5/3: 1
     XT11/XT11-4/SG1/0: 1
   num: 2
+- docitems:
+  - c:
+    - k3
+    - k4
+    class: VSF
+    e: SF1
+    x: 20
+    y: 250
+  - class: VXTcross
+    e: XT11/XT11-6
+    x: 20
+    y: 260
+  - c:
+    - r5
+    - r5_
+    class: VboxNo
+    e: A1
+    labels:
+    - P5
+    x: 30
+    y: 210
+  - c:
+    - rOpen1
+    - rOpen1_
+    class: VboxNo
+    e: A1
+    labels:
+    - "\u041E\u0442\u043A\u043B."
+    x: 30
+    y: 110
+  - c:
+    - rClose
+    - rClose_
+    class: VboxNo
+    e: A1
+    labels:
+    - "\u0412\u043A\u043B."
+    x: 80
+    y: 210
+  - c:
+    - 'no'
+    - no_
+    - nc
+    - nc_
+    class: VSAC2
+    e: SAC1
+    x: 30
+    y: 190
+  - c:
+    - 'no'
+    - no_
+    class: VSB
+    e: SB1
+    x: 85
+    y: 190
+  - c:
+    - n1
+    - no1
+    class: VcontNo
+    e: KLB
+    x: 130
+    y: 210
+  - class: VXT
+    e: XT12/XT12-1
+    x: 126
+    y: 210
+  - class: VXT
+    e: XT12/XT12-2
+    x: 165
+    y: 210
+  - c:
+    - d8
+    - d8_
+    - d7
+    - d7_
+    class: VboxTxt
+    e: A1
+    labels:
+    - "\u04148"
+    - "\u04147"
+    x: 30
+    y: 150
+  - class: VXT
+    e: XT5/XT5-1
+    x: 20
+    y: 210
+  - c:
+    - up
+    - up_
+    - d15
+    - d15_
+    - d5
+    - d5_
+    - d6
+    - d6_
+    class: VboxTxt
+    e: A1
+    labels:
+    - U=
+    - "\u041415"
+    - "\u04145"
+    - "\u04146"
+    x: 135
+    y: 80
+  - c:
+    - r7
+    - r7_
+    class: VboxNo
+    e: A1
+    labels:
+    - "\u04207"
+    x: 30
+    y: 65
+  - c:
+    - yac
+    - ya
+    - yat
+    class: Vbox
+    e: Q1
+    x: 120
+    y: 150
+  - class: VXT
+    e: XT5/XT5-4
+    x: 110
+    y: 150
+  - class: VXT
+    e: XT5/XT5-5
+    x: 100
+    y: 120
+  - class: VXT
+    e: XT5/XT5-6
+    x: 100
+    y: 135
+  - c:
+    - 'no'
+    - no_
+    class: VSB
+    e: SB2
+    x: 40
+    y: 90
+  - c:
+    - k1
+    - k2
+    class: VSF
+    e: SF1
+    x: 175
+    y: 250
+  - class: VXT
+    e: XT5/XT5-7
+    x: 175
+    y: 150
+  - class: VXT
+    e: XT5/XT5-8
+    x: 175
+    y: 25
+  - class: VXTcross
+    e: XT11/XT11-7
+    x: 175
+    y: 260
+  - class: VXT
+    e: XT5/XT5-14
+    x: 110
+    y: 50
+  - c:
+    - n1
+    - no1
+    class: VcontNo
+    e: KLD1
+    x: 70
+    y: 50
+  - c:
+    - nc
+    - nc_
+    class: VSACno
+    e: SAC2
+    x: 30
+    y: 35
+  - c:
+    - nc
+    - nc_
+    class: VSACno
+    e: SAC5
+    x: 30
+    y: 15
+  - class: VXT
+    e: XT5/XT5-2
+    x: 20
+    y: 50
+  - class: VXT
+    e: XT5/XT5-3
+    x: 20
+    y: 15
+  docwires:
+    A1/X1-1/A1/X2-5: 3
+    A1/X1-2/A1/X5-2: 10
+    A1/X1-2/XT5/XT5-8: 2
+    A1/X2-5/A1/X4-1: 3
+    A1/X2-6/SB2/4: 4
+    A1/X2-6/XT5/XT5-5: 2
+    A1/X4-1/A1/X4-3: 3
+    A1/X4-10/A1/X2-3: 0
+    A1/X4-13/A1/X5-13: 3
+    A1/X4-9/A1/X4-13: 3
+    A1/X4-9/A1/X4-3: 3
+    A1/X5-12/A1/X5-10: 4
+    A1/X5-12/A1/X6-2: 10
+    A1/X5-15/A1/X5-13: 3
+    A1/X5-15/SAC1/3: 3
+    A1/X5-8/A1/X5-10: 10
+    A1/X6-12/A1/X6-14: 10
+    A1/X6-16/A1/X6-14: 13
+    KL3/21/KLD1/11: 10
+    KL4/A2/XT5/XT5-8: 10
+    SAC1/1/SAC1/3: 3
+    SAC1/1/SAC1/3`: 3
+    SAC1/1`/SAC1/3`: 3
+    SAC1/1`/SAC1/3``: 3
+    SAC1/1``/SAC1/3``: 3
+    SAC1/1``/SAC2/1: 3
+    SAC1/2/SB1/3: 5
+    SAC1/4/A1/X2-3: 5
+    SAC2/2/SAC5/2: 4
+    SAC5/1/SAC2/1: 3
+    SAC5/1/SB2/3: 3
+    SB1/4/A1/X2-4: 4
+    SB1/4/XT12/XT12-1: 2
+    SB2/3`/KLD1/11: 3
+    SB2/3`/SB2/3: 10
+    SF1/4/A1/X2-5: 1
+    XT12/XT12-2/XT5/XT5-4: 7
+    XT5/XT5-1/A1/X1-1: 1
+    XT5/XT5-1/SF1/4: 0
+    XT5/XT5-2/KLD1/11: 0
+    XT5/XT5-3/Q1/A14: 25
+    XT5/XT5-3/Q1/C3: 10
+    "XT5/XT5-5/Q1/A7 \u041E\u0442\u043A\u043B.": 5
+    XT5/XT5-8/A1/X6-16: 25
+  num: 3
+- docitems:
+  - class: VXT
+    e: XT5/XT5-3
+    x: 20
+    y: 220
+  - c:
+    - no1
+    - no1_
+    class: VcontNo
+    e: Q1
+    x: 50
+    y: 220
+  - c:
+    - nc1
+    - nc1_
+    class: VcontNc
+    e: Q1
+    x: 50
+    y: 205
+  - c:
+    - d1
+    - d1_
+    - d2
+    - d2_
+    - d3
+    - d3_
+    - d4
+    - d4_
+    class: VboxTxt
+    e: A1
+    labels:
+    - "\u04141"
+    - "\u04142"
+    - "\u04143"
+    - "\u04144"
+    x: 150
+    y: 220
+  - class: VXT
+    e: XT5/XT5-9
+    x: 120
+    y: 220
+  - class: VXT
+    e: XT5/XT5-10
+    x: 120
+    y: 205
+  - c:
+    - a1
+    - a2
+    class: Vrelay
+    e: KL4
+    x: 130
+    y: 240
+  - class: VXT
+    e: XT5/XT5-8
+    x: 190
+    y: 240
+  - c:
+    - no1
+    - no_1
+    - nc1
+    - nc_1
+    class: VSAC2
+    e: SAC1
+    x: 30
+    y: 190
+  - class: VXT
+    e: XT5/XT5-11
+    x: 70
+    y: 190
+  - class: VXT
+    e: XT5/XT5-12
+    x: 100
+    y: 190
+  - c:
+    - no1
+    - no_1
+    class: VSB
+    e: SB1
+    x: 75
+    y: 175
+  - c:
+    - no1
+    - no_1
+    class: VSB
+    e: SB2
+    x: 60
+    y: 160
+  - class: VXT
+    e: XT5/XT5-13
+    x: 100
+    y: 160
+  - c:
+    - r1
+    - r1_
+    class: VboxNo
+    e: A1
+    labels:
+    - "\u04201"
+    x: 30
+    y: 140
+  - c:
+    - r2
+    - r2_
+    class: VboxNo
+    e: A1
+    labels:
+    - "\u04202"
+    x: 30
+    y: 120
+  - class: VXT
+    e: XT5/XT5-15
+    x: 100
+    y: 140
+  - class: VXT
+    e: XT5/XT5-16
+    x: 100
+    y: 120
+  - c:
+    - a1
+    - a2
+    class: Vrelay
+    e: KL1
+    x: 130
+    y: 140
+  - c:
+    - a1
+    - a2
+    class: Vrelay
+    e: KL2
+    x: 130
+    y: 120
+  - c:
+    - sqs_no
+    - sqs_no_
+    class: VcontNo
+    e: Q1
+    x: 50
+    y: 100
+  - c:
+    - sqs_nc
+    - sqs_nc_
+    class: VcontNc
+    e: Q1
+    x: 50
+    y: 85
+  - c:
+    - 'no'
+    - no_
+    class: VcontNo
+    e: 89T
+    x: 50
+    y: 70
+  - c:
+    - nc
+    - nc_
+    class: VcontNo
+    e: 89T
+    x: 50
+    y: 55
+  - c:
+    - no2
+    - no_2
+    - nc2
+    - nc_2
+    class: VSAC2
+    e: SAC1
+    x: 30
+    y: 40
+  - c:
+    - d9
+    - d9_
+    - d10
+    - d10_
+    - d11
+    - d11_
+    - d12
+    - d12_
+    - d13
+    - d13_
+    - d14
+    - d14_
+    - d16
+    - d16_
+    class: VboxTxt
+    e: A1
+    labels:
+    - "\u04149"
+    - "\u041410"
+    - "\u041411"
+    - "\u041412"
+    - "\u041413"
+    - "\u041414"
+    - "\u041416"
+    x: 150
+    y: 100
+  - c:
+    - n2
+    - no2
+    class: VcontNo
+    e: KL3
+    x: 30
+    y: 10
+  docwires:
+    A1/X1-2/A1/X5-2: 10
+    A1/X1-2/XT5/XT5-8: 10
+    A1/X4-1/A1/X4-3: 3
+    A1/X5-12/A1/X6-2: 10
+    A1/X5-4/A1/X5-2: 4
+    A1/X5-4/A1/X5-6: 4
+    A1/X5-8/A1/X5-10: 10
+    A1/X5-8/A1/X5-6: 4
+    A1/X6-12/A1/X6-10: 4
+    A1/X6-12/A1/X6-14: 10
+    A1/X6-16/A1/X6-14: 10
+    A1/X6-4/A1/X6-2: 4
+    A1/X6-4/A1/X6-6: 4
+    A1/X6-8/A1/X6-10: 4
+    A1/X6-8/A1/X6-6: 4
+    KL1/A2/KL2/A2: 4
+    KL4/A2/KL2/A2: 10
+    KL4/A2/XT5/XT5-8: 0
+    SAC1/1`/SAC1/3``: 3
+    XT5/XT5-12/SB1/4`: 1
+    XT5/XT5-13/A1/X5-7: 5
+    XT5/XT5-3/Q1/A14: 1
+    XT5/XT5-8/A1/X6-16: 1
+    XT5/XT5-9/KL4/A1: 1
+  num: 4
+- docitems: []
+  docwires: {}
+  num: 5
+- docitems: []
+  docwires: {}
+  num: 6
+- docitems:
+  - class: VXTmount
+    e: XT5
+    x: 40
+    y: 240
+  docwires: {}
+  num: 7
 dug:
   class: PS4
   model: "\u0423\u0414\u0417.\u041F\u0421-4"
@@ -533,6 +1022,25 @@ g1:
 g2:
   class: Ground
   name: ground2
+kl1:
+  class: KL
+  name: KL1
+kl2:
+  class: KL
+  name: KL2
+kl3:
+  class: KL
+  name: KL3
+kl4:
+  class: KL
+  name: KL4
+klb:
+  class: KL
+  name: KLB
+kld1:
+  class: KL
+  model: "\u0420\u0435\u043B\u0435 RXM4AB1BD"
+  name: KLD1
 mr5:
   class: MR5PO50
   name: A1
@@ -542,14 +1050,31 @@ pa:
 pik:
   class: PIK
   name: PIK1
+sac1:
+  class: XB5AD21_3ZBE101_3ZBE102
+  name: SAC1
+sac2:
+  class: XB5AD21_2ZBE101_2ZBE102
+  name: SAC2
 sac5:
-  class: XB5AD21_ZBE102
+  class: XB5AD21_ZBE101_ZBE102
   name: SAC5
+sb1:
+  class: XB5AA33
+  name: SB1
+sb2:
+  class: XB5AA43
+  name: SB2
+sf:
+  class: SF2
+  name: SF1
 sg:
   class: SGm
   model: "\u0418\u0441\u043F\u044B\u0442\u0430\u0442\u0435\u043B\u044C\u043D\u0430\
     \u044F \u043A\u043E\u0440\u043E\u0431\u043A\u0430 \u0418\u041A\u041F"
   name: SG1
+sqg:
+  class: SQGZPUE
 wires:
   class: Wires
   wires:
@@ -833,6 +1358,426 @@ wires:
     - null
     - null
     - ''
+  - - KLD1:A1
+    - XT5:XT5-19
+    - null
+    - null
+    - ''
+  - - KLD1:A2
+    - XT11:XT11-34
+    - null
+    - null
+    - D106
+  - - XT11:XT11-6
+    - SF1:3
+    - null
+    - null
+    - '853'
+  - - A1:X1-1
+    - A1:X2-5
+    - null
+    - null
+    - ''
+  - - A1:X2-5
+    - A1:X4-1
+    - null
+    - null
+    - ''
+  - - A1:X4-1
+    - A1:X4-3
+    - null
+    - null
+    - ''
+  - - A1:X4-9
+    - A1:X4-3
+    - null
+    - null
+    - ''
+  - - A1:X4-9
+    - A1:X4-13
+    - null
+    - null
+    - ''
+  - - A1:X4-10
+    - A1:X2-3
+    - null
+    - null
+    - ''
+  - - SB1:4
+    - A1:X2-4
+    - null
+    - null
+    - ''
+  - - SB1:4
+    - XT12:XT12-1
+    - null
+    - null
+    - ''
+  - - SAC1:4
+    - A1:X2-3
+    - null
+    - null
+    - ''
+  - - SAC1:2
+    - SB1:3
+    - null
+    - null
+    - ''
+  - - A1:X4-13
+    - A1:X5-13
+    - null
+    - null
+    - ''
+  - - A1:X5-15
+    - A1:X5-13
+    - null
+    - null
+    - ''
+  - - A1:X5-15
+    - SAC1:3
+    - null
+    - null
+    - ''
+  - - SAC1:1
+    - SAC1:3
+    - null
+    - null
+    - ''
+  - - SAC1:1
+    - SAC1:3`
+    - null
+    - null
+    - ''
+  - - SAC1:1`
+    - SAC1:3`
+    - null
+    - null
+    - ''
+  - - SAC1:1`
+    - SAC1:3``
+    - null
+    - null
+    - ''
+  - - SAC1:1``
+    - SAC1:3``
+    - null
+    - null
+    - ''
+  - - SAC1:1``
+    - SAC2:1
+    - null
+    - null
+    - ''
+  - - SAC5:1
+    - SAC2:1
+    - null
+    - null
+    - ''
+  - - SAC5:1
+    - SB2:3
+    - null
+    - null
+    - ''
+  - - SB2:3`
+    - SB2:3
+    - null
+    - null
+    - ''
+  - - XT5:XT5-2
+    - KLD1:11
+    - null
+    - null
+    - ''
+  - - KL3:21
+    - KLD1:11
+    - null
+    - null
+    - ''
+  - - XT5:XT5-1
+    - SF1:4
+    - null
+    - null
+    - ''
+  - - XT5:XT5-1
+    - A1:X1-1
+    - null
+    - null
+    - ''
+  - - XT12:XT12-1
+    - KLB:11
+    - null
+    - null
+    - ''
+  - - XT12:XT12-2
+    - KLB:14
+    - null
+    - null
+    - ''
+  - - XT12:XT12-2
+    - XT5:XT5-4
+    - null
+    - null
+    - ''
+  - - XT5:XT5-4
+    - A1:X5-16
+    - null
+    - null
+    - ''
+  - - XT5:XT5-4
+    - "Q1:A10 \u0412\u043A\u043B."
+    - null
+    - null
+    - ''
+  - - XT5:XT5-5
+    - "Q1:A7 \u041E\u0442\u043A\u043B."
+    - null
+    - null
+    - '33'
+  - - A1:X2-6
+    - XT5:XT5-5
+    - null
+    - null
+    - ''
+  - - A1:X2-6
+    - SB2:4
+    - null
+    - null
+    - ''
+  - - A1:X5-14
+    - XT5:XT5-6
+    - null
+    - null
+    - ''
+  - - Q1:A16
+    - XT5:XT5-7
+    - null
+    - null
+    - '2'
+  - - XT11:XT11-7
+    - SF1:1
+    - null
+    - null
+    - '854'
+  - - SF1:2
+    - XT5:XT5-7
+    - null
+    - null
+    - ''
+  - - A1:X1-2
+    - XT5:XT5-8
+    - null
+    - null
+    - ''
+  - - A1:X4-14
+    - A1:X6-13
+    - null
+    - null
+    - ''
+  - - A1:X1-2
+    - A1:X5-2
+    - null
+    - null
+    - ''
+  - - A1:X5-4
+    - A1:X5-2
+    - null
+    - null
+    - ''
+  - - A1:X5-4
+    - A1:X5-6
+    - null
+    - null
+    - ''
+  - - A1:X5-8
+    - A1:X5-6
+    - null
+    - null
+    - ''
+  - - A1:X5-8
+    - A1:X5-10
+    - null
+    - null
+    - ''
+  - - A1:X5-12
+    - A1:X5-10
+    - null
+    - null
+    - ''
+  - - A1:X5-12
+    - A1:X6-2
+    - null
+    - null
+    - ''
+  - - A1:X6-4
+    - A1:X6-2
+    - null
+    - null
+    - ''
+  - - A1:X6-4
+    - A1:X6-6
+    - null
+    - null
+    - ''
+  - - A1:X6-8
+    - A1:X6-6
+    - null
+    - null
+    - ''
+  - - A1:X6-8
+    - A1:X6-10
+    - null
+    - null
+    - ''
+  - - A1:X6-12
+    - A1:X6-10
+    - null
+    - null
+    - ''
+  - - A1:X6-12
+    - A1:X6-14
+    - null
+    - null
+    - ''
+  - - A1:X6-16
+    - A1:X6-14
+    - null
+    - null
+    - ''
+  - - KL4:A2
+    - XT5:XT5-8
+    - null
+    - null
+    - ''
+  - - KL4:A2
+    - KL2:A2
+    - null
+    - null
+    - ''
+  - - KL1:A2
+    - KL2:A2
+    - null
+    - null
+    - ''
+  - - XT5:XT5-8
+    - A1:X6-16
+    - null
+    - null
+    - ''
+  - - SAC2:2
+    - SAC5:2
+    - null
+    - null
+    - ''
+  - - SAC2:2
+    - A1:X5-11
+    - null
+    - null
+    - '23'
+  - - KLD1:14
+    - XT5:XT5-14
+    - null
+    - null
+    - ''
+  - - A1:X5-9
+    - XT5:XT5-14
+    - null
+    - null
+    - '21'
+  - - XT5:XT5-3
+    - Q1:C3
+    - null
+    - null
+    - ''
+  - - XT5:XT5-3
+    - Q1:A14
+    - null
+    - null
+    - ''
+  - - XT5:XT5-9
+    - Q1:C4
+    - null
+    - null
+    - ''
+  - - XT5:XT5-10
+    - Q1:A15
+    - null
+    - null
+    - ''
+  - - XT5:XT5-9
+    - A1:X5-1
+    - null
+    - null
+    - ''
+  - - XT5:XT5-10
+    - A1:X5-3
+    - null
+    - null
+    - ''
+  - - XT5:XT5-9
+    - KL4:A1
+    - null
+    - null
+    - ''
+  - - SAC1:4`
+    - XT5:XT5-11
+    - null
+    - null
+    - '11'
+  - - A1:X5-5
+    - XT5:XT5-12
+    - null
+    - null
+    - '03'
+  - - SAC1:2`
+    - SB1:3`
+    - null
+    - null
+    - '10'
+  - - XT5:XT5-12
+    - SB1:4`
+    - null
+    - null
+    - '03'
+  - - XT5:XT5-13
+    - A1:X5-7
+    - null
+    - null
+    - '033'
+  - - XT5:XT5-13
+    - SB2:4`
+    - null
+    - null
+    - ''
+  - - A1:X4-2
+    - XT5:XT5-15
+    - null
+    - null
+    - ''
+  - - A1:X4-4
+    - XT5:XT5-16
+    - null
+    - null
+    - ''
+  - - KL1:A1
+    - XT5:XT5-15
+    - null
+    - null
+    - ''
+  - - KL2:A1
+    - XT5:XT5-16
+    - null
+    - null
+    - '043'
+  - - SAC1:4``
+    - A1:X6-9
+    - null
+    - null
+    - ''
+  - - SAC1:2``
+    - A1:X6-11
+    - null
+    - null
+    - ''
 xt:
   class: XTm
   jumpers:
@@ -858,7 +1803,7 @@ xt:
   - false
   name: XT2
   size: 20
-xt5:
+xt12:
   class: XT
   jumpers:
   - false
@@ -869,6 +1814,31 @@ xt5:
   - false
   - false
   - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  - false
+  name: XT12
+  size: 20
+xt5:
+  class: XT
+  jumpers:
+  - false
+  - true
+  - true
+  - false
+  - false
+  - true
+  - false
+  - true
   - false
   - false
   - false
@@ -912,7 +1882,7 @@ xt5:
   - false
   - false
   name: XT5
-  size: 50
+  size: 40
 xtcr:
   class: XT
   jumpers:
