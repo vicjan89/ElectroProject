@@ -1,11 +1,10 @@
 from classes import Element, Connection, Apparatus
 
-class Diode(Element):
+class Diode(Apparatus):
+    model = 'Диод'
+    trans = (('anode', 'анод'),
+             ('cathode', 'катод'))
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.anode = Connection(parent=self, name='анод')
-        self.cathode = Connection(parent=self, name='катод')
 
 class HL(Apparatus):
     '''Класс описания лампочки сигнальной'''
@@ -39,12 +38,10 @@ class HLG(HL):
     model = 'Сигнальная лампа XB5 AVB3 зелёная'
 
 
-class Diode_bridge(Element):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.plus = Connection(parent=self, name='+')
-        self.minus = Connection(parent=self, name='-')
-        self.in1 = Connection(parent=self, name='~1')
-        self.in2 = Connection(parent=self, name='~2')
+class Diode_bridge(Apparatus):
+    model = 'Диодный мост'
+    trans = (('plus','+'),
+             ('minus','-'),
+             ('in1', '~1'),
+             ('in2','~2'))
 

@@ -3,7 +3,7 @@ def diode_bridge(x, y, name):
     \draw ''' + f'({x + 10}, {y}) to[diode] ({x}, {y + 10}) to[diode] ({x - 10}, {y});' + '''
     \draw ''' + f'({x}, {y}) node {{${name}$}};\n' +
             f'\draw ({x-10}, {y}) node [below left] {{$+$}};\n' +
-            f'\draw ({x+10}, {y}) node [below left] {{$-$}};\n' +
+            f'\draw ({x+10}, {y}) node [below right] {{$-$}};\n' +
             f'\draw ({x}, {y+10}) node [above left] {{$~$}};\n' +
             f'\draw ({x}, {y - 10}) node [below left] {{$~$}};\n')
 

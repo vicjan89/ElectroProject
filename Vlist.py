@@ -5,7 +5,7 @@ from classes import *
 from textengines.interfaces import TextEngine
 
 
-from views.VA4 import VA4
+from views.VA4 import *
 from views.VXT import *
 from views.Vradio_component import *
 from views.VSQ import VSQ
@@ -16,11 +16,26 @@ from views.Vmeasurements import *
 from views.Vswitches import *
 from views.VSF import *
 from views.tables import *
+from views.frames import *
 from elements.XT import *
 
 class Vlist:
 
-    def __init__(self, num: str, project: Element, te: TextEngine, docitems: list | None = None, docwires: dict | None = None):
+    def __init__(self,
+                 num: str,
+                 project: Element,
+                 te: TextEngine,
+                 docitems: list | None = None,
+                 docwires: dict | None = None,
+                 code_list: str = '',
+                 cabinet_list: str = '',
+                 name_list: str = '',
+                 num_lists: int = 1,
+                 ):
+        self.code_list = code_list
+        self.cabinet_list = cabinet_list
+        self.name_list = name_list
+        self.num_lists = num_lists
         self.num = num
         if docitems:
             self.docitems = docitems
@@ -40,7 +55,10 @@ class Vlist:
                    'VXTmountM': VXTmountM,
                    'Vlbox_mount': Vlbox_mount,
                    'VA4': VA4,
+                   'VA4Seom': VA4Seom,
                    'VDiode_bridge': VDiode_bridge,
+                   'VDiode': VDiode,
+                   'VDiodeL': VDiodeL,
                    'VHL': VHL,
                    'VSQ': VSQ,
                    'Vrelay': Vrelay,
@@ -61,49 +79,126 @@ class Vlist:
                    'VSB': VSB,
                    'VPA': VPA,
                    'VSF': VSF,
-                   'TableApparatus': TableApparatus}
+                   'TableApparatus': TableApparatus,
+                   'Vcabinet': Vcabinet,
+                   'VcabinetD': VcabinetD,
+                   'Vlabel': Vlabel,
+                   'Ruler': Ruler,
+                   'Vexplanation': Vexplanation}
 
-    def av(self, view: View, atr: str = None):
-        view.te = self.te
-        if atr:
-            self.__dict__[atr] = view
-        self.docitems.append(view)
+    def av(self, view: View | list):
+        if isinstance(view, View):
+            view.te = self.te
+            self.docitems.append(view)
+        elif isinstance(view, list):
+            self.docitems.extend(view)
+        else:
+            assert False, 'Аргумент должен быть либо View либо list'
+
+    def dv(self, view : View | list):
+        if isinstance(view, View):
+            self.docitems.remove(view)
+        elif isinstance(view, list):
+            for v in view:
+                self.docitems.remove(v)
+        else:
+            assert False, 'Аргумент должен быть либо View либо list'
+
+    def replace(self,num: int, new_class: View):
+        '''
+        Заменяет объект View номер num на другой класс new_class
+        :param num: номер заменяемого объекта в списке docitems
+        :param new_class: имя нового класса наследника View
+        :return: объект нового класса
+        '''
+        self.docitems[num] = new_class(**self.docitems[num].__dict__)
+        return self.docitems[num]
+
+    def clear(self):
+        self.docitems = []
+        self.docwires = dict()
+
+    def place(self, elements: list[Element]):
+        '''
+        Размещает на листе елементы из списка с использованием класса Vlbox_mount
+        :param elements: список элементов для размещения
+        :return:
+        '''
+        x = 30
+        y = 250
+        for element in elements:
+            if isinstance(element, XT):
+                obj = VXTmount(e=element,x=x, y=y)
+            elif isinstance(element, XTm):
+                obj = VXTmountM(e=element,x=x, y=y)
+            else:
+                obj = Vlbox_mount(e=element, x=x, y=y)
+            h = y - obj.bottom
+            y = obj.bottom
+            if y < 10:
+                x += 60
+                y = 250
+                obj.x = x
+                obj.y = y
+                y = y - h
+            self.av(obj)
+            print(f'Placed {element}')
 
     def tw(self, wire_number: int | list | tuple, type_wire: int | None = None):
         if isinstance(wire_number, int):
             slug = self.project.wires.slug_wire(wire_number)
             if type_wire is None:
-                print(f'{wire_number})\t{slug}\t{self.docwires[slug]}')
+                print(f'{wire_number})\t{slug}\t{self.docwires[wire_number]}')
             else:
-                self.docwires[slug] = type_wire
+                self.docwires[wire_number] = type_wire
         else:
             for wire in wire_number:
                 slug = self.project.wires.slug_wire(wire)
                 if type_wire is None:
-                    print(f'{wire})\t{slug}\t{self.docwires[slug]}')
+                    print(f'{wire})\t{slug}\t{self.docwires[wire]}')
                 else:
-                    self.docwires[slug] = type_wire
+                    self.docwires[wire] = type_wire
+        # if isinstance(wire_number, int):
+        #     slug = self.project.wires.slug_wire(wire_number)
+        #     if type_wire is None:
+        #         print(f'{wire_number})\t{slug}\t{self.docwires[slug]}')
+        #     else:
+        #         self.docwires[slug] = type_wire
+        # else:
+        #     for wire in wire_number:
+        #         slug = self.project.wires.slug_wire(wire)
+        #         if type_wire is None:
+        #             print(f'{wire})\t{slug}\t{self.docwires[slug]}')
+        #         else:
+        #             self.docwires[slug] = type_wire
 
     def search_coords(self, c: Connection):
+        '''
+        Ищет координаты на листе для переданного объекта c типа Connection
+        :param c:
+        :return:
+        '''
         for v in self.docitems:
             coord = v.get_coords(c)
             if coord:
                 return coord
         return False
 
-    def draw_wire(self, c0: Connection, c1: Connection, num: int | None = None, name: str = ''):
+    def draw_wire(self, c0: Connection, c1: Connection, num: int | None = None, name: str = '', dev_mode = True):
         '''Рисует проводник. Тип линии запрашивает по номеру num в словаре типов линий листа.
-        Если тип равен 10 то линия не рисуется'''
-        if num:
-            tw = self.docwires.get(self.project.wires.slug_wire(num), 0)
-        else:
+        Если тип равен 10 то линия не рисуется
+        :param num: номер типа линии'''
+        if num is None:
             tw = 0
+        else:
+            tw = self.docwires.get(num, 0)
+        num_text = num if num and dev_mode else ''
         if tw != 10:
             coord0 = self.search_coords(c0)
             coord1 = self.search_coords(c1)
             if coord0 and coord1:
-                self.te.wire(coord0, coord1, tw, name=name)
-            elif (coord0 and not coord1) or (not coord0 and coord1):
+                self.te.wire(c1=coord0, c2=coord1, tw=tw, name=name, num=num_text)
+            elif dev_mode and ((coord0 and not coord1) or (not coord0 and coord1)):
                 if coord0 and not coord1:
                     x1,y1 = coord0
                 else:
@@ -125,21 +220,32 @@ class Vlist:
                 #     tw = 0
                 # else:
                 #     tw = 2
-                if abs(x1 - 20) < abs(x1-230):
-                    x2 = 30
-                else:
-                    x2 = 175
-                y2 = y1
-                self.te.wire((x1,y1), (x2, y2), tw, name=name)
 
-    def draw(self):
+                # if abs(x1 - 20) < abs(x1-230):
+                #     x2 = 30
+                # else:
+                #     x2 = 175
+                # y2 = y1
+
+                x2 = x1
+                y2 = y1 - 10
+                name = c0.slug if coord1 else c1.slug
+                self.te.wire(c1=(x1,y1), c2=(x2, y2), tw=tw, name=name, num=num_text, arrow=True)
+
+    def draw(self, dev_mode = True):
         self.te.picture_begin()
+        if self.cabinet_list:
+            self.te.latex(r'\AddToShipoutPicture*{\put(150mm,15mm){\parbox[c]{30mm}{\centering {\normalsize ' + self.cabinet_list + r'}}}}')
+        if self.name_list:
+            self.te.latex(r'\AddToShipoutPicture*{\put(148mm,5.5mm){\parbox[c]{35mm}{\centering {\scriptsize \begin{spacing}{0.5}' +
+                          self.name_list + r'\end{spacing}}}}}')
         for num, wire in enumerate(self.project.wires.wires):
-            name = '' if wire[4] is None else wire[4]
-            self.draw_wire(wire[0], wire[1], num=num, name=name)
+            name = '' if wire[2] is None else wire[2]
+            self.draw_wire(wire[0], wire[1], num=num, name=name, dev_mode=dev_mode)
         for item in self.docitems:
             if not isinstance(item, VXT) and not isinstance(item, VXTm):
-                item.draw()
+                if not isinstance(item, Ruler) or dev_mode:
+                    item.draw()
         # рисуем перемычки на клеммниках
         for name, element in self.project.__dict__.items():
             if isinstance(element, XT) or isinstance(element, XTm):
@@ -154,8 +260,11 @@ class Vlist:
     def encode(self):
         res = {'num': self.num,
                'docitems': list(),
-               'docwires': self.docwires
-               }
+               'docwires': self.docwires,
+               'code_list': self.code_list,
+               'cabinet_list': self.cabinet_list,
+               'name_list': self.name_list,
+        }
         for view in self.docitems:
             res['docitems'].append(view.encode())
         return res
@@ -184,14 +293,24 @@ class Vlist:
     def ve(self):
         return self.docitems
 
+    @property
+    def vl(self):
+        return self.docitems[-1]
 
     def gef(self, f):
-        '''Возарвщает список графических элементов для которых функция f вернёт True'''
+        '''Возвращает список графических элементов для которых функция f вернёт True'''
         res = []
         for item in self.docitems:
             if f(item):
                 res.append(item)
         return res
+
+    def gebox(self, x: int, y: int, w: int, h: int):
+        def box(o):
+            res_x = x <= o.x <= x + w
+            res_y = y - h <= o.y <= y
+            return res_x and res_y
+        return self.gef(box)
 
     def f(self, s: str):
         '''Печатает список элементов содержащих в выводе __repr__ подстроку s'''
@@ -201,6 +320,14 @@ class Vlist:
             if s in view_name:
                 res += view_name
         print(res)
+
+    def fe(self, s: str):
+        '''Возвращает список элементов содержащих в выводе __repr__ подстроку s'''
+        res = []
+        for num, item in enumerate(self.docitems):
+            if s in repr(item):
+                res.append(item)
+        return res
 
     def __repr__(self):
         return f'{self.__class__.__name__}(num={self.num}, docitems={len(self.docitems)}, docwires={len(self.docwires)})'

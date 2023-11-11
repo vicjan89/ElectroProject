@@ -5,12 +5,13 @@ from classes import Connection, View
 
 
 class VXT(View):
-
+    '''Класс отображает одиночную клемму в виде кружка'''
     def draw(self):
         self.te.circle(self.x, self.y, 1)
         self.te.label(self.x, self.y, self.e.name, s=2)
 
 class VXT1(View):
+    '''Класс отображает одиночную клемму в виде перечёркнутого кружка'''
 
     def draw(self):
         d = 1.5
@@ -19,6 +20,7 @@ class VXT1(View):
         self.te.label(self.x, self.y, self.e.name, s=2)
 
 class VXTcross(View):
+    '''Класс отображает одиночную кроссовую клемму'''
 
     def draw(self):
         self.te.lines((self.x - 4, self.y), (self.x + 4, self.y ))
@@ -26,6 +28,7 @@ class VXTcross(View):
         self.te.label(self.x, self.y, self.e.name, s=2)
 
 class VXTm(View):
+    '''Класс отображает одиночную испытательную клемму'''
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -52,6 +55,12 @@ class VG(View):
 
 class VXTmount(View):
     '''Класс для описания клеммника на монтажной схеме'''
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    @property
+    def bottom(self):
+        return self.y - self.e.size * 6 - 17
 
     def draw(self):
         x, y = self.x, self.y
@@ -87,6 +96,9 @@ class VXTmount(View):
 
 class VXTmountM(View):
     '''Класс для описания испытательного клеммника на монтажной схеме'''
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.bottom = self.y - self.e.size * 6
 
     def draw(self):
         x, y = self.x, self.y

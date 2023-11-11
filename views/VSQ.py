@@ -4,9 +4,11 @@ from views.func_graph_elements import *
 
 class VSQ(View):
 
-    def __post_init__(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         if self.c:
             self.correspondence = {self.c[0]: (0, 0),
-                                   self.c[1]: (30, 0)}
+                                   self.c[1]: (16, 0)}
     def draw(self):
-        self.te.latex(contact_nc(self.x, self.y, self.c[0], self.c[1], self.e.name))
+        self.te.latex(contact_nc(self.x, self.y, getattr(self.e, self.c[0]).name, getattr(self.e, self.c[1]).name,
+                                 self.e.name))

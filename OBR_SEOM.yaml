@@ -39,7 +39,7 @@ doc:
     y: 60
   - class: VXT
     e: "\u0421\u0420-1/XT/XT-7"
-    x: 90
+    x: 100
     y: 60
   - class: VXT
     e: "\u0422\u0440-\u0440 1/XT/XT-3"
@@ -63,7 +63,7 @@ doc:
     y: 65
   - class: VXT
     e: "\u0421\u0420-1/XT/XT-8"
-    x: 107
+    x: 67
     y: 90
   - c:
     - k1
@@ -165,7 +165,7 @@ doc:
     y: 110
   - class: VXT
     e: "\u0421\u0420-1/XT/XT-10"
-    x: 80
+    x: 100
     y: 110
   - class: VXT
     e: "\u0421\u0412\u041D/XT/XT-3"
@@ -194,17 +194,17 @@ doc:
   - c:
     - anode
     - cathode
-    class: VDiode
+    class: VDiodeL
     e: "\u0421\u0420-1/VD2"
     x: 92
     y: 100
   - c:
     - anode
     - cathode
-    class: VDiode
+    class: VDiodeL
     e: "\u0421\u0420-1/VD3"
     x: 92
-    y: 75
+    y: 77
   - class: VXT
     e: "\u0422\u0440-\u0440 1/XT/XT-1"
     x: 0
@@ -295,7 +295,7 @@ doc:
     x: 145
     y: 150
   - class: Vexplanation
-    h: 30
+    h: 25
     t: "\u0411\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u043A\u0430 \u0432\u043A\u043B\
       \u044E\u0447\u0435\u043D\u0438\u044F \u0417\u041D \u0441\u0435\u043A\u0446\u0438\
       \u043E\u043D\u043D\u043E\u0439 \u043F\u0435\u0440\u0435\u043C\u044B\u0447\u043A\
@@ -304,12 +304,15 @@ doc:
     x: 145
     y: 125
   - class: Vexplanation
-    h: 20
+    h: 30
     t: "\u0411\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u043A\u0430 \u043E\u043F\u0435\
-      \u0440\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F \u0421\u0420-1 \u0442\
-      \u043E\u043A\u0430 \u043D\u0430\u0433\u0440\u0443\u0437\u043A\u0438"
+      \u0440\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F \u0421\u0420-1 \u043F\
+      \u0440\u0438 \u0442\u043E\u043A\u0435 \u043D\u0430\u0433\u0440\u0443\u0437\u043A\
+      \u0438 \u0438\u043B\u0438 \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u043D\u044B\
+      \u0445 \u0417\u041D \u0441\u0435\u043A\u0446\u0438\u043E\u043D\u043D\u043E\u0439\
+      \ \u043F\u0435\u0440\u0435\u043C\u044B\u0447\u043A\u0438 \u0421\u0412\u041D"
     x: 145
-    y: 95
+    y: 100
   - class: Vexplanation
     h: 30
     t: "\u0411\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u043A\u0430 \u0432\u043A\u043B\
@@ -318,7 +321,7 @@ doc:
       \ \u0432\u0432\u043E\u0434\u0430 1 \u0438\u043B\u0438 \u0442\u0440-\u0440\u0430\
       \ 1"
     x: 145
-    y: 75
+    y: 70
   - class: VA4Seom
     x: 0
     y: 0
@@ -326,6 +329,26 @@ doc:
     e: "\u0421\u0420-1/XT/XT-4"
     x: 110
     y: 230
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-13"
+    x: 107
+    y: 90
+  - c:
+    - nc1
+    - nc1_
+    class: VSQ
+    e: "\u0421\u0412\u041D/SQG2"
+    x: 70
+    y: 90
+  - c:
+    - no1
+    - no1_
+    - nc1
+    - nc1_
+    class: Vcabinet
+    e: "\u0421\u0412\u041D/SQG2"
+    x: 55
+    y: 105
   docwires:
     0: 1
     1: 2
@@ -334,15 +357,15 @@ doc:
     12: 1
     13: 4
     14: 0
-    20: 1
-    21: 1
-    27: 2
-    28: 2
-    29: 1
-    30: 2
-    32: 1
-    34: 3
-    42: 2
+    16: 1
+    17: 1
+    23: 2
+    24: 2
+    25: 1
+    26: 2
+    28: 1
+    30: 3
+    38: 2
   name_list: "\u0421\u0445\u0435\u043C\u0430 \u044D\u043B\u0435\u043A\u0442\u0440\u0438\
     \u0447\u0435\u0441\u043A\u0430\u044F \u043F\u0440\u0438\u043D\u0446\u0438\u043F\
     \u0438\u0430\u043B\u044C\u043D\u0430\u044F"
@@ -451,11 +474,11 @@ doc:
     x: 145
     y: 95
   docwires:
-    22: 2
+    18: 2
+    34: 2
     38: 2
+    41: 3
     42: 2
-    45: 3
-    46: 2
   name_list: "\u0421\u0445\u0435\u043C\u0430 \u044D\u043B\u0435\u043A\u0442\u0440\u0438\
     \u0447\u0435\u0441\u043A\u0430\u044F \u043F\u0440\u0438\u043D\u0446\u0438\u043F\
     \u0438\u0430\u043B\u044C\u043D\u0430\u044F"
@@ -525,8 +548,8 @@ doc:
     x: 145
     y: 25
   docwires:
-    43: 2
-    44: 2
+    39: 2
+    40: 2
   name_list: "\u0421\u0445\u0435\u043C\u0430 \u044D\u043B\u0435\u043A\u0442\u0440\u0438\
     \u0447\u0435\u0441\u043A\u0430\u044F \u043F\u0440\u0438\u043D\u0446\u0438\u043F\
     \u0438\u0430\u043B\u044C\u043D\u0430\u044F"
@@ -568,43 +591,125 @@ doc:
     x: 145
     y: 25
   docwires:
-    47: 1
-    48: 1
+    43: 1
+    44: 1
   name_list: "\u0421\u0445\u0435\u043C\u0430 \u044D\u043B\u0435\u043A\u0442\u0440\u0438\
     \u0447\u0435\u0441\u043A\u0430\u044F \u043F\u0440\u0438\u043D\u0446\u0438\u043F\
     \u0438\u0430\u043B\u044C\u043D\u0430\u044F"
   num: 4
+- cabinet_list: ''
+  code_list: ''
+  docitems:
+  - c:
+    - no1
+    - no1_
+    - nc1
+    - nc1_
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/SQG1"
+    x: 30
+    y: 250
+  - c:
+    - no1
+    - no1_
+    - nc1
+    - nc1_
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/SQG2"
+    x: 30
+    y: 211
+  - c:
+    - no1
+    - no1_
+    - nc1
+    - nc1_
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/SQS1"
+    x: 30
+    y: 172
+  - c:
+    - plus
+    - minus
+    - in1
+    - in2
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/VD1"
+    x: 30
+    y: 133
+  - c:
+    - anode
+    - cathode
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/VD3"
+    x: 30
+    y: 94
+  - c:
+    - anode
+    - cathode
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/VD2"
+    x: 30
+    y: 67
+  - c: []
+    class: VXTmount
+    e: "\u0421\u0420-1/XT"
+    x: 90
+    y: 250
+  - c:
+    - k1
+    - k2
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/YG1"
+    x: 90
+    y: 113
+  - c:
+    - k1
+    - k2
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/YG2"
+    x: 90
+    y: 86
+  - c:
+    - k1
+    - k2
+    class: Vlbox_mount
+    e: "\u0421\u0420-1/YS1"
+    x: 90
+    y: 59
+  docwires: {}
+  name_list: ''
+  num: 5
 sqg1_3:
   cabinet: "\u0421\u0420-1"
-  class: SQ_Seom
+  class: SQ_VP15
   name: SQG1
 sqg1_4:
   cabinet: "\u0421\u0412\u041D"
-  class: SQ_Seom
+  class: SQ_VP15
   name: SQG1
 sqg2_3:
   cabinet: "\u0421\u0420-1"
-  class: SQ_Seom
+  class: SQ_VP15
+  name: SQG2
+sqg2_4:
+  cabinet: "\u0421\u0412\u041D"
+  class: SQ_VP15
   name: SQG2
 sqs1_1:
   cabinet: "\u0412\u0432\u043E\u0434 1"
-  class: SQ_Seom
-  model: "\u041A\u043E\u043D\u0446\u0435\u0432\u043E\u0439 \u0432\u044B\u043A\u043B\
-    \u044E\u0447\u0430\u0442\u0435\u043B\u044C"
+  class: SQ_VP15
   name: SQS1
 sqs1_2:
   cabinet: "\u0422\u0440-\u0440 1"
-  class: SQ_Seom
-  model: "\u041A\u043E\u043D\u0446\u0435\u0432\u043E\u0439 \u0432\u044B\u043A\u043B\
-    \u044E\u0447\u0430\u0442\u0435\u043B\u044C"
+  class: SQ_VP15
   name: SQS1
 sqs1_3:
   cabinet: "\u0421\u0420-1"
-  class: SQ_Seom
+  class: SQ_VP15
   name: SQS1
 sqs1_4:
   cabinet: "\u0421\u0412\u041D"
-  class: SQ_Seom
+  class: SQ_VP15
   name: SQS1
 vd1:
   cabinet: "\u0421\u0420-1"
@@ -631,13 +736,13 @@ wires:
   - - "\u0421\u0420-1/VD1/-"
     - "\u0421\u0420-1/XT/XT-5"
     - ''
-  - - "\u0422\u0440-\u0440 1/SQS1/8"
+  - - "\u0422\u0440-\u0440 1/SQS1/3"
     - "\u0422\u0440-\u0440 1/XT/XT-3"
     - ''
   - - "\u0421\u0420-1/VD1/+"
     - "\u0421\u0420-1/XT/XT-1"
     - ''
-  - - "\u0412\u0432\u043E\u0434 1/SQS1/8"
+  - - "\u0412\u0432\u043E\u0434 1/SQS1/3"
     - "\u0412\u0432\u043E\u0434 1/XT/XT-3"
     - ''
   - - "\u0421\u0420-1/XT/XT-7"
@@ -647,13 +752,13 @@ wires:
     - "\u0421\u0420-1/XT/XT-7"
     - ''
   - - "\u0422\u0440-\u0440 1/XT/XT-2"
-    - "\u0422\u0440-\u0440 1/SQS1/7"
+    - "\u0422\u0440-\u0440 1/SQS1/1"
     - ''
   - - "\u0412\u0432\u043E\u0434 1/XT/XT-3"
     - "\u0422\u0440-\u0440 1/XT/XT-2"
     - ''
   - - "\u0412\u0432\u043E\u0434 1/XT/XT-2"
-    - "\u0412\u0432\u043E\u0434 1/SQS1/7"
+    - "\u0412\u0432\u043E\u0434 1/SQS1/1"
     - ''
   - - "\u0421\u0420-1/XT/XT-1"
     - "\u0422\u0440-\u0440 1/XT/XT-1"
@@ -664,34 +769,22 @@ wires:
   - - "\u0421\u0420-1/YG1/2"
     - "\u0421\u0420-1/YS1/2"
     - ''
-  - - "\u0421\u0420-1/XT/XT-8"
+  - - "\u0421\u0420-1/XT/XT-13"
     - "\u0421\u0420-1/YS1/1"
     - ''
-  - - "\u0422\u0440-\u0440 2/SQS1/10"
-    - "\u0422\u0440-\u0440 2/XT/XT-10"
-    - ''
-  - - "\u0422\u0440-\u0440 2/SQS1/9"
-    - "\u0422\u0440-\u0440 2/XT/XT-9"
-    - ''
-  - - "\u0412\u0432\u043E\u0434 2/XT/XT-10"
-    - "\u0412\u0432\u043E\u0434 2/SQS1/10"
-    - ''
-  - - "\u0412\u0432\u043E\u0434 2/XT/XT-9"
-    - "\u0412\u0432\u043E\u0434 2/SQS1/9"
-    - ''
   - - "\u0421\u0420-1/XT/XT-2"
-    - "\u0421\u0420-1/SQG1/7"
+    - "\u0421\u0420-1/SQG1/1"
     - ''
   - - "\u0421\u0420-1/XT/XT-9"
-    - "\u0421\u0420-1/SQG1/8"
+    - "\u0421\u0420-1/SQG1/3"
     - '873'
   - - "\u0421\u0420-1/XT/XT-1"
     - "\u0421\u0412\u041D/XT/XT-1"
     - ''
-  - - "\u0421\u0412\u041D/SQS1/7"
+  - - "\u0421\u0412\u041D/SQS1/1"
     - "\u0421\u0412\u041D/XT/XT-1"
     - ''
-  - - "\u0421\u0412\u041D/SQS1/8"
+  - - "\u0421\u0412\u041D/SQS1/3"
     - "\u0421\u0412\u041D/XT/XT-3"
     - ''
   - - "\u0421\u0420-1/XT/XT-10"
@@ -718,16 +811,16 @@ wires:
   - - "\u0422\u0440-\u0440 1/XT/XT-1"
     - "\u0412\u0432\u043E\u0434 1/XT/XT-1"
     - ''
-  - - "\u0421\u0420-1/SQG1/7"
-    - "\u0421\u0420-1/SQG2/7"
+  - - "\u0421\u0420-1/SQG1/1"
+    - "\u0421\u0420-1/SQG2/1"
     - ''
   - - "\u0421\u0420-1/XT/XT-11"
-    - "\u0421\u0420-1/SQG2/8"
+    - "\u0421\u0420-1/SQG2/3"
     - ''
-  - - "\u0421\u0420-1/SQS1/7"
-    - "\u0421\u0420-1/SQG2/7"
+  - - "\u0421\u0420-1/SQS1/1"
+    - "\u0421\u0420-1/SQG2/1"
     - ''
-  - - "\u0421\u0420-1/SQS1/8"
+  - - "\u0421\u0420-1/SQS1/3"
     - "\u0421\u0420-1/XT/XT-12"
     - ''
   - - "\u0421\u0420-1/XT/XT-11"
@@ -757,10 +850,10 @@ wires:
   - - "\u0412\u0432\u043E\u0434 1/YS1/2"
     - "\u0412\u0432\u043E\u0434 1/XT/XT-5"
     - ''
-  - - "\u0421\u0412\u041D/SQG1/7"
-    - "\u0421\u0412\u041D/SQS1/7"
+  - - "\u0421\u0412\u041D/SQG1/1"
+    - "\u0421\u0412\u041D/SQS1/1"
     - ''
-  - - "\u0421\u0412\u041D/SQG1/8"
+  - - "\u0421\u0412\u041D/SQG1/3"
     - "\u0421\u0412\u041D/XT/XT-9"
     - ''
   - - "\u0422\u0440-\u0440 2/XT/XT-9"
@@ -768,6 +861,12 @@ wires:
     - ''
   - - "\u0422\u0440-\u0440 2/XT/XT-5"
     - "\u0422\u0440-\u0440 2/YS1/2"
+    - ''
+  - - "\u0421\u0420-1/XT/XT-8"
+    - "\u0421\u0412\u041D/SQG2/1"
+    - ''
+  - - "\u0421\u0420-1/XT/XT-13"
+    - "\u0421\u0412\u041D/SQG2/3"
     - ''
 xt:
   cabinet: "\u0421\u0420-1"
@@ -793,41 +892,11 @@ xt:
   - false
   - false
   - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
-  - false
   model: "\u041A\u043B\u0435\u043C\u043C\u043D\u044B\u0435 \u0440\u044F\u0434\u044B\
     \ \u043F\u0440\u043E\u043C\u0435\u0436\u0443\u0442\u043E\u0447\u043D\u044B\u0445\
     \ \u043A\u043B\u0435\u043C\u043C"
   name: XT
-  size: 50
+  size: 20
 xt_1:
   cabinet: "\u0412\u0432\u043E\u0434 1"
   class: XT

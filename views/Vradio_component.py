@@ -2,9 +2,32 @@ from classes import View
 from views.func_graph_elements import *
 
 
+class VDiode(View):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.correspondence = {'anode': (0, 0),
+                               'cathode': (10, 0)}
+
+    def draw(self):
+        self.te.latex(f'\\draw ({self.x}, {self.y}) to[diode] ({self.x + 10}, {self.y});')
+        self.te.label(self.x+5, self.y+1, self.e.name, 'n')
+
+class VDiodeL(View):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.correspondence = {'anode': (0, 0),
+                               'cathode': (-10, 0)}
+
+    def draw(self):
+        self.te.latex(f'\\draw ({self.x}, {self.y}) to[diode] ({self.x - 10}, {self.y});')
+        self.te.label(self.x-5, self.y+1, self.e.name, 'n')
+
 class VDiode_bridge(View):
 
-    def __post_init__(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.correspondence = {'plus': (-10, 0),
                           'minus': (10, 0),
                           'in1': (0, -10),

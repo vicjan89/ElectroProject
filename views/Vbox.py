@@ -81,10 +81,13 @@ class Vlbox_mount(View):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    @property
+    def bottom(self):
         len_trans = len(self.e.trans)
         len_trans = len_trans if len_trans <= 45 else 45
-        y = self.y - len_trans  * 6
-        print(f'Координата низа {self.e.name} y={y-15}')
+        return self.y - len_trans  * 6 - 15
+
 
     def draw(self):
         begin = 0

@@ -36,6 +36,12 @@ class Element:
         return f'{self.__class__.__name__}(name={self.name}, model={self.model}, cabinet={self.cabinet}, ' \
                f'location={self.location})'
 
+    @property
+    def attr(self):
+        return {'name': self.name,
+                'cabinet': self.cabinet,
+                'location': self.location}
+
     def save(self):
         self.storage.write(self.encode())
 
@@ -76,7 +82,7 @@ class Element:
             c -= 1
 
     @property
-    def e(self):
+    def el(self):
         self.print_elements(self.gef(lambda e: not isinstance(e, Connection)))
 
 
@@ -91,6 +97,19 @@ class Element:
                     if res_i:
                         res += res_i
         return res
+
+    def gefc(self, cabinet: str):
+        '''
+        Возвращает список элементов Element исключая Connections
+        :param cabinet: название ячейки или шкафа
+        :return:
+        '''
+        def filter_by_cabinet(o: Element):
+            if isinstance(o, Element) and not isinstance(o, Connection):
+                return o.cabinet == cabinet
+
+        return self.gef(filter_by_cabinet)
+
 
     @property
     def slug(self):
@@ -145,7 +164,7 @@ class Wires(Element):
     def __repr__(self):
         res = ''
         for num, wire in enumerate(self.wires):
-            res += f'{num})\t{wire[0].label}\t/\t{wire[1].label}\n'
+            res += f'{num})\t{self.slug_wire(num)}\n'
         return res
 
     def set_name(self, num, name):
@@ -153,6 +172,14 @@ class Wires(Element):
             self.wires[num].append(name)
         else:
             self.wires[num][4] = name
+
+    def delete(self, num: int):
+        '''
+        Удаляет проводник из списка
+        :param num: номер удаляемого проводника
+        :return: список представляющий данные уддалённого проводника
+        '''
+        return self.wires.pop(num)
 
     def f(self, s: str):
         '''
@@ -162,20 +189,34 @@ class Wires(Element):
         '''
         res = ''
         for num, wire in enumerate(self.wires):
-            wire_name =  f'{num})\t{wire[0].label}\t/\t{wire[1].label}\n'
+            wire_name = f'{num})\t{self.slug_wire(num)}\n'
             if s in wire_name:
                 res += wire_name
         print(res)
 
+    def ac(self, num: int, c: Connection):
+        '''
+        Разделяет проводник на два с включением посередине коннекшена с
+        :param num: номер разделяемого проводника
+        :param c: объект Connection вставляемый посередине
+        :return: номера и слаги двух новых проводников
+        '''
+        c2 = self.wires[num][1]
+        name = self.wires[num][2]
+        self.wires[num][1] = c
+        num_last = self.add(c, c2, name)
+        print(f'{num}\t{self.slug_wire(num)}\n{num_last})\t{self.slug_wire(num_last)}')
+
 
     def encode(self):
         res = {'class': 'Wires', 'wires': []}
-        for c1, c2, _, _, name in self.wires:
-            res['wires'].append([c1.label, c2.label, c1.cabinet, c2.cabinet, name]) #TODO: потом переделать на слаги
+        for c1, c2, name in self.wires:
+            res['wires'].append([c1.slug, c2.slug, name])
         return res
 
     def add(self, c1: Connection, c2: Connection, name: str = ''):
-       self.wires.append([c1, c2, None, None, name])
+        self.wires.append([c1, c2, name])
+        return len(self.wires)-1
 
     def get(self, e: Element):
         connected = []
@@ -187,7 +228,7 @@ class Wires(Element):
 
     def slug_wire(self, num):
         wire = self.wires[num]
-        return f'{wire[0].slug}/{wire[1].slug}'
+        return f'{wire[0].slug}~{wire[1].slug}'
 
 class TextStorage(Storage):
 
@@ -227,17 +268,34 @@ class TomlStorage(Storage):
     def write(self, d: dict):
         ...
 
-@dataclass
 class View(Element):
-    c: tuple | list | None = None
-    e: Element | None = None
-    x: int | None = None
-    y: int | None = None
-    te: TextEngine | None = None
-    correspondence: dict = None
+
+    def __init__(self, c: tuple | list | None = None,
+                 e: Element | None = None,
+                 x: int | None = None,
+                 y: int | None = None,
+                 te: TextEngine | None = None,
+                 correspondence: dict = None):
+        self.e = e
+        self.x = x if x else 0
+        self.y = y if y else 0
+        self.te = te
+        self.correspondence = correspondence
+        if c:
+            self.c = c
+        else:
+            if self.e and not isinstance(self.e, Connection):
+                self.c = self.e.tr
+            else:
+                self.c = None
+
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(x={self.x}, y={self.y}, c={self.c}, e={self.e.slug})'
+        slug = self.e.slug if self.e else None
+        return f'{self.__class__.__name__}(x={self.x}, y={self.y}, c={self.c}, e={slug})'
+
+    def __eq__(self, other):
+        return self is other
 
     def get_coords(self, c: Connection):
         if self.e:

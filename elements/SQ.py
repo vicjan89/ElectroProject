@@ -30,30 +30,39 @@ class Contact(Element):
         self.type = type
 
 
-class SQ_Seom(Element):
-    '''Концевой выключатель'''
+class SQ_VP15(Apparatus):
+    '''Концевой выключатель китайский'''
 
-    def __init__(self, model: str = 'Концевой выключатель', *args, **kwargs):
-        kwargs['model'] = model
-        super().__init__(*args, **kwargs)
-        kwargs['parent'] = self
-        for i in range(1,13):
-            kwargs['name'] = str(i)
-            self.__dict__[f'k{i}'] = Connection(*args, **kwargs)
+    trans = (('no1', '2'),
+             ('no1_', '4'),
+             ('nc1', '1'),
+             ('nc1_', '3'))
 
-    def __setattr__(self, name, value):
-        self.__dict__[name] = value
-        if name == 'wires':
-            for name, value_attr in self.__dict__.items():
-                if isinstance(value_attr, (Connection)):
-                    value_attr.wires = self.wires
+    model = 'Концевой выключатель ВП15'
+
+class SQ_Seom(Apparatus):
+    '''Концевой выключатель китайский'''
+
+    trans = (('no1', '1'),
+             ('no1_', '2'),
+             ('no2', '3'),
+             ('no2_', '4'),
+             ('no3', '5'),
+             ('no3_', '6'),
+             ('nc1', '7'),
+             ('nc1_', '8'),
+             ('nc2', '9'),
+             ('nc2_', '10'),
+             ('nc3', '11'),
+             ('nc3_', '12'))
+
+    model = 'Концевой выключатель'
 
 
-class Blocklock(Element):
+class Blocklock(Apparatus):
     '''Блок-замок электромагнитной блокировки'''
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.k1 = Connection(parent=self, name='1')
-        self.k2 = Connection(parent=self, name='2')
+    model = 'Электромагнитная блокировка ЗБ-1М'
+    trans = (('k1','1'),
+             ('k2','2'))
 
