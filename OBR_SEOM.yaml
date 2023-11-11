@@ -354,33 +354,29 @@ doc:
   - c: *id001
     class: VSQ
     e: "\u0421\u0412\u041D/SQS1"
-    x: 70
+    x: 20
     y: 110
   - class: VXT
     e: "\u0421\u0412\u041D/XT/XT-3"
-    x: 100
+    x: 50
     y: 110
   - class: VXT
     e: "\u0421\u0412\u041D/XT/XT-2"
-    x: 60
-    y: 160
-  - class: VXT
-    e: "\u0421\u0412\u041D/XT/XT-5"
-    x: 95
+    x: 10
     y: 160
   - c: *id002
     class: Vrelay
     e: "\u0421\u0412\u041D/YS1"
-    x: 65
+    x: 15
     y: 160
   - class: VXT
     e: "\u0421\u0412\u041D/XT/XT-4"
-    x: 60
+    x: 10
     y: 180
   - c: *id003
     class: Vrelay
     e: "\u0421\u0412\u041D/YG2"
-    x: 65
+    x: 15
     y: 180
   - class: Ruler
     x: 0
@@ -416,29 +412,47 @@ doc:
     y: 125
   - class: VXTcross
     e: "\u0421\u0412\u041D/XT/XT-1"
-    x: 60
+    x: 10
     y: 120
   - c:
     - nc1
     - nc1_
     class: VSQ
     e: "\u0421\u0412\u041D/SQG1"
-    x: 70
+    x: 20
     y: 70
   - class: VXTcross
     e: "\u0421\u0412\u041D/XT/XT-9"
-    x: 110
+    x: 60
     y: 80
   - class: Vlabel
     text: +EB
-    x: 60
+    x: 10
     y: 120
   - class: Vlabel
     text: +EB3
-    x: 110
+    x: 60
     y: 80
+  - class: Vlabel
+    text: -EB
+    x: 45
+    y: 190
+  - class: VXTcross
+    e: "\u0421\u0412\u041D/XT/XT-5"
+    x: 45
+    y: 190
+  - class: Vexplanation
+    h: 30
+    t: "\u0411\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u043A\u0430 \u0432\u043A\u043B\
+      \u044E\u0447\u0435\u043D\u0438\u044F \u0412\u041D \u0432\u0432\u043E\u0434\u0430\
+      \ 2 \u0438 \u0442\u0440-\u0440\u0430 2 \u043F\u0440\u0438 \u0432\u043A\u043B\
+      \u044E\u0447\u0435\u043D\u043D\u043E\u043C \u0417\u041D \u0441\u0435\u043A\u0446\
+      \u0438\u0438 \u0448\u0438\u043D"
+    x: 145
+    y: 95
   docwires:
     22: 2
+    38: 2
     42: 2
     45: 3
     46: 2
@@ -560,76 +574,6 @@ doc:
     \u0447\u0435\u0441\u043A\u0430\u044F \u043F\u0440\u0438\u043D\u0446\u0438\u043F\
     \u0438\u0430\u043B\u044C\u043D\u0430\u044F"
   num: 4
-- cabinet_list: ''
-  code_list: ''
-  docitems:
-  - c:
-    - nc2
-    - nc2_
-    class: VSQ
-    e: "\u0422\u0440-\u0440 2/SQS1"
-    x: 90
-    y: 95
-  - c:
-    - nc2
-    - nc2_
-    class: VSQ
-    e: "\u0412\u0432\u043E\u0434 2/SQS1"
-    x: 45
-    y: 95
-  - class: VXT
-    e: "\u0422\u0440-\u0440 2/XT/XT-9"
-    x: 84
-    y: 95
-  - class: VXT
-    e: "\u0422\u0440-\u0440 2/XT/XT-10"
-    x: 120
-    y: 95
-  - class: VXT
-    e: "\u0412\u0432\u043E\u0434 2/XT/XT-9"
-    x: 40
-    y: 95
-  - class: VXT
-    e: "\u0412\u0432\u043E\u0434 2/XT/XT-10"
-    x: 74
-    y: 95
-  - c:
-    - no1
-    - no1_
-    - no2
-    - no2_
-    - no3
-    - no3_
-    - nc1
-    - nc1_
-    - nc2
-    - nc2_
-    - nc3
-    - nc3_
-    class: Vcabinet
-    e: "\u0412\u0432\u043E\u0434 2/SQS1"
-    x: 36
-    y: 105
-  - c:
-    - no1
-    - no1_
-    - no2
-    - no2_
-    - no3
-    - no3_
-    - nc1
-    - nc1_
-    - nc2
-    - nc2_
-    - nc3
-    - nc3_
-    class: Vcabinet
-    e: "\u0422\u0440-\u0440 2/SQS1"
-    x: 80
-    y: 105
-  docwires: {}
-  name_list: ''
-  num: 5
 sqg1_3:
   cabinet: "\u0421\u0420-1"
   class: SQ_Seom
@@ -660,14 +604,6 @@ sqs1_3:
   name: SQS1
 sqs1_4:
   cabinet: "\u0421\u0412\u041D"
-  class: SQ_Seom
-  name: SQS1
-sqs1_5:
-  cabinet: "\u0422\u0440-\u0440 2"
-  class: SQ_Seom
-  name: SQS1
-sqs1_6:
-  cabinet: "\u0412\u0432\u043E\u0434 2"
   class: SQ_Seom
   name: SQS1
 vd1:
