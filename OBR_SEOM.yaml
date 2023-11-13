@@ -63,7 +63,7 @@ doc:
     y: 65
   - class: VXT
     e: "\u0421\u0420-1/XT/XT-8"
-    x: 67
+    x: 52
     y: 90
   - c:
     - k1
@@ -338,7 +338,7 @@ doc:
     - nc1_
     class: VSQ
     e: "\u0421\u0412\u041D/SQG2"
-    x: 70
+    x: 68
     y: 90
   - c:
     - no1
@@ -349,6 +349,14 @@ doc:
     e: "\u0421\u0412\u041D/SQG2"
     x: 55
     y: 105
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-8"
+    x: 66
+    y: 90
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-7"
+    x: 96
+    y: 90
   docwires:
     0: 1
     1: 2
@@ -484,7 +492,7 @@ doc:
     \u0438\u0430\u043B\u044C\u043D\u0430\u044F"
   num: 2
 - cabinet_list: "\u041A\u0430\u043C\u0435\u0440\u0430 \u0432\u0432\u043E\u0434\u0430\
-    \ 1 \u0438 \u0442\u0440-\u0440\u0430 1"
+    \ 1 \u0438 \u0442\u0440-\u0440\u0430 1 \u041A\u0421\u041E-\u042D\u041C-394"
   code_list: ''
   docitems:
   - class: VA4Seom
@@ -555,7 +563,7 @@ doc:
     \u0438\u0430\u043B\u044C\u043D\u0430\u044F"
   num: 3
 - cabinet_list: "\u041A\u0430\u043C\u0435\u0440\u0430 \u0432\u0432\u043E\u0434\u0430\
-    \ 2 \u0438 \u0442\u0440-\u0440\u0430 2"
+    \ 2 \u0438 \u0442\u0440-\u0440\u0430 2 \u041A\u0421\u041E-\u042D\u041C-394"
   code_list: ''
   docitems:
   - class: VA4Seom
@@ -597,7 +605,8 @@ doc:
     \u0447\u0435\u0441\u043A\u0430\u044F \u043F\u0440\u0438\u043D\u0446\u0438\u043F\
     \u0438\u0430\u043B\u044C\u043D\u0430\u044F"
   num: 4
-- cabinet_list: ''
+- cabinet_list: "\u041A\u0430\u043C\u0435\u0440\u0430 \u0421\u0420-1 \u041A\u0421\u041E\
+    -\u042D\u041C-394"
   code_list: ''
   docitems:
   - c:
@@ -676,9 +685,473 @@ doc:
     e: "\u0421\u0420-1/YS1"
     x: 90
     y: 59
+  - class: VA4Seom
+    x: 0
+    y: 0
   docwires: {}
-  name_list: ''
+  name_list: "\u0421\u0445\u0435\u043C\u0430 \u043C\u043E\u043D\u0442\u0430\u0436\u043D\
+    \u0430\u044F"
   num: 5
+- cabinet_list: "\u041A\u0430\u043C\u0435\u0440\u0430 \u0421\u0412\u041D \u041A\u0421\
+    \u041E-\u042D\u041C-394"
+  code_list: ''
+  docitems:
+  - c:
+    - no1
+    - no1_
+    - nc1
+    - nc1_
+    class: Vlbox_mount
+    e: "\u0421\u0412\u041D/SQG1"
+    x: 30
+    y: 250
+  - c:
+    - no1
+    - no1_
+    - nc1
+    - nc1_
+    class: Vlbox_mount
+    e: "\u0421\u0412\u041D/SQG2"
+    x: 30
+    y: 211
+  - c:
+    - no1
+    - no1_
+    - nc1
+    - nc1_
+    class: Vlbox_mount
+    e: "\u0421\u0412\u041D/SQS1"
+    x: 30
+    y: 172
+  - c: []
+    class: VXTmount
+    e: "\u0421\u0412\u041D/XT"
+    x: 90
+    y: 250
+  - c:
+    - k1
+    - k2
+    class: Vlbox_mount
+    e: "\u0421\u0412\u041D/YG2"
+    x: 90
+    y: 113
+  - c:
+    - k1
+    - k2
+    class: Vlbox_mount
+    e: "\u0421\u0412\u041D/YS1"
+    x: 90
+    y: 86
+  - class: VA4Seom
+    x: 0
+    y: 0
+  docwires: {}
+  name_list: "\u0421\u0445\u0435\u043C\u0430 \u043C\u043E\u043D\u0442\u0430\u0436\u043D\
+    \u0430\u044F"
+  num: 6
+- cabinet_list: "\u041A\u0430\u043C\u0435\u0440\u0430 \u0432\u0432\u043E\u0434\u0430\
+    \ 1 \u0438 \u0442\u0440-\u0440\u0430 1 \u041A\u0421\u041E-\u042D\u041C-394"
+  code_list: ''
+  docitems:
+  - class: VA4Seom
+    x: 0
+    y: 0
+  - c:
+    - no1
+    - no1_
+    - nc1
+    - nc1_
+    class: Vlbox_mount
+    e: "\u0412\u0432\u043E\u0434 1/SQS1"
+    x: 30
+    y: 250
+  - c: []
+    class: VXTmount
+    e: "\u0412\u0432\u043E\u0434 1/XT"
+    x: 30
+    y: 211
+  - c:
+    - k1
+    - k2
+    class: Vlbox_mount
+    e: "\u0412\u0432\u043E\u0434 1/YS1"
+    x: 30
+    y: 74
+  docwires: {}
+  name_list: "\u0421\u0445\u0435\u043C\u0430 \u043C\u043E\u043D\u0442\u0430\u0436\u043D\
+    \u0430\u044F"
+  num: 7
+- cabinet_list: "\u041A\u0430\u043C\u0435\u0440\u0430 \u0432\u0432\u043E\u0434\u0430\
+    \ 2 \u0438 \u0442\u0440-\u0440\u0430 2 \u041A\u0421\u041E-\u042D\u041C-394"
+  code_list: ''
+  docitems:
+  - class: VA4Seom
+    x: 0
+    y: 0
+  - c: []
+    class: VXTmount
+    e: "\u0422\u0440-\u0440 2/XT"
+    x: 30
+    y: 250
+  - c:
+    - k1
+    - k2
+    class: Vlbox_mount
+    e: "\u0422\u0440-\u0440 2/YS1"
+    x: 30
+    y: 113
+  docwires: {}
+  name_list: "\u0421\u0445\u0435\u043C\u0430 \u043C\u043E\u043D\u0442\u0430\u0436\u043D\
+    \u0430\u044F"
+  num: 8
+- cabinet_list: "\u041A\u0430\u043C\u0435\u0440\u044B 1-6 \u041A\u0421\u041E-\u042D\
+    \u041C-394"
+  code_list: ''
+  docitems:
+  - class: VA4Seom
+    x: 0
+    y: 0
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-1"
+    x: 20
+    y: 250
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-2"
+    x: 20
+    y: 240
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-3"
+    x: 20
+    y: 230
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-4"
+    x: 20
+    y: 220
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-5"
+    x: 20
+    y: 210
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-6"
+    x: 20
+    y: 200
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-7"
+    x: 20
+    y: 190
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-8"
+    x: 20
+    y: 180
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-9"
+    x: 20
+    y: 170
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-10"
+    x: 20
+    y: 160
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-11"
+    x: 20
+    y: 150
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 1/XT/XT-12"
+    x: 20
+    y: 140
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-1"
+    x: 45
+    y: 250
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-2"
+    x: 45
+    y: 240
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-3"
+    x: 45
+    y: 230
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-4"
+    x: 45
+    y: 220
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-5"
+    x: 45
+    y: 210
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-6"
+    x: 45
+    y: 200
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-7"
+    x: 45
+    y: 190
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-8"
+    x: 45
+    y: 180
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-9"
+    x: 45
+    y: 170
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-10"
+    x: 45
+    y: 160
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-11"
+    x: 45
+    y: 150
+  - class: VXT
+    e: "\u0422\u0440-\u0440 1/XT/XT-12"
+    x: 45
+    y: 140
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-1"
+    x: 70
+    y: 250
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-2"
+    x: 70
+    y: 240
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-13"
+    x: 70
+    y: 190
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-4"
+    x: 70
+    y: 220
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-5"
+    x: 70
+    y: 210
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-6"
+    x: 70
+    y: 200
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-7"
+    x: 70
+    y: 230
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-8"
+    x: 70
+    y: 180
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-9"
+    x: 70
+    y: 170
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-10"
+    x: 70
+    y: 160
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-11"
+    x: 70
+    y: 150
+  - class: VXT
+    e: "\u0421\u0420-1/XT/XT-12"
+    x: 70
+    y: 140
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-1"
+    x: 95
+    y: 250
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-5"
+    x: 95
+    y: 210
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-6"
+    x: 95
+    y: 200
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-7"
+    x: 95
+    y: 190
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-8"
+    x: 95
+    y: 180
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-9"
+    x: 95
+    y: 170
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-3"
+    x: 95
+    y: 160
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-2"
+    x: 95
+    y: 150
+  - class: VXT
+    e: "\u0421\u0412\u041D/XT/XT-4"
+    x: 95
+    y: 140
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-1"
+    x: 120
+    y: 250
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-2"
+    x: 120
+    y: 240
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-3"
+    x: 120
+    y: 230
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-4"
+    x: 120
+    y: 220
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-5"
+    x: 120
+    y: 210
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-6"
+    x: 120
+    y: 200
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-7"
+    x: 120
+    y: 190
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-8"
+    x: 120
+    y: 180
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-9"
+    x: 120
+    y: 170
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-10"
+    x: 120
+    y: 160
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-11"
+    x: 120
+    y: 150
+  - class: VXT
+    e: "\u0422\u0440-\u0440 2/XT/XT-12"
+    x: 120
+    y: 140
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-1"
+    x: 145
+    y: 250
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-2"
+    x: 145
+    y: 240
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-3"
+    x: 145
+    y: 230
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-4"
+    x: 145
+    y: 220
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-5"
+    x: 145
+    y: 210
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-6"
+    x: 145
+    y: 200
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-7"
+    x: 145
+    y: 190
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-8"
+    x: 145
+    y: 180
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-9"
+    x: 145
+    y: 170
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-10"
+    x: 145
+    y: 160
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-11"
+    x: 145
+    y: 150
+  - class: VXT
+    e: "\u0412\u0432\u043E\u0434 2/XT/XT-12"
+    x: 145
+    y: 140
+  - c: []
+    class: Vframe_cross
+    e: "\u0412\u0432\u043E\u0434 1/XT"
+    h: 140
+    num: 1
+    w: 25
+    x: 7.5
+    y: 265
+  - c: []
+    class: Vframe_cross
+    e: "\u0422\u0440-\u0440 1/XT"
+    h: 140
+    num: 2
+    w: 25
+    x: 32.5
+    y: 265
+  - c: []
+    class: Vframe_cross
+    e: "\u0421\u0420-1/XT"
+    h: 140
+    num: 3
+    w: 25
+    x: 57.5
+    y: 265
+  - c: []
+    class: Vframe_cross
+    e: "\u0421\u0412\u041D/XT"
+    h: 140
+    num: 4
+    w: 25
+    x: 82.5
+    y: 265
+  - c: []
+    class: Vframe_cross
+    e: "\u0422\u0440-\u0440 2/XT"
+    h: 140
+    num: 5
+    w: 25
+    x: 107.5
+    y: 265
+  - c: []
+    class: Vframe_cross
+    e: "\u0412\u0432\u043E\u0434 2/XT"
+    h: 140
+    num: 6
+    w: 25
+    x: 132.5
+    y: 265
+  - class: Vlabel
+    text: +EB
+    x: 0
+    y: 245
+  - class: Vlabel
+    text: -EB
+    x: 0
+    y: 205
+  - class: Vlabel
+    text: +EB3
+    x: 0
+    y: 165
+  docwires: {}
+  name_list: "\u0421\u0445\u0435\u043C\u0430 \u043C\u0435\u0436\u043A\u0430\u043C\u0435\
+    \u0440\u043D\u044B\u0445 \u0441\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\
+    \u0439"
+  num: 9
 sqg1_3:
   cabinet: "\u0421\u0420-1"
   class: SQ_VP15
@@ -863,10 +1336,40 @@ wires:
     - "\u0422\u0440-\u0440 2/YS1/2"
     - ''
   - - "\u0421\u0420-1/XT/XT-8"
-    - "\u0421\u0412\u041D/SQG2/1"
+    - "\u0421\u0412\u041D/XT/XT-8"
     - ''
   - - "\u0421\u0420-1/XT/XT-13"
+    - "\u0421\u0412\u041D/XT/XT-7"
+    - ''
+  - - "\u0412\u0432\u043E\u0434 1/XT/XT-5"
+    - "\u0422\u0440-\u0440 1/XT/XT-5"
+    - ''
+  - - "\u0421\u0420-1/XT/XT-5"
+    - "\u0422\u0440-\u0440 1/XT/XT-5"
+    - ''
+  - - "\u0421\u0420-1/XT/XT-9"
+    - "\u0422\u0440-\u0440 1/XT/XT-9"
+    - ''
+  - - "\u0412\u0432\u043E\u0434 1/XT/XT-9"
+    - "\u0422\u0440-\u0440 1/XT/XT-9"
+    - ''
+  - - "\u0421\u0412\u041D/XT/XT-8"
+    - "\u0421\u0412\u041D/SQG2/1"
+    - ''
+  - - "\u0421\u0412\u041D/XT/XT-7"
     - "\u0421\u0412\u041D/SQG2/3"
+    - ''
+  - - "\u0421\u0412\u041D/XT/XT-9"
+    - "\u0422\u0440-\u0440 2/XT/XT-9"
+    - ''
+  - - "\u0412\u0432\u043E\u0434 2/XT/XT-9"
+    - "\u0422\u0440-\u0440 2/XT/XT-9"
+    - ''
+  - - "\u0412\u0432\u043E\u0434 2/XT/XT-5"
+    - "\u0422\u0440-\u0440 2/XT/XT-5"
+    - ''
+  - - "\u0421\u0412\u041D/XT/XT-5"
+    - "\u0422\u0440-\u0440 2/XT/XT-5"
     - ''
 xt:
   cabinet: "\u0421\u0420-1"
