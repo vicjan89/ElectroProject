@@ -1019,16 +1019,9 @@ doc:
     x: 155
     y: 120
   - c:
-    - sqs_no
-    - sqs_no_
+    - sprn
+    - sprno
     class: VcontNo
-    e: Q1
-    x: 50
-    y: 100
-  - c:
-    - sqs_nc
-    - sqs_nc_
-    class: VcontNc
     e: Q1
     x: 50
     y: 85
@@ -1156,7 +1149,7 @@ doc:
     x: 185
     y: 130
   - class: Vexplanation
-    h: 30
+    h: 15
     t: "\u0420\u0430\u0437\u044A\u0435\u0434\u0438\u043D\u0438\u0442\u0435\u043B\u044C"
     x: 185
     y: 110
@@ -1172,11 +1165,24 @@ doc:
     x: 185
     y: 50
   - class: Vexplanation
-    h: 20
+    h: 15
     t: "\u0412\u044B\u0437\u044B\u0432\u043D\u0430\u044F \u0441\u0438\u0433\u043D\u0430\
       \u043B\u0438\u0437\u0430\u0446\u0438\u044F"
     x: 185
     y: 20
+  - class: Vexplanation
+    h: 15
+    t: "\u041F\u0440\u0443\u0436\u0438\u043D\u044B \u043D\u0435 \u0432\u0437\u0432\
+      \u0435\u0434\u0435\u043D\u044B"
+    x: 185
+    y: 95
+  - c:
+    - sqs_nc
+    - sqs_nc_
+    class: VcontNc
+    e: Q1
+    x: 50
+    y: 100
   docwires:
     61: 3
     75: 3
@@ -1425,6 +1431,21 @@ doc:
     t: "\u0426\u0435\u043F\u0438 \u043E\u0431\u043E\u0433\u0440\u0435\u0432\u0430"
     x: 165
     y: 50
+  - c:
+    - sqs_no
+    - sqs_no_
+    class: VcontNo
+    e: Q1
+    x: 50
+    y: 110
+  - class: Vexplanation
+    h: 30
+    t: "\u0411\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u043A\u0430 \u043D\u043E\u0436\
+      \u0430 \u0437\u0430\u0437\u0435\u043C\u043B\u0435\u043D\u0438\u044F \u0441\u0431\
+      \u043E\u0440\u043D\u044B\u0445 \u0448\u0438\u043D \u0441\u0435\u043A\u0446\u0438\
+      \u0438"
+    x: 165
+    y: 130
   docwires:
     154: 1
     155: 1
@@ -1442,6 +1463,8 @@ doc:
     219: 1
     220: 3
     221: 4
+    222: 1
+    223: 1
   name_list: ''
   num: 5
 - cabinet_list: ''
@@ -2890,10 +2913,10 @@ wires:
     - A1/X6-11
     - ''
   - - XT5/XT5-4
-    - Q1/A8
+    - Q1/C1
     - ''
   - - XT5/XT5-5
-    - Q1/C1
+    - Q1/A3
     - ''
   - - XT5/XT5-6
     - 89T/1
@@ -2901,10 +2924,10 @@ wires:
   - - XT5/XT5-7
     - 89T/3
     - ''
-  - - Q1/A9
+  - - Q1/C2
     - XT5/XT5-29
     - ''
-  - - Q1/C2
+  - - Q1/A4 FC1
     - XT5/XT5-30
     - ''
   - - 89T/2
@@ -3134,6 +3157,12 @@ wires:
     - ''
   - - EK1/2
     - EK2/2
+    - ''
+  - - XT12/XT12-3
+    - Q1/A8
+    - ''
+  - - XT12/XT12-4
+    - Q1/A9
     - ''
 xs1:
   class: XS

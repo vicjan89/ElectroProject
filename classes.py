@@ -174,8 +174,38 @@ class Wires(Element):
     def __repr__(self):
         res = ''
         for num, wire in enumerate(self.wires):
-            res += f'{num})\t{self.slug_wire(num)}\n'
+            res += f'{num})\t{self.slug_wire(num)}\t{self.wires[num][2]}\n'
         return res
+
+    def without_name(self):
+        '''
+        Выводит на печать проводники без имени
+        :return:
+        '''
+        for num, wire in enumerate(self.wires):
+            if not wire[2]:
+                print(f'{num})\t{self.slug_wire(num)}')
+
+    def fill_wire_name(self):
+        '''
+        Заполняет словарь wires_names названиями цепей на основе анализа фактических соединений схемы
+        :return:
+        '''
+        self.wires_names = dict()
+        i = 0
+        while i < len(self.wires):
+            name = self.wires[i][2]
+            if name and i not in self.wires_names:
+                self.wires_names[i] = name
+                connected = self.get_all(self.wires[i][0])
+                for j, wire in enumerate(self.wires):
+                    if wire[0] in connected or wire[1] in connected:
+                        self.wires_names[j] = name
+                        self.wires[j][2] = name
+                i = 0
+            else:
+                i += 1
+
 
     def set_name(self, num, name):
         if len(self.wires[num]) == 4:
@@ -235,17 +265,19 @@ class Wires(Element):
         :return:
         '''
         connected = []
+        name = ''
         for wire in self.wires:
             f = [wire[0] == e, wire[1] == e]
             if any(f):
                 connected.append(wire[f.index(False)])
-        return connected
+                name = wire[2]
+        return connected, name
 
     def get_all(self, c: Connection):
         res = [c]
         i = 0
         while i < len(res):
-            add_res = self.get(res[i])
+            add_res, _ = self.get(res[i])
             add_by_apparatus = res[i].parent.connected(res[i])
             if add_by_apparatus:
                 add_res.extend(add_by_apparatus)

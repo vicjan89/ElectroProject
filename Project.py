@@ -87,7 +87,8 @@ class Project(Element):
         code_list: str = '',
         cabinet_list: str = '',
         name_list: str = '',
-        num_lists: int = 1):
+        num_lists: int = 1,
+        cross: bool = False):
         '''
         Добавление листа в документ
         :param num: номер добавляемого листа
@@ -99,7 +100,7 @@ class Project(Element):
         if not num:
             num = len(self.doc) + 1
         self.doc.append(Vlist(num=num, project=self, te=self.te, code_list=code_list, cabinet_list=cabinet_list,
-                              name_list=name_list, num_lists = num_lists))
+                              name_list=name_list, num_lists = num_lists, cross=cross))
         name = f'l{len(self.doc)}'
         self.__dict__[name] = self.doc[-1]
         globals()[name] = self.doc[-1]

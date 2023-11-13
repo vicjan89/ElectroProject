@@ -100,13 +100,14 @@ class Vlbox_mount(View):
                 yc = self.y - num * 6
                 self.te.label(x, yc, item[1], 'e', 2)
                 my_con = getattr(self.e, item[0])
-                connected = my_con.connected()
+                connected, name = my_con.connected()
                 for n, connect in enumerate(connected):
                     label = connect.label.replace('_','')
                     if 'XT' in label:
                         label = label.split(':')[1]
                     if n == 0:
                         self.te.lines((x, yc), (x - 5, yc))
+                        self.te.label(x - 18, yc, name, 'w', 2, box=True)
                         self.te.label(x - 5, yc, label, 'w', 2)
                     elif n == 1:
                         self.te.lines((x, yc), (x - 5, yc + 3))

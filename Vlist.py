@@ -86,7 +86,8 @@ class Vlist:
                    'VcabinetD': VcabinetD,
                    'Vlabel': Vlabel,
                    'Ruler': Ruler,
-                   'Vexplanation': Vexplanation}
+                   'Vexplanation': Vexplanation,
+                   'Vframe_cross': Vframe_cross}
 
     def av(self, view: View | list):
         if isinstance(view, View):
@@ -206,6 +207,7 @@ class Vlist:
         '''Рисует проводник. Тип линии запрашивает по номеру num в словаре типов линий листа.
         Если тип равен 10 то линия не рисуется
         :param num: номер типа линии'''
+        res = False
         if num is None:
             tw = 0
         else:
@@ -215,7 +217,10 @@ class Vlist:
             coord0 = self.search_coords(c0)
             coord1 = self.search_coords(c1)
             if coord0 and coord1:
+                dx = abs(coord0[0] - coord1[0])
+                name = name if dx > 5 else ''
                 self.te.wire(c1=coord0, c2=coord1, tw=tw, name=name, num=num_text)
+                res = True
             elif not self.cross and ((coord0 and not coord1) or (not coord0 and coord1)):
                 if coord0:
                     crd = coord0
@@ -229,6 +234,7 @@ class Vlist:
                     y2 = y1 - 10
                     name = c0.slug if coord1 else c1.slug
                     self.te.wire(c1=(x1,y1), c2=(x2, y2), tw=tw, name=name, num=num_text, arrow=True)
+                    res = True
                 else:
                     connected = self.project.wires.get_all(c_for_srch)
                     for next_connected in connected:
@@ -247,7 +253,9 @@ class Vlist:
                                     else:
                                         tw = 2
                                 self.te.wire(c1=(x1, y1), c2=(x2, y2), tw=tw, name=name, num=num_text)
+                                res = True
                                 break
+        return res
 
     def draw(self, dev_mode = True):
         self.te.picture_begin()
@@ -257,9 +265,14 @@ class Vlist:
         if self.name_list:
             self.te.latex(r'\AddToShipoutPicture*{\put(148mm,5.5mm){\parbox[c]{35mm}{\centering {\scriptsize \begin{spacing}{0.6}' +
                           self.name_list + r'\end{spacing}}}}}')
+        names = set()
         for num, wire in enumerate(self.project.wires.wires):
             name = '' if wire[2] is None else wire[2]
-            self.draw_wire(wire[0], wire[1], num=num, name=name, dev_mode=dev_mode)
+            if name in names:
+                name = ''
+            drawed = self.draw_wire(wire[0], wire[1], num=num, name=name, dev_mode=dev_mode)
+            if drawed:
+                names.add(name)
         for item in self.docitems:
             if not isinstance(item, VXT) and not isinstance(item, VXTm):
                 if not isinstance(item, Ruler) or dev_mode:
@@ -282,6 +295,7 @@ class Vlist:
                'code_list': self.code_list,
                'cabinet_list': self.cabinet_list,
                'name_list': self.name_list,
+               'cross': self.cross
         }
         for view in self.docitems:
             res['docitems'].append(view.encode())

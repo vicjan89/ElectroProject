@@ -68,13 +68,15 @@ class VXTmount(View):
         for c in range(self.e.size):
             yc = y-c*6
             self.te.lines((x,yc),(x+20,yc), (x+20,yc-6),(x,yc-6),cycle=True)
-            self.te.label(x+5,yc-3,c+1,'e',2)
+            self.te.lines((x+4,yc),(x+4,yc-6))
+            self.te.lines((x+9.5,yc),(x+9.5,yc-6))
+            self.te.label(x+4,yc-3,c+1,'e',2)
             if self.e.jumpers[c]:
                 self.te.lines((x+2,yc-3),(x+2,yc+3))
                 self.te.circle(x+2,yc-3,1,True)
                 self.te.circle(x+2,yc+3,1,True)
             con = self.e.__dict__.get(f'k{c+1}')
-            connected = con.connected()
+            connected, name = con.connected()
             for num, connect in enumerate(connected):
                 label = connect.label
                 if 'XT' in label:
@@ -82,6 +84,7 @@ class VXTmount(View):
                 if num == 0:
                     self.te.lines((x,yc-3), (x-5,yc-3))
                     self.te.label(x-5,yc-3,label,'w',2)
+                    self.te.label(x+9,yc-3,name,'e',2)
                 elif num == 1:
                     self.te.lines((x+20,yc-3), (x+25,yc-3))
                     self.te.label(x+25,yc-3,label,'e',2)
