@@ -5,11 +5,11 @@ from Vlist import *
 
 
 prj = (('Отходящая линия 10кВ ТП-897', 'OL_TP897'),
-       ('ОБР ТП Сеом', 'OBR_SEOM', 'ТП заказ 814.tex'))
+       ('ОБР ТП Сеом', 'OBR_SEOM'))
 for n, p in enumerate(prj):
     print(f'{n+1}\t{p[0]}')
-# c = int(input('Введите номер проекта (0 - для нового)>'))
-c = 2
+c = int(input('Введите номер проекта (0 - для нового)>'))
+# c = 2
 if c == 0:
     name = input('Введите имя проекта: ')
     file = input('Введите имя файла: ')
@@ -29,8 +29,7 @@ for name in ('name', 'storage','cabinet','location','model','te','wires','docwir
     elements.pop(name)
 globals().update(elements)
 # p.replace('sqs1_1', SQ_VP15)
-# x=10
 # p.save()
-# p.draw()
+# w.get_all(p.kl3.n2)
 # el = p.gefc('СР-1')
 # p.l5.place(el)

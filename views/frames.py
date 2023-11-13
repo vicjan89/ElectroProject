@@ -53,4 +53,26 @@ class Vexplanation(View):
         self.te.lines((x,y),(x+25,y),(x+25,y-self.h),(x,y-self.h), cycle=True)
         self.te.latex(f'\\draw({x+12.5}, {y - self.h// 2}) node [align=center]' +
                       r'{\parbox{25mm}{\begin{spacing}{0.6}\centering {\footnotesize ' + self.t + r'}\end{spacing}}};')
-# \draw (155, 230) node [below left] {\parbox{20mm}{\footnotesize dfsgdfs dfsgds dfg dfg dfg fdsgdgfs}};
+
+class Vframe_cross(View):
+
+    def __init__(self, w: int, h: int, num: int,  *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.w= w
+        self.h= h
+        self.num = num
+
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(x={self.x}, y={self.y},  w={self.w}, h={self.h})'
+
+    def draw(self):
+        x = self.x
+        y = self.y
+        w = self.w
+        h = self.h
+        self.te.lines((x,y),(x+w,y),(x+w,y-h),(x,y-h), cycle=True)
+        self.te.lines((x, y - 10), (x + w, y - 10))
+        self.te.lines((x, y - h + 10), (x + w, y - h + 10))
+        self.te.label(x+ w/2, y - 5, self.num, 'c')
+        self.te.label(x+ w/2, y - h + 5, self.e.cabinet, 'c')

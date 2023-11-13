@@ -31,12 +31,14 @@ class Vlist:
                  cabinet_list: str = '',
                  name_list: str = '',
                  num_lists: int = 1,
+                 cross: bool = False
                  ):
         self.code_list = code_list
         self.cabinet_list = cabinet_list
         self.name_list = name_list
         self.num_lists = num_lists
         self.num = num
+        self.cross = cross
         if docitems:
             self.docitems = docitems
         else:
@@ -144,6 +146,35 @@ class Vlist:
             self.av(obj)
             print(f'Placed {element}')
 
+    def place_cross(self, xts: list | tuple, beg: int = 1, end: int | None = None):
+        '''
+        Размещает на листе клеммы клеммников в списке args в виде схемы кроссовых шинок
+        :param xts: объекты клеммников в нужном порядке
+        :param beg: индекс первой клеммы
+        :param end: индекс последней клеммы
+        :return:
+        '''
+        x = 20
+        dx = 25
+        y = 250
+        max_end = 0
+        for xt in xts:
+            end = end if end else xt.size
+            if max_end < end:
+                max_end = end
+            for num in range(beg, end+1):
+                self.av(VXT(e=xt.__dict__[f'k{num}'], x=x, y=y))
+                y -= 10
+            x += dx
+            y = 250
+        h = (max_end - beg + 3) * 10
+        x = 20 - dx / 2
+        for num, xt in enumerate(xts):
+            self.av(Vframe_cross(x=x, y=265, w=dx, h=h, num=num+1, e=xt))
+            x += dx
+        self.cross = True
+
+
     def tw(self, wire_number: int | list | tuple, type_wire: int | None = None):
         if isinstance(wire_number, int):
             slug = self.project.wires.slug_wire(wire_number)
@@ -158,19 +189,6 @@ class Vlist:
                     print(f'{wire})\t{slug}\t{self.docwires[wire]}')
                 else:
                     self.docwires[wire] = type_wire
-        # if isinstance(wire_number, int):
-        #     slug = self.project.wires.slug_wire(wire_number)
-        #     if type_wire is None:
-        #         print(f'{wire_number})\t{slug}\t{self.docwires[slug]}')
-        #     else:
-        #         self.docwires[slug] = type_wire
-        # else:
-        #     for wire in wire_number:
-        #         slug = self.project.wires.slug_wire(wire)
-        #         if type_wire is None:
-        #             print(f'{wire})\t{slug}\t{self.docwires[slug]}')
-        #         else:
-        #             self.docwires[slug] = type_wire
 
     def search_coords(self, c: Connection):
         '''
@@ -198,46 +216,46 @@ class Vlist:
             coord1 = self.search_coords(c1)
             if coord0 and coord1:
                 self.te.wire(c1=coord0, c2=coord1, tw=tw, name=name, num=num_text)
-            elif dev_mode and ((coord0 and not coord1) or (not coord0 and coord1)):
-                if coord0 and not coord1:
-                    x1,y1 = coord0
+            elif not self.cross and ((coord0 and not coord1) or (not coord0 and coord1)):
+                if coord0:
+                    crd = coord0
+                    c_for_srch = c0
                 else:
-                    x1,y1 = coord1
-                # if tw in (11, 21,15,25):
-                #     x2 = x1
-                # elif tw in (12,22,13,23,14,24):
-                #     x2 = x1 +10
-                # else:
-                #     x2 = x1 - 10
-                # if tw in (13, 23,17,27):
-                #     y2 = y1
-                # elif tw in (18,28,11,21,12,22):
-                #     y2 = y1 +10
-                # else:
-                #     y2 = y1 - 10
-                # arrow = (21 <= tw <= 28)
-                # if tw in (11,21,13,23,15,25,17,27):
-                #     tw = 0
-                # else:
-                #     tw = 2
-
-                # if abs(x1 - 20) < abs(x1-230):
-                #     x2 = 30
-                # else:
-                #     x2 = 175
-                # y2 = y1
-
-                x2 = x1
-                y2 = y1 - 10
-                name = c0.slug if coord1 else c1.slug
-                self.te.wire(c1=(x1,y1), c2=(x2, y2), tw=tw, name=name, num=num_text, arrow=True)
+                    crd = coord1
+                    c_for_srch = c1
+                x1, y1 = crd
+                if dev_mode:
+                    x2 = x1
+                    y2 = y1 - 10
+                    name = c0.slug if coord1 else c1.slug
+                    self.te.wire(c1=(x1,y1), c2=(x2, y2), tw=tw, name=name, num=num_text, arrow=True)
+                else:
+                    connected = self.project.wires.get_all(c_for_srch)
+                    for next_connected in connected:
+                        if isinstance(next_connected.parent, XT):
+                            crd2 = self.search_coords(next_connected)
+                            if crd2:
+                                x2, y2 = crd2
+                                if x1 < 70:
+                                    if x1 < x2:
+                                        tw = 1
+                                    else:
+                                        tw = 2
+                                else:
+                                    if x1 > x2:
+                                        tw = 1
+                                    else:
+                                        tw = 2
+                                self.te.wire(c1=(x1, y1), c2=(x2, y2), tw=tw, name=name, num=num_text)
+                                break
 
     def draw(self, dev_mode = True):
         self.te.picture_begin()
         if self.cabinet_list:
-            self.te.latex(r'\AddToShipoutPicture*{\put(150mm,15mm){\parbox[c]{30mm}{\centering {\normalsize ' + self.cabinet_list + r'}}}}')
+            self.te.latex(r'\AddToShipoutPicture*{\put(150mm,16mm){\parbox[c]{30mm}{\centering {\normalsize \begin{spacing}{0.7}' +
+                          self.cabinet_list + r'\end{spacing}}}}}')
         if self.name_list:
-            self.te.latex(r'\AddToShipoutPicture*{\put(148mm,5.5mm){\parbox[c]{35mm}{\centering {\scriptsize \begin{spacing}{0.5}' +
+            self.te.latex(r'\AddToShipoutPicture*{\put(148mm,5.5mm){\parbox[c]{35mm}{\centering {\scriptsize \begin{spacing}{0.6}' +
                           self.name_list + r'\end{spacing}}}}}')
         for num, wire in enumerate(self.project.wires.wires):
             name = '' if wire[2] is None else wire[2]
@@ -251,7 +269,7 @@ class Vlist:
             if isinstance(element, XT) or isinstance(element, XTm):
                 for num, jum in enumerate(element.jumpers):
                     if jum:
-                        self.draw_wire(element.__dict__[f'k{num}'], element.__dict__[f'k{num+1}'])
+                        self.draw_wire(element.__dict__[f'k{num}'], element.__dict__[f'k{num+1}'], dev_mode=dev_mode)
         for item in self.docitems:
             if isinstance(item, VXT) or isinstance(item, VXTm):
                 item.draw()

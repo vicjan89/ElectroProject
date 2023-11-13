@@ -103,6 +103,8 @@ class Vlbox_mount(View):
                 connected = my_con.connected()
                 for n, connect in enumerate(connected):
                     label = connect.label.replace('_','')
+                    if 'XT' in label:
+                        label = label.split(':')[1]
                     if n == 0:
                         self.te.lines((x, yc), (x - 5, yc))
                         self.te.label(x - 5, yc, label, 'w', 2)

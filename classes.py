@@ -110,6 +110,13 @@ class Element:
 
         return self.gef(filter_by_cabinet)
 
+    def fe(self, s: str):
+        '''
+        Возвращает список элементов в выводе __repr__ которых есть подстрока s
+        :param s:
+        :return:
+        '''
+        return self.gef(lambda o: not isinstance(o, Connection) and s in repr(o))
 
     @property
     def slug(self):
@@ -128,6 +135,9 @@ class Element:
     def trp(self):
         for n, c in enumerate(self.trans):
             print(f'{n})\t{c[0]}')
+
+    def connected(self, c):
+        ...
 
 class Connection(Element):
     
@@ -219,12 +229,33 @@ class Wires(Element):
         return len(self.wires)-1
 
     def get(self, e: Element):
+        '''
+        Возвращает список непосредственно подключенных объектов Connection к переданному атрибуту e
+        :param e:
+        :return:
+        '''
         connected = []
         for wire in self.wires:
             f = [wire[0] == e, wire[1] == e]
             if any(f):
                 connected.append(wire[f.index(False)])
         return connected
+
+    def get_all(self, c: Connection):
+        res = [c]
+        i = 0
+        while i < len(res):
+            add_res = self.get(res[i])
+            add_by_apparatus = res[i].parent.connected(res[i])
+            if add_by_apparatus:
+                add_res.extend(add_by_apparatus)
+            for next_c in add_res:
+                if next_c not in res:
+                    res.append(next_c)
+            i += 1
+        res.remove(c)
+        return res
+
 
     def slug_wire(self, num):
         wire = self.wires[num]

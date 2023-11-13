@@ -76,18 +76,21 @@ class VXTmount(View):
             con = self.e.__dict__.get(f'k{c+1}')
             connected = con.connected()
             for num, connect in enumerate(connected):
+                label = connect.label
+                if 'XT' in label:
+                    label = label.split(':')[1]
                 if num == 0:
                     self.te.lines((x,yc-3), (x-5,yc-3))
-                    self.te.label(x-5,yc-3,connect.label,'w',2)
+                    self.te.label(x-5,yc-3,label,'w',2)
                 elif num == 1:
                     self.te.lines((x+20,yc-3), (x+25,yc-3))
-                    self.te.label(x+25,yc-3,connect.label,'e',2)
+                    self.te.label(x+25,yc-3,label,'e',2)
                 if num == 2:
                     self.te.lines((x, yc - 3), (x - 5, yc))
-                    self.te.label(x - 5, yc, connect.label, 'w', 2)
+                    self.te.label(x - 5, yc, label, 'w', 2)
                 elif num == 3:
                     self.te.lines((x+20,yc-3), (x+25,yc))
-                    self.te.label(x+25,yc,connect.label,'e',2)
+                    self.te.label(x+25,yc,label,'e',2)
 
 
     def get_coords(self, c: Connection):
@@ -98,7 +101,10 @@ class VXTmountM(View):
     '''Класс для описания испытательного клеммника на монтажной схеме'''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.bottom = self.y - self.e.size * 6
+
+    @property
+    def bottom(self):
+        return self.y - self.e.size * 6 - 17
 
     def draw(self):
         x, y = self.x, self.y

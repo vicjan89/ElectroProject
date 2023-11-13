@@ -58,6 +58,7 @@ class Project(Element):
                'CT1': CT1,
                'SQGZPUE': SQGZPUE,
                'TGI': TGI}
+    trans = dict()
 
     def __init__(self, te: TextEngine, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -178,3 +179,16 @@ class Project(Element):
     def mv(self, view: View | list, l_from: Vlist, l_to: Vlist):
         l_to.av(view)
         l_from.dv(view)
+    def convert(self):
+        for l in self.doc:
+            new_docwires = dict()
+            for key in l.docwires:
+                value = l.docwires.get(key)
+                for num in range(len(self.wires.wires)):
+                    sl = self.wires.slug_wire(num)
+                    if key == sl:
+                        new_docwires[num] = value
+            l.docwires = new_docwires
+        for num in range(len(self.wires.wires)):
+            self.wires.wires[num].pop(2)
+            self.wires.wires[num].pop(2)
