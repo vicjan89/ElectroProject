@@ -22,9 +22,9 @@ from elements.XT import *
 class Vlist:
 
     def __init__(self,
-                 num: str,
                  project: Element,
                  te: TextEngine,
+                 num: int | None = None,
                  docitems: list | None = None,
                  docwires: dict | None = None,
                  code_list: str = '',
@@ -265,6 +265,12 @@ class Vlist:
         if self.name_list:
             self.te.latex(r'\AddToShipoutPicture*{\put(148mm,5.5mm){\parbox[c]{35mm}{\centering {\scriptsize \begin{spacing}{0.6}' +
                           self.name_list + r'\end{spacing}}}}}')
+        self.te.latex(
+            r'\AddToShipoutPicture*{\put(174mm,11mm){\parbox[c]{35mm}{\centering {\scriptsize \begin{spacing}{0.6}' +
+            str(self.num) + r'\end{spacing}}}}}')
+        self.te.latex(
+            r'\AddToShipoutPicture*{\put(188mm,11mm){\parbox[c]{35mm}{\centering {\scriptsize \begin{spacing}{0.6}' +
+            str(self.num_lists) + r'\end{spacing}}}}}')
         names = set()
         for num, wire in enumerate(self.project.wires.wires):
             name = '' if wire[2] is None else wire[2]

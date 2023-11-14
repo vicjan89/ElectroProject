@@ -1,4 +1,5 @@
 import os
+from collections import Counter
 
 
 from textengines.interfaces import TextEngine
@@ -83,7 +84,7 @@ class Project(Element):
         self.__dict__[name_attr] = new_obj
 
 
-    def al(self, num: str = '',
+    def al(self, num: int = 0,
         code_list: str = '',
         cabinet_list: str = '',
         name_list: str = '',
@@ -97,16 +98,25 @@ class Project(Element):
         :param name_list: название вида схемы
         :return: объект Vlist
         '''
+        vlist = Vlist(project=self, te=self.te, code_list=code_list, cabinet_list=cabinet_list,
+                                  name_list=name_list, num_lists = num_lists, cross=cross)
         if not num:
             num = len(self.doc) + 1
-        self.doc.append(Vlist(num=num, project=self, te=self.te, code_list=code_list, cabinet_list=cabinet_list,
-                              name_list=name_list, num_lists = num_lists, cross=cross))
-        name = f'l{len(self.doc)}'
-        self.__dict__[name] = self.doc[-1]
-        globals()[name] = self.doc[-1]
-        return self.doc[-1]
-
-
+            vlist.num = num
+            self.doc.append(vlist)
+            name = f'l{len(self.doc)}'
+            self.__dict__[name] = self.doc[-1]
+            globals()[name] = self.doc[-1]
+        else:
+            vlist.num = num
+            self.doc.insert(num-1, vlist)
+            for i in range(len(self.doc), num, -1):
+                self.doc[i-1].num += 1
+                self.__dict__[f'l{i}'] = self.doc[i-1]
+                globals()[f'l{i}'] = self.doc[i-1]
+            self.__dict__[f'l{num}'] = self.doc[num-1]
+            globals()[f'l{num}'] = self.doc[num-1]
+        return self.doc[num-1]
 
     def draw(self, dev_mode = True):
         self.te.clear()
@@ -193,3 +203,17 @@ class Project(Element):
         for num in range(len(self.wires.wires)):
             self.wires.wires[num].pop(2)
             self.wires.wires[num].pop(2)
+
+    def specification(self):
+        res = dict()
+        for name, item in self.__dict__.items():
+            if isinstance(item, Element) and not isinstance(item, Connection) and name not in ('wires','g','g1','g2'):
+                if item.model in res:
+                    res[item.model].append(item.cabinet)
+                else:
+                    res[item.model] = [item.cabinet]
+        for key, value in res.items():
+            print(key)
+            cnt = dict(Counter(value))
+            for k, v in cnt.items():
+                print(f'{k}\t{v}')

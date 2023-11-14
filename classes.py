@@ -208,10 +208,7 @@ class Wires(Element):
 
 
     def set_name(self, num, name):
-        if len(self.wires[num]) == 4:
-            self.wires[num].append(name)
-        else:
-            self.wires[num][4] = name
+        self.wires[num][2] = name
 
     def delete(self, num: int):
         '''

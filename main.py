@@ -30,3 +30,4 @@ for name in ('name', 'storage','cabinet','location','model','te','wires','docwir
 globals().update(elements)
 # p.save()
 # p.draw(False)
+# p.al(8)
