@@ -107,6 +107,15 @@ class Vlist:
         else:
             assert False, 'Аргумент должен быть либо View либо list'
 
+
+    def del_by_element(self, e: Element):
+        num = 0
+        while num < len(self.docitems):
+            if self.docitems[num].e == e:
+                self.dv(self.docitems[num])
+            else:
+                num += 1
+
     def replace(self,num: int, new_class: View):
         '''
         Заменяет объект View номер num на другой класс new_class
@@ -149,14 +158,14 @@ class Vlist:
 
     def place_cross(self, xts: list | tuple, beg: int = 1, end: int | None = None):
         '''
-        Размещает на листе клеммы клеммников в списке args в виде схемы кроссовых шинок
+        Размещает на листе клеммы клеммников в списке xts в виде схемы кроссовых шинок
         :param xts: объекты клеммников в нужном порядке
         :param beg: индекс первой клеммы
         :param end: индекс последней клеммы
         :return:
         '''
         x = 20
-        dx = 25
+        dx = 23
         y = 250
         max_end = 0
         for xt in xts:
@@ -218,9 +227,16 @@ class Vlist:
             coord1 = self.search_coords(c1)
             if coord0 and coord1:
                 dx = abs(coord0[0] - coord1[0])
-                name = name if dx > 5 else ''
+                if dx > 5:
+                    name = name
+                else:
+                    name = ''
+                if tw == 0 and dev_mode:
+                    tw = 8
                 self.te.wire(c1=coord0, c2=coord1, tw=tw, name=name, num=num_text)
-                res = True
+                # if name:
+                #     print(f'{self.num}\t{name}\t{c0}\t{c1}')
+                res = True if name else False
             elif not self.cross and ((coord0 and not coord1) or (not coord0 and coord1)):
                 if coord0:
                     crd = coord0
@@ -253,6 +269,8 @@ class Vlist:
                                     else:
                                         tw = 2
                                 self.te.wire(c1=(x1, y1), c2=(x2, y2), tw=tw, name=name, num=num_text)
+                                # if name:
+                                #     print(f'{self.num}\t{name}\t{c0}\t{c1}')
                                 res = True
                                 break
         return res
@@ -317,7 +335,7 @@ class Vlist:
                     item['e'] = list(obj)[0]
             if name == 'TableApparatus':
                 item['e'] = self.project
-
+            # if not (name in ('VXT', 'VXTcross') and not slug):
             self.docitems.append(self.classes[name](te=self.te, **item))
         self.docwires = data.get('docwires', dict())
 

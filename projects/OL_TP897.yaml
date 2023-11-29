@@ -16,6 +16,7 @@ ctc:
 doc:
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c:
     - i31
@@ -421,6 +422,7 @@ doc:
   num: 1
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c:
     - i1
@@ -602,6 +604,7 @@ doc:
   num: 2
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c:
     - k3
@@ -658,10 +661,10 @@ doc:
     x: 76.5
     y: 190
   - c:
-    - n1
-    - no1
+    - n2
+    - no2
     class: VcontNo
-    e: KLB
+    e: KLB2.6
     x: 117.0
     y: 210
   - class: VXT
@@ -704,7 +707,7 @@ doc:
     - "\u041415"
     - "\u04145"
     - "\u04146"
-    x: 121.5
+    x: 111.5
     y: 80
   - c:
     - r7
@@ -756,7 +759,7 @@ doc:
   - class: VXT
     e: XT5/XT5-25
     x: 161.5
-    y: 25
+    y: 80
   - class: VXTcross
     e: XT11/XT11-10
     x: 161.5
@@ -841,6 +844,17 @@ doc:
       \u0435\u0434\u0435\u043D\u0430"
     x: 173
     y: 40
+  - class: VXT
+    e: XT5/XT5-26
+    x: 161.5
+    y: 25
+  - c:
+    - a1
+    - a2
+    class: Vrelay
+    e: KLB2.6
+    x: 100
+    y: 240
   docwires:
     59: 3
     60: 3
@@ -887,6 +901,7 @@ doc:
   num: 3
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - class: VXT
     e: XT5/XT5-3
@@ -1211,6 +1226,7 @@ doc:
   num: 4
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - class: VXTcross
     e: XT11/XT11-15
@@ -1469,6 +1485,7 @@ doc:
   num: 5
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - class: VXTcross
     e: XT11/XT11-8
@@ -1778,6 +1795,7 @@ doc:
   num: 6
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c: []
     class: VXTmount
@@ -1797,6 +1815,7 @@ doc:
   num: 7
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c: []
     class: VXTmount
@@ -1840,6 +1859,7 @@ doc:
   num: 8
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c:
     - a1
@@ -1996,6 +2016,7 @@ doc:
   num: 9
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c:
     - i
@@ -2137,6 +2158,7 @@ doc:
   num: 10
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c:
     - 'no'
@@ -2194,6 +2216,7 @@ doc:
   num: 11
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c:
     - Ia
@@ -2283,6 +2306,7 @@ doc:
   num: 12
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c:
     - yac
@@ -2370,11 +2394,11 @@ doc:
   num: 13
 - cabinet_list: ''
   code_list: ''
+  cross: false
   docitems:
   - c: []
     class: TableApparatus
-    e: "\u041E\u0442\u0445\u043E\u0434\u044F\u0449\u0430\u044F \u043B\u0438\u043D\u0438\
-      \u044F 10\u043A\u0412 \u0422\u041F-897"
+    e: OL_TP897.yaml
     x: 30
     y: 250
   - class: VA4
@@ -2437,7 +2461,7 @@ kl4:
   name: KL4
 klb:
   class: KL
-  name: KLB
+  name: KLB2.6
 kld1:
   class: KL
   model: "\u0420\u0435\u043B\u0435 RXM4AB1BD"
@@ -2506,10 +2530,10 @@ wires:
     - C411
   - - "14T1/3\u04181"
     - "14T2/3\u04181"
-    - null
+    - N411
   - - "14T2/3\u04181"
     - "14T3/3\u04181"
-    - null
+    - N411
   - - "14T3/3\u04181"
     - XT2/XT2-4
     - N411
@@ -2542,16 +2566,16 @@ wires:
     - C421
   - - "14T1/1\u04182"
     - "14T2/1\u04182"
-    - null
+    - N421
   - - "14T2/1\u04182"
     - "14T3/1\u04182"
-    - null
+    - N421
   - - "14T3/1\u04182"
     - SG1/1
     - N421
   - - SG1/1
     - ground1
-    - null
+    - N421
   - - PIK1/1
     - SG1/7`
     - A422
@@ -2566,10 +2590,10 @@ wires:
     - N422
   - - PIK1/3
     - PIK1/6
-    - null
+    - N422
   - - PIK1/6
     - PIK1/9
-    - null
+    - N422
   - - "14T1/2\u04181"
     - XT2/XT2-10
     - A442
@@ -2590,10 +2614,10 @@ wires:
     - null
   - - "14T1/2\u04182"
     - "14T2/2\u04182"
-    - null
+    - N442
   - - "14T2/2\u04182"
     - "14T3/2\u04182"
-    - null
+    - N442
   - - "14T3/2\u04182"
     - XT2/XT2-13
     - N442
@@ -2748,10 +2772,10 @@ wires:
     - A1/X1-1
     - ''
   - - XT12/XT12-1
-    - KLB/11
+    - KLB2.6/21
     - ''
   - - XT12/XT12-2
-    - KLB/14
+    - KLB2.6/24
     - ''
   - - XT12/XT12-2
     - XT5/XT5-21
@@ -2767,13 +2791,13 @@ wires:
     - '33'
   - - A1/X2-6
     - XT5/XT5-22
-    - ''
+    - '33'
   - - A1/X2-6
     - SB2/4
-    - ''
+    - '33'
   - - A1/X5-14
     - XT5/XT5-23
-    - ''
+    - '33'
   - - Q1/A16
     - XT5/XT5-24
     - '2'
@@ -2782,76 +2806,76 @@ wires:
     - '854'
   - - SF1/2
     - XT5/XT5-24
-    - ''
+    - '2'
   - - A1/X1-2
     - XT5/XT5-25
-    - ''
+    - '2'
   - - A1/X4-14
     - A1/X6-13
     - ''
   - - A1/X1-2
     - A1/X5-2
-    - ''
+    - '2'
   - - A1/X5-4
     - A1/X5-2
-    - ''
+    - '2'
   - - A1/X5-4
     - A1/X5-6
-    - ''
+    - '2'
   - - A1/X5-8
     - A1/X5-6
-    - ''
+    - '2'
   - - A1/X5-8
     - A1/X5-10
-    - ''
+    - '2'
   - - A1/X5-12
     - A1/X5-10
-    - ''
+    - '2'
   - - A1/X5-12
     - A1/X6-2
-    - ''
+    - '2'
   - - A1/X6-4
     - A1/X6-2
-    - ''
+    - '2'
   - - A1/X6-4
     - A1/X6-6
-    - ''
+    - '2'
   - - A1/X6-8
     - A1/X6-6
-    - ''
+    - '2'
   - - A1/X6-8
     - A1/X6-10
-    - ''
+    - '2'
   - - A1/X6-12
     - A1/X6-10
-    - ''
+    - '2'
   - - A1/X6-12
     - A1/X6-14
-    - ''
+    - '2'
   - - A1/X6-16
     - A1/X6-14
-    - ''
+    - '2'
   - - KL4/A2
     - XT5/XT5-25
-    - ''
+    - '2'
   - - KL4/A2
     - KL2/A2
-    - ''
+    - '2'
   - - KL1/A2
     - KL2/A2
-    - ''
+    - '2'
   - - XT5/XT5-25
     - A1/X6-16
-    - ''
+    - '2'
   - - SAC2/2
     - SAC5/2
-    - ''
+    - '23'
   - - SAC2/2
     - A1/X5-11
     - '23'
   - - KLD1/14
     - XT5/XT5-14
-    - ''
+    - '21'
   - - A1/X5-9
     - XT5/XT5-14
     - '21'
@@ -2893,13 +2917,13 @@ wires:
     - '033'
   - - XT5/XT5-13
     - SB2/4`
-    - ''
+    - '033'
   - - A1/X4-2
     - XT5/XT5-15
     - ''
   - - A1/X4-4
     - XT5/XT5-16
-    - ''
+    - '043'
   - - KL1/A1
     - XT5/XT5-15
     - ''
@@ -2968,10 +2992,10 @@ wires:
     - '046'
   - - KL2/21
     - XT5/XT5-36
-    - ''
+    - '046'
   - - KL2/11
     - XT5/XT5-35
-    - ''
+    - '045'
   - - KL2/14
     - XT11/XT11-22
     - "2\u0423\u0420\u041E\u0412"
@@ -3013,7 +3037,7 @@ wires:
     - "+\u0428\u0421"
   - - XT4/XT4-1
     - SF2/4
-    - ''
+    - '701'
   - - XT4/XT4-1
     - KL4/41
     - '701'
@@ -3022,103 +3046,103 @@ wires:
     - '781'
   - - XT4/XT4-3
     - HLR/1
-    - ''
+    - '781'
   - - XT4/XT4-4
     - KL4/42
     - '783'
   - - XT4/XT4-4
     - HLG/1
-    - ''
+    - '783'
   - - XT11/XT11-12
     - SF2/1
     - "-\u0428\u0421"
   - - SF2/2
     - XT4/XT4-8
-    - ''
+    - '702'
   - - HLR/2
     - XT4/XT4-8
     - '702'
   - - HLR/2
     - HLG/2
-    - ''
+    - '702'
   - - HL1/2
     - HLG/2
-    - ''
+    - '702'
   - - KL4/41
     - KL3/11
-    - ''
+    - '701'
   - - XT4/XT4-5
     - KL3/14
-    - ''
+    - '751'
   - - XT4/XT4-5
     - HL1/1
     - '751'
   - - KL3/11
     - KLD1/21
-    - ''
+    - '701'
   - - XT4/XT4-7
     - KLD1/24
-    - ''
+    - '776'
   - - XT4/XT4-7
     - KH2/1
     - '776'
   - - KH2/2
     - HL1/2
-    - ''
+    - '702'
   - - XT4/XT4-2
     - KH1/3
-    - ''
+    - '701'
   - - KH2/3
     - KH1/3
-    - ''
+    - '701'
   - - KH2/5
     - KH1/5
-    - ''
+    - '775'
   - - XT4/XT4-6
     - KH1/5
-    - ''
+    - '775'
   - - XT4/XT4-6
     - KL3/A1
     - '775'
   - - KL3/A2
     - XT4/XT4-9
-    - ''
+    - '702'
   - - KH2/3
     - A1/X2-1
-    - ''
+    - '701'
   - - A1/X4-5
     - A1/X2-1
-    - ''
+    - '701'
   - - A1/X4-5
     - A1/X4-7
-    - ''
+    - '701'
   - - A3/16
     - A1/X4-7
-    - ''
+    - '701'
   - - KLD1/21
     - SF9`/11
-    - ''
+    - '701'
   - - A1/X4-6
     - XT4/XT4-10
     - '773'
   - - Q1/C5
     - XT4/XT4-10
-    - ''
+    - '773'
   - - Q1/C6
     - XT11/XT11-25
     - "\u0428\u0417\u0410"
   - - SF9`/12
     - XT4/XT4-11
-    - ''
+    - '777'
   - - A1/X2-2
     - XT4/XT4-11
-    - ''
+    - '777'
   - - A1/X2-2
     - A1/X4-8
-    - ''
+    - '777'
   - - A3/17
     - A1/X4-8
-    - ''
+    - '777'
   - - A3/17
     - KH1/1
     - '777'
@@ -3139,13 +3163,13 @@ wires:
     - ''
   - - SA/1
     - XS1/1
-    - ''
+    - "1\u0428\u041E 891"
   - - SA/2
     - EL1/1
     - ''
   - - XS1/2
     - EL1/2
-    - ''
+    - "2\u0428\u041E 892"
   - - XT11/XT11-29
     - EK1/1
     - "3\u0428\u041E 898"
@@ -3154,10 +3178,10 @@ wires:
     - "4\u0428\u041E 899"
   - - EK1/1
     - EK2/1
-    - ''
+    - "3\u0428\u041E 898"
   - - EK1/2
     - EK2/2
-    - ''
+    - "4\u0428\u041E 899"
   - - XT12/XT12-3
     - Q1/A8
     - ''
@@ -3273,7 +3297,7 @@ xt5:
   - true
   - false
   - true
-  - false
+  - true
   - false
   - false
   - false

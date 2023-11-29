@@ -58,7 +58,8 @@ class Project(Element):
                'SGm': SGm,
                'CT1': CT1,
                'SQGZPUE': SQGZPUE,
-               'TGI': TGI}
+               'TGI': TGI,
+               'EKL': EKL}
     trans = dict()
 
     def __init__(self, te: TextEngine, *args, **kwargs):
@@ -70,6 +71,7 @@ class Project(Element):
     def __setattr__(self, name, value):
         if value and name not in ('name', 'storage', 'wires', 'cabinet') and not isinstance(value, (int, float, tuple, str, list, dict)):
             value.wires = self.wires
+            # value.parent = self
         self.__dict__[name] = value
         globals()[name] = value
 
@@ -128,8 +130,8 @@ class Project(Element):
                 self.te.newpage()
             l.draw(dev_mode)
         self.te.save()
-        os.system(f'pdflatex "{self.te.path}"')
-            # print('Документ сформирован')
+        if self.te.__class__.__name__ == 'LaTeX':
+            os.system(f'pdflatex "{self.te.path}"')
 
     def encode(self):
         res = dict()
@@ -144,20 +146,22 @@ class Project(Element):
 
     def decode(self, data: dict):
         wires = data.pop('wires')['wires']
+
+        # for w in wires:
+        #     w[0] = w[0].replace('СВН','СР-2')
+        #     w[1] = w[1].replace('СВН','СР-2')
+
+
         self.docwires = data.pop('docwires', dict()) #TODO: возможно нужно удалить за ненадобностью
         for key, value in data.items():
             if key not in ('doc', 'version'):
                 name_class = value.pop('class')
                 obj = self.classes[name_class](**value)
                 obj.wires = self.wires
+                # obj.parent = self
                 self.__dict__[key] = obj
+                # globals()[key] = obj
                 for c, _ in obj.get_connections():
-                    # label = c.label
-                    # for i, wire in enumerate(wires):
-                    #     if wire[0] == label and wire[2] == c.cabinet:
-                    #         wires[i][0] = c
-                    #     if wire[1] == label and wire[3] == c.cabinet:
-                    #         wires[i][1] = c
                     for i, wire in enumerate(wires):
                         if wire[0] == c.slug:
                             wires[i][0] = c
@@ -217,3 +221,15 @@ class Project(Element):
             cnt = dict(Counter(value))
             for k, v in cnt.items():
                 print(f'{k}\t{v}')
+
+    def de(self, e: Element):
+        for key, value in self.__dict__.items():
+            if e == value:
+                del_name = key
+                break
+        for c, _ in self.__dict__[del_name].get_connections():
+            self.wires.del_wires_by_connection(c)
+        for vl in self.doc:
+            vl.del_by_element(e)
+        self.__dict__.pop(del_name)
+        # globals().pop(del_name)

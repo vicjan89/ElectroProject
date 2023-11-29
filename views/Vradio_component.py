@@ -10,7 +10,11 @@ class VDiode(View):
                                'cathode': (10, 0)}
 
     def draw(self):
-        self.te.latex(f'\\draw ({self.x}, {self.y}) to[diode] ({self.x + 10}, {self.y});')
+        x = self.x
+        y = self.y
+        self.te.lines((x, y), (x+10, y))
+        self.te.lines((x+2,y-3), (x+2, y+3), (x+7, y), cycle=True)
+        self.te.lines((x+7, y-3), (x+7, y+3))
         self.te.label(self.x+5, self.y+1, self.e.name, 'n')
 
 class VDiodeL(View):
@@ -21,7 +25,11 @@ class VDiodeL(View):
                                'cathode': (-10, 0)}
 
     def draw(self):
-        self.te.latex(f'\\draw ({self.x}, {self.y}) to[diode] ({self.x - 10}, {self.y});')
+        x = self.x
+        y = self.y
+        self.te.lines((x, y), (x-10, y))
+        self.te.lines((x-2,y-3), (x-2, y+3), (x-7, y), cycle=True)
+        self.te.lines((x-7, y-3), (x-7, y+3))
         self.te.label(self.x-5, self.y+1, self.e.name, 'n')
 
 class VDiode_bridge(View):

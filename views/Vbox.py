@@ -1,5 +1,6 @@
 from classes import View, Connection
 from views.func_graph_elements import *
+from views.Vrelay_component import VcontNo, VcontNc
 
 
 class Vbox(View):
@@ -32,7 +33,7 @@ class VboxNo(Vbox):
     def draw(self):
         super().draw()
         for i in range(len(self.c)//2):
-            self.te.latex(contact_no(self.x+7, self.y - i * 15-2, name=self.labels[i]))
+            VcontNo.draw_no(self.te, self.x+7, self.y - i * 15-2, self.labels[i])
 
 class VboxNc(Vbox):
 
@@ -43,7 +44,7 @@ class VboxNc(Vbox):
     def draw(self):
         super().draw()
         for i in range(len(self.c)//2):
-            self.te.latex(contact_nc(self.x+7, self.y - i * 15+2, name=self.labels[i]))
+            VcontNc.draw_nc(self.te, self.x+7, self.y - i * 15+2, self.labels[i])
 
 class VboxTxt(Vbox):
 

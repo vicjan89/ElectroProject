@@ -19,4 +19,4 @@ class VSF(View):
         self.te.label(self.x, self.y, getattr(self.e, self.c[0]).name, 'e', 2)
         self.te.label(self.x, self.y-10, getattr(self.e, self.c[1]).name, 'e', 2)
         self.te.label(self.x+3, self.y-5, self.e.name, 'e')
-        self.te.circle(self.x, self.y-10, 1)
+        # self.te.circle(self.x, self.y-10, 1)

@@ -36,6 +36,9 @@ class Element:
         return f'{self.__class__.__name__}(name={self.name}, model={self.model}, cabinet={self.cabinet}, ' \
                f'location={self.location})'
 
+    def __eq__(self, other):
+        return self is other
+
     @property
     def attr(self):
         return {'name': self.name,
@@ -62,10 +65,10 @@ class Element:
         for n, i in self.__dict__.items():
             if isinstance(i, Connection):
                 yield i, n
-            else:
-                if isinstance(i, Element):
-                    for j in i.get_connections():
-                        yield j
+            # else:
+            #     if isinstance(i, Element):
+            #         for j in i.get_connections():
+            #             yield j
 
     def ge(self):
         return self.gef(lambda x: True)
@@ -139,12 +142,21 @@ class Element:
     def connected(self, c):
         ...
 
+
 class Connection(Element):
     
     def __init__(self, parent: Element, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.parent = parent
-        self.cabinet = parent.cabinet
+
+
+    @property
+    def cabinet(self):
+        return self.parent.cabinet
+
+    @cabinet.setter
+    def cabinet(self, value):
+        ...
 
     def __eq__(self, other):
         if isinstance(other, Connection):
@@ -218,6 +230,14 @@ class Wires(Element):
         '''
         return self.wires.pop(num)
 
+    def del_wires_by_connection(self, c: Connection):
+        num = 0
+        while num < len(self.wires):
+            if c in self.wires[num][:2]:
+                self.delete(num)
+            else:
+                num += 1
+
     def f(self, s: str):
         '''
         Поиск провода имеющего в label Connection переданную подстроку
@@ -271,6 +291,11 @@ class Wires(Element):
         return connected, name
 
     def get_all(self, c: Connection):
+        '''
+        Возвращает список Connection подключенных к переданному в аргументе проводниками или перемычками на клеммниках
+        :param c:
+        :return:
+        '''
         res = [c]
         i = 0
         while i < len(res):
@@ -285,6 +310,18 @@ class Wires(Element):
         res.remove(c)
         return res
 
+    def get_all_wires(self, c: Connection):
+        '''
+        Возвращает список wires подключенных к переданному в аргументе проводниками или перемычками на клеммниках
+        :param c:
+        :return:
+        '''
+        connected = self.get_all(c)
+        res = []
+        for w in self.wires:
+            if w[0] in connected or w[1] in connected:
+                res.append(w)
+        return res
 
     def slug_wire(self, num):
         wire = self.wires[num]

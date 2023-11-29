@@ -9,7 +9,7 @@ class VPA(View):
         super().__init__(*args, **kwargs)
         if self.c:
             self.correspondence = {self.c[0]: (0, 0),
-                                   self.c[1]: (4, 0)}
+                                   self.c[1]: (8, 0)}
 
     def draw(self):
         self.te.circle(self.x+4, self.y, 4)

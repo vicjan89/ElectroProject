@@ -1,4 +1,4 @@
-from classes import View
+from classes import View, Connection
 
 
 class Vcabinet(View):
@@ -9,6 +9,9 @@ class Vcabinet(View):
         self.te.lines((x,y),(x+40,y),(x+40,y-20),(x,y-20), cycle=True, tl = 1)
         self.te.label(self.x+20, self.y, self.e.cabinet, 'n')
 
+    def get_coords(self, c: Connection):
+        return None
+
 class VcabinetD(View):
 
     def draw(self):
@@ -17,11 +20,17 @@ class VcabinetD(View):
         self.te.lines((x,y),(x+40,y),(x+40,y-40),(x,y-40), cycle=True, tl = 1)
         self.te.label(self.x+20, self.y, self.e.cabinet, 'n')
 
+    def get_coords(self, c: Connection):
+        return None
+
 class Vlabel(View):
 
     def __init__(self, text: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.text = text
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(x={self.x}, y={self.y}, text={self.text})'
 
     def draw(self):
         self.te.label(self.x, self.y, self.text, 'n')
@@ -51,8 +60,7 @@ class Vexplanation(View):
         x = self.x
         y = self.y
         self.te.lines((x,y),(x+25,y),(x+25,y-self.h),(x,y-self.h), cycle=True)
-        self.te.latex(f'\\draw({x+12.5}, {y - self.h// 2}) node [align=center]' +
-                      r'{\parbox{25mm}{\begin{spacing}{0.6}\centering {\footnotesize ' + self.t + r'}\end{spacing}}};')
+        self.te.mtext(x+12.5, y-self.h/2, 25, self.t, 'c', 2)
 
 class Vframe_cross(View):
 
@@ -75,4 +83,9 @@ class Vframe_cross(View):
         self.te.lines((x, y - 10), (x + w, y - 10))
         self.te.lines((x, y - h + 10), (x + w, y - h + 10))
         self.te.label(x+ w/2, y - 5, self.num, 'c')
-        self.te.label(x+ w/2, y - h + 5, self.e.cabinet, 'c')
+        self.te.latex(f'\\draw({x+w/2}, {y - h +5}) node [align=center]' +
+                      r'{\parbox{' + str(w) + r'mm}{\begin{spacing}{0.6}\centering {\footnotesize ' + self.e.cabinet +
+                      r'}\end{spacing}}};')
+
+    def get_coords(self, c: Connection):
+        return None

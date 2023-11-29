@@ -7,7 +7,7 @@ from classes import Connection, View
 class VXT(View):
     '''Класс отображает одиночную клемму в виде кружка'''
     def draw(self):
-        self.te.circle(self.x, self.y, 1)
+        self.te.circle(self.x, self.y, 1, black=True)
         self.te.label(self.x, self.y, self.e.name, s=2)
 
 class VXT1(View):
@@ -15,7 +15,7 @@ class VXT1(View):
 
     def draw(self):
         d = 1.5
-        self.te.circle(self.x, self.y, 1)
+        self.te.circle(self.x, self.y, 1, black=True)
         self.te.lines((self.x - d, self.y -d), (self.x + d, self.y + d))
         self.te.label(self.x, self.y, self.e.name, s=2)
 
@@ -24,7 +24,7 @@ class VXTcross(View):
 
     def draw(self):
         self.te.lines((self.x - 4, self.y), (self.x + 4, self.y ))
-        self.te.circle(self.x, self.y, 1.2)
+        self.te.circle(self.x, self.y, 1.2, black=True)
         self.te.label(self.x, self.y, self.e.name, s=2)
 
 class VXTm(View):
@@ -38,8 +38,8 @@ class VXTm(View):
 
     def draw(self):
         self.te.lines((self.x, self.y), (self.x + 4, self.y))
-        self.te.circle(self.x, self.y, 1)
-        self.te.circle(self.x+4, self.y, 1)
+        self.te.circle(self.x, self.y, 1, black=True)
+        self.te.circle(self.x+4, self.y, 1, black=True)
         self.te.label(self.x, self.y, getattr(self.e, self.c[0]).name, s=2)
 
 
@@ -81,6 +81,8 @@ class VXTmount(View):
                 label = connect.label
                 if 'XT' in label:
                     label = label.split(':')[1]
+                    if self.e != connect.parent:
+                        label = f'{connect.parent.cabinet}:{label}'
                 if num == 0:
                     self.te.lines((x,yc-3), (x-5,yc-3))
                     self.te.label(x-5,yc-3,label,'w',2)
@@ -122,7 +124,7 @@ class VXTmountM(View):
                 self.te.circle(x + 2, yc + 3, 1, True)
             con = self.e.__dict__.get(f'k{c + 1}')
             con_ = self.e.__dict__.get(f'k{c + 1}_')
-            connected = con.connected()
+            connected, name = con.connected()
             for num, connect in enumerate(connected):
                 if num == 0:
                     self.te.lines((x, yc - 3), (x - 5, yc - 3))
@@ -132,7 +134,7 @@ class VXTmountM(View):
                     self.te.label(x - 5, yc, connect.label, 'w', 2)
                 else:
                     assert False, f'На измерительную клемму {c+1} клеммника {self.e.name} подключено более 2 проводов'
-            connected_ = con_.connected()
+            connected_, name_ = con_.connected()
             for num, connect in enumerate(connected_):
                 if num == 0:
                     self.te.lines((x + 30, yc - 3), (x + 35, yc - 3))

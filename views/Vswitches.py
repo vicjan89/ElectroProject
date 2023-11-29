@@ -19,8 +19,8 @@ class VSAC(View):
         self.te.label(self.x+7, self.y+10, self.e.name, 'n')
         self.te.label(self.x+4, self.y+3, 'О', 'n', 2)
         self.te.label(self.x+11, self.y+3, 'В', 'n', 2)
-        self.te.circle(self.x, self.y, 1)
-        self.te.circle(self.x+15, self.y, 1)
+        # self.te.circle(self.x, self.y, 1)
+        # self.te.circle(self.x+15, self.y, 1)
 
 class VSACno(VSAC):
 
@@ -55,10 +55,10 @@ class VSAC2(View):
         self.te.label(self.x+7, self.y+10, self.e.name, 'n')
         self.te.label(self.x+4, self.y+3, 'М', 'n', 2)
         self.te.label(self.x+11, self.y+3, 'ТУ', 'n', 2)
-        self.te.circle(self.x, self.y, 1)
-        self.te.circle(self.x+15, self.y, 1)
-        self.te.circle(self.x, self.y-15, 1)
-        self.te.circle(self.x+15, self.y-15, 1)
+        # self.te.circle(self.x, self.y, 1)
+        # self.te.circle(self.x+15, self.y, 1)
+        # self.te.circle(self.x, self.y-15, 1)
+        # self.te.circle(self.x+15, self.y-15, 1)
         self.te.circle(self.x +11, self.y, 1, black=True)
         self.te.circle(self.x +4, self.y-15, 1, black=True)
 
