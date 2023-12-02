@@ -59,7 +59,8 @@ class Project(Element):
                'CT1': CT1,
                'SQGZPUE': SQGZPUE,
                'TGI': TGI,
-               'EKL': EKL}
+               'EKL': EKL,
+               'DXN8_Q': DXN8_Q}
     trans = dict()
 
     def __init__(self, te: TextEngine, *args, **kwargs):
@@ -74,6 +75,19 @@ class Project(Element):
             # value.parent = self
         self.__dict__[name] = value
         globals()[name] = value
+
+    @property
+    def to_list(self):
+        '''
+        Возвращает все элементы проекта в виде списка
+        :return: список элементов
+        '''
+        res = []
+        for key, value in self.__dict__.items():
+            if isinstance(value, Element) and not isinstance(value, Connection) and not isinstance(value, Wires):
+                res.append(value)
+        return res
+
 
     def replace(self, name_attr: str, new_class: Element):
         temp = self.__dict__[name_attr]
@@ -131,7 +145,9 @@ class Project(Element):
             l.draw(dev_mode)
         self.te.save()
         if self.te.__class__.__name__ == 'LaTeX':
-            os.system(f'pdflatex "{self.te.path}"')
+            path = self.te.path.replace('\\', '/')
+            os.system(f'pdflatex "{path}">draw.log')
+            print(f'Документ выведен в файл {path}')
 
     def encode(self):
         res = dict()
@@ -233,3 +249,6 @@ class Project(Element):
             vl.del_by_element(e)
         self.__dict__.pop(del_name)
         # globals().pop(del_name)
+
+    def check(self):
+        self.wires.fill_wire_name()

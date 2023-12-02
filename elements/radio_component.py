@@ -42,6 +42,6 @@ class Diode_bridge(Apparatus):
     model = 'Диодный мост'
     trans = (('plus','+'),
              ('minus','-'),
-             ('in1', '~1'),
-             ('in2','~2'))
+             ('in1', 'переменный1'),
+             ('in2','переменный2'))
 

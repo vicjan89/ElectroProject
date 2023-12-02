@@ -16,11 +16,11 @@ if c == 0:
 else:
     name = files[c-1]
     file = files[c-1].split('.')[0]
-    file_tex = file + '.tex'
+    file_out = os.path.join('out', file)
 w = Wires()
 
-# te = LaTeX(path=file_tex, static='static')
-te = DXF(path=file + '.dxf')
+te = LaTeX(path=file_out + '.tex', static='static')
+# te = DXF(path=file_out + '.dxf')
 p = Project(name=name, storage=YamlStorage(os.path.join(path, file)), te=te)
 p.wires = w
 if c:

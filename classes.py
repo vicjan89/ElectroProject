@@ -54,7 +54,7 @@ class Element:
     def encode(self):
         res = {'class': self.__class__.__name__}
         for key, value in self.__dict__.items():
-            if isinstance(value, (int, float, str, dict, tuple, list)):
+            if isinstance(value, (int, float, str, dict, tuple, list)) and key != 'location':
                 res[key] = value
         return res
 
@@ -126,7 +126,7 @@ class Element:
         parent_name = getattr(self, 'parent', False)
         if parent_name:
             parent_name = parent_name.name
-        res = tuple(filter(lambda x: x, (self.cabinet, self.location, parent_name, self.name)))
+        res = tuple(filter(lambda x: x, (self.cabinet, parent_name, self.name)))
         return '/'.join(res)
 
     @property
@@ -213,7 +213,10 @@ class Wires(Element):
                 for j, wire in enumerate(self.wires):
                     if wire[0] in connected or wire[1] in connected:
                         self.wires_names[j] = name
-                        self.wires[j][2] = name
+                        if not self.wires[j][2]:
+                            self.wires[j][2] = name
+                        else:
+                            assert self.wires[j][2] == name, f'Разные имена у соединённых цепей {self.wires[j][2]} и {name}'
                 i = 0
             else:
                 i += 1
@@ -231,6 +234,7 @@ class Wires(Element):
         return self.wires.pop(num)
 
     def del_wires_by_connection(self, c: Connection):
+        '''Удаляет все проводники содержащие Connection переданный в качестве атрибута'''
         num = 0
         while num < len(self.wires):
             if c in self.wires[num][:2]:
@@ -238,18 +242,32 @@ class Wires(Element):
             else:
                 num += 1
 
-    def f(self, s: str):
+    def f(self, *strgs):
         '''
-        Поиск провода имеющего в label Connection переданную подстроку
-        :param s: подстрока для поиска
+        Поиск провода имеющего в slug_wire или в имени цепи переданные в параметрах подстроки
+        :param strgs: одна или несколько подстрок для поиска
         :return:  найденные провода в виде строки вывода
         '''
         res = ''
         for num, wire in enumerate(self.wires):
-            wire_name = f'{num})\t{self.slug_wire(num)}\n'
-            if s in wire_name:
-                res += wire_name
+            wire_name = str(num).ljust(5) + self.slug_wire(num).ljust(40) + wire[2]
+            include_substr = [s in wire_name for s in strgs]
+            if all(include_substr):
+                res += wire_name + '\n'
         print(res)
+
+    def fe(self, s: str):
+        '''
+        Возвращает список проводников в номере, slug_wire или имени цепи которых есть подстрока s
+        :param s:
+        :return: список проводников
+        '''
+        res = []
+        for num, wire in enumerate(self.wires):
+            wire_name = str(num).ljust(5) + self.slug_wire(num).ljust(40) + wire[2]
+            if s in wire_name:
+                res.append(wire)
+        return res
 
     def ac(self, num: int, c: Connection):
         '''

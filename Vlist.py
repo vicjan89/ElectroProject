@@ -56,11 +56,15 @@ class Vlist:
                    'VXTmount': VXTmount,
                    'VXTmountM': VXTmountM,
                    'Vlbox_mount': Vlbox_mount,
+                   'VSQ_mount': VSQ_mount,
+                   'VVD_mount': VVD_mount,
+                   'VDXN8_Q_mount': VDXN8_Q_mount,
                    'VA4': VA4,
                    'VA4Seom': VA4Seom,
                    'VDiode_bridge': VDiode_bridge,
                    'VDiode': VDiode,
                    'VDiodeL': VDiodeL,
+                   'VDiodeB': VDiodeB,
                    'VHL': VHL,
                    'VSQ': VSQ,
                    'Vrelay': Vrelay,
@@ -74,6 +78,7 @@ class Vlist:
                    'VboxNo': VboxNo,
                    'VboxNc': VboxNc,
                    'VboxTxt': VboxTxt,
+                   'VboxCombo': VboxCombo,
                    'VG': VG,
                    'VSACno': VSACno,
                    'VSACnc': VSACno,
@@ -87,7 +92,8 @@ class Vlist:
                    'Vlabel': Vlabel,
                    'Ruler': Ruler,
                    'Vexplanation': Vexplanation,
-                   'Vframe_cross': Vframe_cross}
+                   'Vframe_cross': Vframe_cross,
+                   'VHL_SA': VHL_SA}
 
     def av(self, view: View | list):
         if isinstance(view, View):
@@ -99,6 +105,11 @@ class Vlist:
             assert False, 'Аргумент должен быть либо View либо list'
 
     def dv(self, view : View | list):
+        '''
+        Удаляет элемент View из листа
+        :param view: удаляемый объект View или список элементов View для удаления
+        :return:
+        '''
         if isinstance(view, View):
             self.docitems.remove(view)
         elif isinstance(view, list):
@@ -109,6 +120,11 @@ class Vlist:
 
 
     def del_by_element(self, e: Element):
+        '''
+        Удаляет View из листа по его атрибуту e типа Element
+        :param e: объект Element
+        :return:
+        '''
         num = 0
         while num < len(self.docitems):
             if self.docitems[num].e == e:
@@ -125,6 +141,11 @@ class Vlist:
         '''
         self.docitems[num] = new_class(**self.docitems[num].__dict__)
         return self.docitems[num]
+
+    def replace_all(self, old_class: View, new_class: View):
+        for n, v in enumerate(self.docitems):
+            if isinstance(v, old_class):
+                self.replace(n, new_class)
 
     def clear(self):
         self.docitems = []
@@ -165,8 +186,19 @@ class Vlist:
         :return:
         '''
         x = 20
-        dx = 23
         y = 250
+        dx = 23
+        max_end = self.place_xt(20, 250, xts, beg, end)
+        h = (max_end - beg + 3) * 10
+        x = 20 - dx / 2
+        for num, xt in enumerate(xts):
+            self.av(Vframe_cross(x=x, y=265, w=dx, h=h, num=num+1, e=xt))
+            x += dx
+        self.cross = True
+
+    def place_xt(self, x1: int, y1: int , dx: int, xts: list | tuple, beg: int = 1, end: int | None = None):
+        x = x1
+        y = y1
         max_end = 0
         for xt in xts:
             end = end if end else xt.size
@@ -176,13 +208,8 @@ class Vlist:
                 self.av(VXT(e=xt.__dict__[f'k{num}'], x=x, y=y))
                 y -= 10
             x += dx
-            y = 250
-        h = (max_end - beg + 3) * 10
-        x = 20 - dx / 2
-        for num, xt in enumerate(xts):
-            self.av(Vframe_cross(x=x, y=265, w=dx, h=h, num=num+1, e=xt))
-            x += dx
-        self.cross = True
+            y = y1
+        return max_end
 
 
     def tw(self, wire_number: int | list | tuple, type_wire: int | None = None):

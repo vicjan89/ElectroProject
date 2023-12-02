@@ -46,12 +46,15 @@ class VXTm(View):
 class VG(View):
     '''Класс для описания земли'''
 
+    @staticmethod
+    def draw_(te, x, y):
+        te.lines((x, y), (x, y-5))
+        te.lines((x-5, y-5), (x+5, y - 5))
+        te.lines((x-3, y-6), (x+3, y - 6))
+        te.lines((x-1, y-7), (x+1, y - 7))
+
     def draw(self):
-        x, y = self.x, self.y
-        self.te.lines((x, y), (x, y-5))
-        self.te.lines((x-5, y-5), (x+5, y - 5))
-        self.te.lines((x-3, y-6), (x+3, y - 6))
-        self.te.lines((x-1, y-7), (x+1, y - 7))
+        self.draw_(self.te, self.x, self.y)
 
 class VXTmount(View):
     '''Класс для описания клеммника на монтажной схеме'''
@@ -96,6 +99,14 @@ class VXTmount(View):
                 elif num == 3:
                     self.te.lines((x+20,yc-3), (x+25,yc))
                     self.te.label(x+25,yc,label,'e',2)
+                elif num == 4:
+                    print(f'На клемме {c+1} клеммника {self.e.slug} более 4 проводников')
+                    self.te.lines((x, yc-3),(x-5,yc-1.5), (x-18,yc-1.5))
+                    self.te.label(x-18,yc-1.5,label,'w',2)
+                elif num == 5:
+                    self.te.lines((x+20, yc-3),(x+25,yc-1.5), (x+38,yc-1.5))
+                    self.te.label(x+38,yc-1.5,label,'e',2)
+
 
 
     def get_coords(self, c: Connection):

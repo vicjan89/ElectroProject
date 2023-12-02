@@ -9,7 +9,7 @@ class TableApparatus(View):
             if isinstance(item, Element) and not isinstance(item, Connection) and name not in ('wires','g','g1','g2', 'g3'):
                 if item.name not in names:
                     model = item.model if item.model else ''
-                    self.te.label(self.x, self.y - row_num * 6,f'{row_num+1}. {item.name} {model}','e')
+                    self.te.label(self.x, self.y - row_num * 6,f'{row_num+1}. {item.name} {model} ({item.location})','e')
                     row_num += 1
                     names.add(item.name)
 
