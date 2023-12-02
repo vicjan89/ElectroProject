@@ -54,7 +54,7 @@ class Element:
     def encode(self):
         res = {'class': self.__class__.__name__}
         for key, value in self.__dict__.items():
-            if isinstance(value, (int, float, str, dict, tuple, list)) and key != 'location':
+            if isinstance(value, (int, float, str, dict, tuple, list)):
                 res[key] = value
         return res
 
